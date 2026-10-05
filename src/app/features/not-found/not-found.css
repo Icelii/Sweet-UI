@@ -1,0 +1,26 @@
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes drift {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(24px, -18px) scale(1.08); }
+}
+
+@keyframes rise {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.float { animation: float 6s ease-in-out infinite; }
+.drift { animation: drift 14s ease-in-out infinite; }
+.drift-slow { animation: drift 18s ease-in-out infinite reverse; }
+.rise { animation: rise 0.5s ease-out both; }
+.rise-1 { animation-delay: 0.08s; }
+.rise-2 { animation-delay: 0.16s; }
+.rise-3 { animation-delay: 0.24s; }
+
+@media (prefers-reduced-motion: reduce) {
+    .float, .drift, .drift-slow, .rise { animation: none; }
+}

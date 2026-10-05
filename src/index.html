@@ -1,13 +1,46 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>SweetUi</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-</head>
-<body>
-  <app-root></app-root>
-</body>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>SweetUi</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="description" content="Plantilla de panel administrativo con Angular, Tailwind CSS y daisyUI, con tema claro y oscuro." />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#18181b" media="(prefers-color-scheme: dark)" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="SweetUi" />
+    <meta property="og:title" content="SweetUi" />
+    <meta property="og:description" content="Plantilla de panel administrativo con Angular, Tailwind CSS y daisyUI, con tema claro y oscuro." />
+    <meta property="og:locale" content="es_ES" />
+    <meta name="twitter:card" content="summary" />
+
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href="logo/sweet-ui-icon-beta.svg" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/svg+xml" href="logo/sweet-ui-icon-beta-dark.svg" media="(prefers-color-scheme: dark)" />
+    <link rel="apple-touch-icon" href="logo/sweet-ui-icon-beta.svg" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&family=Plus+Jakarta+Sans:wght@200..800&display=swap"/>
+
+    <script>
+      (function () {
+        try {
+          var mode = localStorage.getItem('theme');
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var theme = mode === 'dark' || (mode !== 'light' && prefersDark) ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', theme);
+          document.documentElement.style.colorScheme = theme;
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <app-root></app-root>
+  </body>
 </html>

@@ -1,0 +1,44 @@
+<main class="relative isolate flex min-h-dvh flex-col overflow-hidden bg-base-200 text-(--text-color)">
+    <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+        <div class="drift absolute -top-32 -left-24 h-96 w-96 rounded-full bg-primary/25 blur-3xl"></div>
+        <div class="drift-slow absolute top-1/3 -right-32 h-[28rem] w-[28rem] rounded-full bg-secondary/20 blur-3xl"></div>
+        <div class="drift absolute -bottom-40 left-1/4 h-96 w-96 rounded-full bg-accent/20 blur-3xl"></div>
+        <div class="absolute inset-0 opacity-[0.35] [background-image:radial-gradient(var(--border-color-1)_1px,transparent_1px)] [background-size:22px_22px] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"></div>
+    </div>
+
+    <header class="flex h-16 items-center px-4 sm:px-8">
+        <a routerLink="/" class="flex items-center gap-3 outline-none" aria-label="Sweet UI">
+            <img [src]="theme.isDark() ? 'logo/sweet-ui-icon-beta-dark.svg' : 'logo/sweet-ui-icon-beta.svg'" alt="Sweet UI" class="h-10 w-10 object-contain"/>
+            <span class="font-heading text-lg font-bold">Sweet UI</span>
+        </a>
+    </header>
+
+    <section class="flex flex-1 items-center justify-center px-4 pb-16">
+        <div class="rise w-full max-w-lg rounded-box border border-(--border-color-1)/40 bg-base-100/80 px-6 py-10 text-center shadow-xl shadow-primary/5 backdrop-blur-md sm:px-10">
+            <span class="inline-flex items-center gap-2 rounded-full border border-(--border-color-1)/40 bg-(--button-bg) px-3 py-1 text-xs font-semibold text-(--secondary-text)">
+                <span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
+                {{ 'notFound.code' | translate }}
+            </span>
+
+            <p class="float mt-6 select-none bg-gradient-to-br from-primary via-secondary to-accent bg-clip-text font-heading text-[7rem] leading-none font-extrabold tracking-tight text-transparent sm:text-[9rem]" aria-hidden="true">
+                404
+            </p>
+
+            <h1 class="rise rise-1 mt-4 text-2xl font-bold">{{ 'notFound.title' | translate }}</h1>
+            <p class="rise rise-2 mx-auto mt-2 max-w-sm text-sm text-(--secondary-text)">
+                {{ 'notFound.description' | translate }}
+            </p>
+
+            <div class="rise rise-3 mt-8 flex flex-col-reverse justify-center gap-3 sm:flex-row">
+                <button type="button" (click)="goBack()" class="btn rounded-field border-(--border-color-1)/60 bg-base-100 font-semibold text-(--secondary-text) hover:text-(--text-color)">
+                    <app-tabler-icon name="arrow-left" [size]="18" />
+                    {{ 'notFound.goBack' | translate }}
+                </button>
+                <a routerLink="/" class="btn btn-primary rounded-field font-semibold">
+                    <app-tabler-icon name="home" [size]="18" />
+                    {{ 'notFound.back' | translate }}
+                </a>
+            </div>
+        </div>
+    </section>
+</main>

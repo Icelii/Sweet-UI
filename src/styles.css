@@ -1,3 +1,120 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import 'tailwindcss';
+
+@plugin 'daisyui' {
+  themes: false;
+}
+
+@plugin 'daisyui/theme' {
+  name: 'light';
+  default: true;
+  color-scheme: light;
+
+  --color-base-100: #ffffff;
+  --color-base-200: #f7fafc;
+  --color-base-300: #e2e8f0;
+  --color-base-content: #2d3748;
+
+  --color-primary: #5facd3;
+  --color-primary-content: #ffffff;
+  --color-secondary: #a78bfa;
+  --color-secondary-content: #1e1240;
+  --color-accent: #f6a5c0;
+  --color-accent-content: #3d0f1f;
+  --color-neutral: #2d3748;
+  --color-neutral-content: #f7fafc;
+
+  --color-info: #63b3ed;
+  --color-info-content: #0a2540;
+  --color-success: #68d391;
+  --color-success-content: #0f3320;
+  --color-warning: #f6ad55;
+  --color-warning-content: #3b2106;
+  --color-error: #fc8181;
+  --color-error-content: #3f0d0d;
+
+  --radius-selector: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-box: 0.75rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+@plugin 'daisyui/theme' {
+  name: 'dark';
+  prefersdark: true;
+  color-scheme: dark;
+
+  --color-base-100: #18181b;
+  --color-base-200: #09090b;
+  --color-base-300: #27272a;
+  --color-base-content: #f4f4f5;
+
+  --color-primary: #5facd3;
+  --color-primary-content: #ffffff;
+  --color-secondary: #a78bfa;
+  --color-secondary-content: #1e1240;
+  --color-accent: #f6a5c0;
+  --color-accent-content: #3d0f1f;
+  --color-neutral: #27272a;
+  --color-neutral-content: #f4f4f5;
+
+  --color-info: #38bdf8;
+  --color-info-content: #082f49;
+  --color-success: #4ade80;
+  --color-success-content: #052e16;
+  --color-warning: #fbbf24;
+  --color-warning-content: #451a03;
+  --color-error: #f87171;
+  --color-error-content: #450a0a;
+
+  --radius-selector: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-box: 0.75rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+:root,
+[data-theme='light'] {
+  --primary-color: var(--color-primary);
+  --text-color: #1e293b;
+  --secondary-text: #64748b;
+  --border-color-1: #cbd5e1;
+  --button-bg: #f1f5f9;
+  --bg-2: #f8fafc;
+  --danger: #ef4444;
+}
+
+[data-theme='dark'] {
+  --primary-color: var(--color-primary);
+  --text-color: #f4f4f5;
+  --secondary-text: #a1a1aa;
+  --border-color-1: #3f3f46;
+  --button-bg: #27272a;
+  --bg-2: #09090b;
+  --danger: #f87171;
+}
+
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    @apply bg-base-200 text-base-content antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading;
+  }
+}

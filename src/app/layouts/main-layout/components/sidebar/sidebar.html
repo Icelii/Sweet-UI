@@ -1,0 +1,102 @@
+<aside [ngClass]="{ 'w-66': isExpanded(), 'w-[72px]': !isExpanded(), 'translate-x-0': layout.mobileOpen(), '-translate-x-full': !layout.mobileOpen() }" class="fixed lg:static top-0 left-0 z-40 flex flex-col h-full bg-base-100 border-r border-(--border-color-1)/40 transition-all duration-300 ease-in-out transform lg:translate-x-0 overscroll-none">
+    <div class="relative flex items-center px-4 h-16 mb-2 border-b border-(--border-color-1)/40 shrink-0" [class.justify-between]="isExpanded()" [class.justify-center]="!isExpanded()">
+        <a routerLink="/" class="flex items-center gap-3 overflow-hidden outline-none" aria-label="Sweet UI">
+            <div class="w-10 h-10 shrink-0 rounded-xl bg-transparent text-white flex items-center justify-center font-heading font-extrabold text-lg shadow-sm select-none" aria-hidden="true">
+                <img [src]="theme.isDark() ? 'logo/sweet-ui-icon-beta-dark.svg' : 'logo/sweet-ui-icon-beta.svg'" alt="Sweet UI" class="w-full h-full object-contain" />
+            </div>
+            @if (isExpanded()) {
+                <span class="font-heading font-bold text-lg text-(--text-color) whitespace-nowrap">Sweet UI</span>
+            }
+        </a>
+
+        <button (click)="layout.toggleSidebar()" [ngClass]="isExpanded() ? '-right-4' : '-right-6'" class="hidden lg:flex absolute top-1/2 -translate-y-1/2 w-8 h-8 rounded-md border border-(--border-color-1)/40 bg-base-100 text-(--secondary-text) hover:text-(--primary-color) shadow-sm items-center justify-center hover:cursor-pointer transition z-50" [attr.aria-label]="(isExpanded() ? 'layout.collapseMenu' : 'layout.expandMenu') | translate">
+            @if(!isExpanded()) {
+                <app-tabler-icon name="chevrons-right" [stroke]="2.5" />
+            } @else {
+                <app-tabler-icon name="chevrons-left" [stroke]="2.5" />
+            }
+        </button>
+        <button (click)="layout.closeMobileSidebar()" class="lg:hidden p-2 rounded-xl hover:bg-(--button-bg) text-(--secondary-text) transition duration-150" [attr.aria-label]="'layout.closeMenu' | translate">
+            <app-tabler-icon name="close" [size]="20" />
+        </button>
+    </div>
+
+    <nav class="flex-1 min-h-0 space-y-0.5 overflow-y-auto overscroll-contain overflow-x-hidden px-3 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        @for (item of navItems; track item.path) {
+            @if (item.section) {
+                <div class="pt-2 pb-1">
+                    @if (isExpanded()) {
+                        <div class="border-t border-(--border-color-1)/40 pt-3">
+                            <span class="text-xs font-bold tracking-wider text-(--secondary-text) px-2 uppercase">
+                                {{ item.section | translate }}
+                            </span>
+                        </div>
+                    } @else {
+                        <div class="border-t border-(--border-color-1)/40 my-1"></div>
+                    }
+                </div>
+            }
+
+            @if (item.children) {
+                <div class="w-full relative group/parent">
+                    <button (click)="toggleSubmenu(item)"
+                        [class.w-full]="isExpanded()"
+                        [class.w-11]="!isExpanded()"
+                        [class.justify-start]="isExpanded()"
+                        [class.px-3]="isExpanded()"
+                        [class.justify-center]="!isExpanded()"
+                        [ngClass]="isChildActive(item) ? 'text-(--text-color)' : 'text-(--secondary-text)'"
+                        [attr.title]="isExpanded() ? null : (item.label | translate)"
+                        class="h-10 hover:text-(--text-color) hover:bg-(--button-bg) rounded-md flex items-center gap-2 hover:cursor-pointer outline-none">
+
+                        <app-tabler-icon [name]="item.icon" [size]="navIconSize(item.icon)" />
+
+                        @if (isExpanded()) {
+                            <span class="font-semibold text-[13px] whitespace-nowrap flex-1 text-left">
+                                {{ item.label | translate }}
+                            </span>
+                            <app-tabler-icon name="chevron-down" [size]="18" [stroke]="2.5" [class.rotate-180]="isSubmenuOpen(item.path)" class="text-gray-400 transition-transform duration-200" />
+                        }
+                    </button>
+
+                    @if (isExpanded()) {
+                        <div [class.max-h-0]="!isSubmenuOpen(item.path)"
+                            [class.max-h-40]="isSubmenuOpen(item.path)"
+                            [class.opacity-0]="!isSubmenuOpen(item.path)"
+                            [class.opacity-100]="isSubmenuOpen(item.path)"
+                            class="overflow-hidden ease-in-out ml-5 pl-4 border-l border-(--border-color-1)/40 space-y-0.5 transition-all duration-200">
+                        @for (child of item.children; track child.path) {
+                            <a [routerLink]="child.path"
+                            (click)="layout.closeMobileSidebar()"
+                            [ngClass]="{ 'bg-(--button-bg) text-(--text-color) font-semibold': isNavActive(child) }"
+                            class="block py-2 px-2 rounded-md text-xs font-medium text-(--secondary-text) hover:bg-(--button-bg) hover:text-(--text-color) whitespace-nowrap">
+                                {{ child.label | translate }}
+                            </a>
+                        }
+                        </div>
+                    }
+                </div>
+            }@else {
+                <a [routerLink]="item.path"
+                    (click)="layout.closeMobileSidebar()"
+                    [ngClass]="{ 'bg-(--button-bg) text-(--text-color) font-semibold': isNavActive(item) }"
+                    [class.w-full]="isExpanded()"
+                    [class.w-11]="!isExpanded()"
+                    [class.justify-start]="isExpanded()"
+                    [class.px-3]="isExpanded()"
+                    [class.justify-center]="!isExpanded()"
+                    [attr.title]="isExpanded() ? null : (item.label | translate)"
+                    class="h-10 text-(--secondary-text) hover:text-(--text-color) hover:bg-(--button-bg) rounded-md flex items-center gap-2 hover:cursor-pointer outline-none">
+
+                    <app-tabler-icon [name]="item.icon" [size]="navIconSize(item.icon)" />
+
+                    @if (isExpanded()) {
+                        <span class="font-semibold text-[13px] whitespace-nowrap">
+                            {{ item.label | translate }}
+                        </span>
+                    }
+                </a>
+            }
+        }
+    </nav>
+</aside>

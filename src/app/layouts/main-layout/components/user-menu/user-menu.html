@@ -1,0 +1,66 @@
+<div class="dropdown dropdown-end cursor-pointer" [class.group]="isDesktop()">
+    <div tabindex="0" role="button" class="flex items-center bg-base-100 border-none" [ngClass]="isDesktop() ? 'gap-2.5 outline-none' : 'gap-3'">
+        <div class="rounded-full overflow-hidden bg-(--primary-color)/10 text-(--primary-color) border-2 border-(--border-color-1)/40 flex items-center justify-center shrink-0 font-bold text-sm select-none" [ngClass]="isDesktop() ? 'w-9.5 h-9.5' : 'w-10 h-10'">
+            @if (user().img && !avatarFailed()) {
+                <img [src]="user().img" alt="{{ user().name || ('user.defaultName' | translate) }}" (error)="avatarFailed.set(true)" class="w-full h-full object-cover object-center rounded-full" />
+            } @else {
+                {{ (user().name || ('user.defaultName' | translate)) | initials }}
+            }
+        </div>
+        <div class="hidden md:block text-sm text-left">
+            <p class="font-bold text-(--text-color) leading-tight">{{ user().name || ('user.defaultName' | translate) }}</p>
+        </div>
+        @if (isDesktop()) {
+            <app-tabler-icon name="chevron-down" [size]="20" class="text-(--secondary-text) transition-transform duration-300 group-focus-within:-rotate-180" />
+        }
+    </div>
+
+    <div tabindex="0" class="dropdown-content mt-2 w-64 rounded-xl bg-base-100 p-2 shadow-md border border-(--border-color-1)/40 z-50 cursor-default">
+        <div class="px-3 pt-2 pb-3">
+            <p class="font-bold text-[14px] text-(--text-color) truncate">{{ user().name || ('user.defaultName' | translate) }}</p>
+            <p class="text-[12px] text-(--secondary-text) truncate">{{ user().role | translate }}</p>
+        </div>
+
+        <ul class="menu w-full p-0 gap-0.5">
+            <li>
+                <a routerLink="/account-settings/profile" routerLinkActive="bg-(--bg-2) !text-(--primary-color)" class="flex items-center gap-3 px-3 py-2.5 rounded-md text-[14px] font-medium text-(--text-color) hover:bg-(--bg-2) hover:text-(--primary-color) focus:bg-(--bg-2) active:bg-(--bg-2) active:text-(--primary-color) transition-colors outline-none">
+                    <app-tabler-icon name="user-circle" [size]="22" class="text-(--secondary-text)" />
+                    {{ 'layout.profileSettings' | translate }}
+                </a>
+            </li>
+            <li>
+                <button (click)="toggleLanguageMenu()" class="flex w-full min-w-0 items-center gap-3 px-3 py-2.5 rounded-md text-[14px] font-medium text-(--text-color) hover:bg-(--bg-2) hover:text-(--primary-color) focus:bg-(--bg-2) active:bg-(--bg-2) active:text-(--primary-color) transition-colors outline-none" [attr.aria-expanded]="languageMenuOpen()" [attr.aria-label]="'layout.switchLanguage' | translate">
+                    <app-tabler-icon name="world" [size]="22" class="text-(--secondary-text)" />
+                    <span class="min-w-0 flex-1 truncate text-left">{{ 'layout.language' | translate }}</span>
+                    <span class="flex shrink-0 items-center gap-1.5 rounded-md border border-(--border-color-1)/40 bg-(--bg-2) px-2 py-0.5 text-[12px] font-medium text-(--text-color)">
+                        {{ languageNames[i18n.language()] }}
+                        <app-flag-icon [language]="i18n.language()" />
+                        <app-tabler-icon name="chevron-down" [size]="14" [stroke]="2.5" [class.rotate-180]="languageMenuOpen()" class="text-(--secondary-text) transition-transform duration-200" />
+                    </span>
+                </button>
+            </li>
+            @if (languageMenuOpen()) {
+                @for (language of i18n.languages; track language) {
+                    <li>
+                        <button (click)="selectLanguage(language)" class="flex w-full min-w-0 items-center gap-2 pl-11 pr-3 py-1.5 text-[13px] font-medium rounded-md outline-none hover:bg-(--bg-2) hover:text-(--primary-color) focus:bg-(--bg-2) active:bg-(--bg-2) active:text-(--primary-color)" [ngClass]="i18n.language() === language ? 'text-(--text-color)' : 'text-(--secondary-text)'" [attr.aria-pressed]="i18n.language() === language">
+                            <app-flag-icon [language]="language" />
+                            <span class="flex-1 text-left">{{ languageNames[language] }}</span>
+                            @if (i18n.language() === language) {
+                                <app-tabler-icon name="check" [size]="16" class="text-(--primary-color)" />
+                            }
+                        </button>
+                    </li>
+                }
+            }
+        </ul>
+
+        <ul class="menu w-full p-0 pt-1 mt-1 border-t border-(--border-color-1)/40">
+            <li>
+                <button class="group/logout flex w-full items-center gap-3 px-3 py-2.5 rounded-md text-[14px] font-medium text-(--text-color) hover:bg-rose-500/10 hover:text-(--danger) focus:bg-rose-500/10 active:bg-rose-500/10 active:text-(--danger) transition-colors outline-none">
+                    <app-tabler-icon name="logout" [size]="22" class="text-(--secondary-text) group-hover/logout:text-(--danger)" />
+                    {{ 'layout.logout' | translate }}
+                </button>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -1,11 +1,20 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { ApplicationConfig, inject, provideAppInitializer, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
+import { provideRouter, TitleStrategy, withComponentInputBinding } from '@angular/router';
+import { I18n } from '@core/i18n/i18n';
+import { TranslatedTitleStrategy } from '@core/i18n/translated-title-strategy';
+import { Theme } from '@core/services/theme';
 import { routes } from './app.routes';
-import { provideClientHydration } from '@angular/platform-browser';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes), provideClientHydration()
-  ]
+    provideRouter(routes, withComponentInputBinding()),
+    provideClientHydration(withEventReplay()),
+    { provide: TitleStrategy, useClass: TranslatedTitleStrategy },
+    provideAppInitializer(() => {
+      inject(Theme);
+      inject(I18n);
+    }),
+  ],
 };
