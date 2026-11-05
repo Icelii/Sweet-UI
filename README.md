@@ -1,6 +1,13 @@
-# SweetUi
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/sweet-ui-logo-horizontal-dark.svg" />
+    <img alt="Sweet UI" src="docs/images/sweet-ui-logo-horizontal.svg" width="360" />
+  </picture>
+</p>
 
 An admin dashboard template built with **Angular 22** (standalone components, signals, SSR and prerendering), **Tailwind CSS 4** and **daisyUI 5**. It has light and dark themes, works in Spanish and English, and is responsive from phones to wide screens.
+
+[View Live Demo](https://sweetui.netlify.app)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://iceliiprojects.s3.us-west-004.backblazeb2.com/Sweet+UI+-+dark+theme.png" />
@@ -10,6 +17,14 @@ An admin dashboard template built with **Angular 22** (standalone components, si
 | Light theme | Dark theme |
 | ----------- | ---------- |
 | ![Sweet UI dashboard in the light theme](https://iceliiprojects.s3.us-west-004.backblazeb2.com/Sweet+UI+-+light+theme.png) | ![Sweet UI dashboard in the dark theme](https://iceliiprojects.s3.us-west-004.backblazeb2.com/Sweet+UI+-+dark+theme.png) |
+
+On phones the sidebar becomes a slide-in menu and every page stacks into one column:
+
+<p align="center">
+  <img alt="Sweet UI on a phone in the light theme" src="https://iceliiprojects.s3.us-west-004.backblazeb2.com/Sweet+UI+Mobile+-+light+theme.png" width="280" />
+  &nbsp;&nbsp;
+  <img alt="Sweet UI on a phone in the dark theme" src="https://iceliiprojects.s3.us-west-004.backblazeb2.com/Sweet+UI+Mobile+-+dark+theme.png" width="280" />
+</p>
 
 ## Features
 
