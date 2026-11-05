@@ -1,4 +1,4 @@
-<aside [class]="(isExpanded() ? 'w-66' : 'w-[72px]') + ' ' + (layout.mobileOpen() ? 'translate-x-0' : '-translate-x-full')" class="fixed lg:static top-0 left-0 z-40 flex flex-col h-full bg-base-100 border-r border-(--border-color-1)/40 transition-all duration-300 ease-in-out transform lg:translate-x-0 overscroll-none">
+<aside [class]="(isExpanded() ? 'w-66' : 'w-[72px]') + ' ' + (layout.mobileOpen() ? 'translate-x-0' : '-translate-x-full max-lg:invisible')" class="fixed lg:static top-0 left-0 z-40 flex flex-col h-full bg-base-100 border-r border-(--border-color-1)/40 transition-all duration-300 ease-in-out transform lg:translate-x-0 overscroll-none">
     <div class="relative flex items-center px-4 h-16 mb-2 border-b border-(--border-color-1)/40 shrink-0" [class.justify-between]="isExpanded()" [class.justify-center]="!isExpanded()">
         <a routerLink="/" class="flex items-center gap-3 overflow-hidden outline-none" [attr.aria-label]="brand.name">
             <div class="w-10 h-10 shrink-0 rounded-xl bg-transparent text-white flex items-center justify-center font-heading font-extrabold text-lg shadow-sm select-none" aria-hidden="true">

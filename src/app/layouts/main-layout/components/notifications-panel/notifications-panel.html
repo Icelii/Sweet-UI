@@ -1,7 +1,8 @@
 @if (layout.notificationsOpen()) {
     <div (click)="layout.closeNotifications()" class="fixed inset-0 z-50 bg-slate-900/20 backdrop-blur-sm touch-none" aria-hidden="true"></div>
 }
-<aside class="fixed top-0 right-0 z-[60] h-[100dvh] w-80 sm:w-96 bg-base-100 shadow-2xl border-l border-(--border-color-1)/40 transition-transform duration-300 ease-in-out transform translate-x-full flex flex-col" [class.translate-x-0!]="layout.notificationsOpen()">
+<!-- Closed: off-screen and invisible, so Tab and screen readers skip it. -->
+<aside class="fixed top-0 right-0 z-[60] h-[100dvh] w-80 sm:w-96 bg-base-100 shadow-2xl border-l border-(--border-color-1)/40 transition-[translate,visibility] duration-300 ease-in-out flex flex-col" [class]="layout.notificationsOpen() ? 'translate-x-0' : 'translate-x-full invisible'">
     <div class="flex items-center justify-between px-6 py-4 shrink-0 h-16">
         <h3 class="font-bold text-(--text-color) text-[15px]">{{ 'layout.notifications' | translate }}</h3>
         <button (click)="layout.closeNotifications()" class="size-9 inline-flex items-center justify-center shrink-0 -mr-2 rounded-xl hover:bg-(--bg-2) text-(--secondary-text) transition hover:cursor-pointer" [attr.aria-label]="'layout.closeNotifications' | translate">
