@@ -1,0 +1,12 @@
+# Netlify build settings. They take priority over the ones in the Netlify dashboard.
+[build]
+  command = "npm run build"
+  publish = "dist/sweetUi/browser"
+
+[build.environment]
+  # Angular 22 needs Node 22.22+ or 24.15+.
+  NODE_VERSION = "24"
+
+# Server rendering on Netlify. It must also be in devDependencies (package.json).
+[[plugins]]
+  package = "@netlify/angular-runtime"
