@@ -182,8 +182,8 @@
 	<line class="st16" x1="173" y1="408" x2="199" y2="421"/>
 	<line class="st17" x1="535" y1="408" x2="511" y2="423"/>
 </g>
-<circle class="st20" cx="263" cy="468" r="16"/>
-<circle class="st20" cx="447" cy="468" r="16"/>
+<circle style="fill:#2D3748" cx="263" cy="468" r="16"/>
+<circle style="fill:#2D3748" cx="447" cy="468" r="16"/>
 <path class="st21" d="M331,493c16,18.7,32,18.7,48,0"/>
 <circle class="st22" cx="215" cy="501" r="24"/>
 <circle class="st22" cx="495" cy="501" r="24"/>
