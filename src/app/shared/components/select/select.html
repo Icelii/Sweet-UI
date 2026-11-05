@@ -1,0 +1,130 @@
+<div
+  #trigger
+  role="combobox"
+  [attr.id]="inputId()"
+  [attr.tabindex]="isDisabled() ? -1 : 0"
+  [attr.aria-labelledby]="labelId()"
+  [attr.aria-expanded]="open()"
+  [attr.aria-controls]="listId"
+  [attr.aria-disabled]="isDisabled() || null"
+  aria-haspopup="listbox"
+  (click)="toggle()"
+  (keydown)="onTriggerKeydown($event)"
+  class="w-full min-h-[41px] flex items-center gap-2 border-2 rounded-lg py-1.5 pl-3 bg-transparent text-left text-[14px] outline-none transition-colors focus-visible:border-(--primary-color)"
+  [class]="(open() ? 'border-(--primary-color) ' : 'border-(--border-color-1)/40 ') + (isDisabled() ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer')"
+>
+  @if (icon(); as leadingIcon) {
+    <app-tabler-icon [name]="leadingIcon" [size]="18" class="text-(--secondary-text)" />
+  }
+
+  <div class="flex-1 min-w-0 flex flex-wrap items-center gap-1.5">
+    @if (!hasValue()) {
+      <span class="truncate text-(--secondary-text) font-extralight text-xs leading-[25px]">{{ placeholderText() }}</span>
+    } @else if (multiple()) {
+      @for (option of selectedOptions(); track option.value) {
+        <span class="inline-flex items-center gap-1 max-w-full rounded-md bg-(--primary-color)/10 text-(--primary-color) text-[12px] font-medium pl-2 pr-1 py-0.5">
+          @if (option.icon) {
+            <app-tabler-icon [name]="option.icon" [size]="14" />
+          }
+          <span class="truncate">{{ option.label }}</span>
+          @if (!isDisabled()) {
+            <button type="button" tabindex="-1" (click)="remove(option, $event)" [attr.aria-label]="('select.remove' | translate) + ' ' + option.label" class="size-4 inline-flex items-center justify-center shrink-0 rounded hover:bg-(--primary-color)/20 cursor-pointer">
+              <app-tabler-icon name="close" [size]="12" />
+            </button>
+          }
+        </span>
+      }
+    } @else {
+      @let selected = selectedOptions()[0];
+      <span class="flex items-center gap-2 min-w-0 text-(--text-color) leading-[25px]">
+        @if (selected.icon && !icon()) {
+          <app-tabler-icon [name]="selected.icon" [size]="18" class="text-(--primary-color)" />
+        }
+        <span class="truncate">{{ selected.label }}</span>
+      </span>
+    }
+  </div>
+
+  <div class="flex items-center gap-0.5 pr-1.5 shrink-0">
+    @if (clearable() && hasValue() && !isDisabled()) {
+      <button type="button" tabindex="-1" (click)="clear($event)" [attr.aria-label]="'select.clear' | translate" class="size-6 inline-flex items-center justify-center rounded-md text-(--secondary-text) hover:text-(--danger) hover:bg-(--danger)/10 transition cursor-pointer">
+        <app-tabler-icon name="close" [size]="14" />
+      </button>
+    }
+    <app-tabler-icon name="chevron-down" [size]="18" class="text-(--secondary-text) transition-transform" [class.rotate-180]="open()" />
+  </div>
+</div>
+
+@if (open()) {
+  <!-- eslint-disable-next-line @angular-eslint/template/interactive-supports-focus -- Catches keys from the search box and the list inside. -->
+  <div
+    #panel
+    popover="manual"
+    (keydown)="onPanelKeydown($event)"
+    class="fixed inset-auto m-0 bg-base-100 text-(--text-color) border border-(--border-color-1) rounded-xl shadow-xl p-1.5 overflow-hidden flex flex-col max-h-[min(20rem,calc(100dvh-1rem))]"
+  >
+    @if (searchable()) {
+      <div class="relative mb-1.5 shrink-0">
+        <app-tabler-icon name="search" [size]="16" class="absolute left-2.5 top-1/2 -translate-y-1/2 text-(--secondary-text) pointer-events-none" />
+        <input
+          #search
+          type="text"
+          role="searchbox"
+          autocomplete="off"
+          [value]="query()"
+          (input)="onSearch($any($event.target).value)"
+          [attr.aria-controls]="listId"
+          [attr.aria-activedescendant]="activeId()"
+          [placeholder]="'select.search' | translate"
+          class="form-input form-input-sm pl-8"
+        />
+      </div>
+    }
+
+    <ul
+      #list
+      [id]="listId"
+      role="listbox"
+      tabindex="-1"
+      [attr.aria-multiselectable]="multiple() || null"
+      [attr.aria-activedescendant]="searchable() ? null : activeId()"
+      class="overflow-y-auto outline-none flex-1 min-h-0"
+    >
+      @for (option of filtered(); track option.value; let index = $index) {
+        <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -- The listbox handles the keyboard (aria-activedescendant). -->
+        <li
+          [id]="listId + '-option-' + index"
+          role="option"
+          [attr.aria-selected]="isSelected(option)"
+          [attr.aria-disabled]="option.disabled || null"
+          (click)="choose(option)"
+          (mousemove)="!option.disabled && activeIndex.set(index)"
+          class="flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-[13px] transition-colors"
+          [class]="(option.disabled ? 'opacity-40 cursor-not-allowed ' : 'cursor-pointer ') + (index === activeIndex() ? 'bg-(--primary-color)/10 ' : '') + (isSelected(option) ? 'text-(--primary-color) font-semibold' : 'text-(--text-color)')"
+        >
+          @if (multiple()) {
+            <span class="size-4 shrink-0 rounded border-2 inline-flex items-center justify-center transition-colors" [class]="isSelected(option) ? 'bg-(--primary-color) border-(--primary-color) text-white' : 'border-(--border-color-1)'">
+              @if (isSelected(option)) {
+                <app-tabler-icon name="check" [size]="12" [stroke]="3" />
+              }
+            </span>
+          }
+          @if (option.icon) {
+            <app-tabler-icon [name]="option.icon" [size]="18" [class]="isSelected(option) ? 'text-(--primary-color)' : 'text-(--secondary-text)'" />
+          }
+          <span class="flex-1 min-w-0">
+            <span class="block truncate">{{ option.label }}</span>
+            @if (option.description) {
+              <span class="block truncate text-[11px] font-normal text-(--secondary-text)">{{ option.description }}</span>
+            }
+          </span>
+          @if (!multiple() && isSelected(option)) {
+            <app-tabler-icon name="check" [size]="16" />
+          }
+        </li>
+      } @empty {
+        <li class="px-2.5 py-6 text-center text-[13px] text-(--secondary-text)">{{ 'select.empty' | translate }}</li>
+      }
+    </ul>
+  </div>
+}

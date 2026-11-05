@@ -1,0 +1,101 @@
+<div class="px-4 md:px-8 py-5 flex flex-col gap-6">
+  <div class="flex flex-col gap-2">
+    <h2 class="text-[20px] font-bold text-(--text-color)">{{ 'ui.breadcrumbs.title' | translate }}</h2>
+    <p class="text-[13px] text-(--secondary-text) -mt-1">{{ 'ui.breadcrumbs.subtitle' | translate }}</p>
+  </div>
+
+  <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 items-start">
+    <!-- AUTOMATIC -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.breadcrumbs.auto' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.breadcrumbs.autoHint' | translate }}</p>
+      </div>
+      <app-breadcrumb />
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">&lt;app-breadcrumb /&gt;</code>
+    </section>
+
+    <!-- MANUAL -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.breadcrumbs.manual' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.breadcrumbs.manualHint' | translate }}</p>
+      </div>
+      <app-breadcrumb [items]="basic" />
+      <app-breadcrumb [items]="basic" [home]="false" />
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">[items]="[&#123; label: 'nav.tables', path: '/ui/tables' &#125;, &#123; label: 'Detalle' &#125;]"</code>
+    </section>
+
+    <!-- SEPARATORS -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.breadcrumbs.separators' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.breadcrumbs.separatorsHint' | translate }}</p>
+      </div>
+      @for (sep of separators; track sep.key) {
+        <div class="flex flex-col gap-1.5">
+          <span class="text-[11px] font-semibold uppercase tracking-wide text-(--secondary-text)">{{ sep.label | translate }}</span>
+          <app-breadcrumb [items]="basic" [separator]="sep.key" />
+        </div>
+      }
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">separator="chevron | slash | dot"</code>
+    </section>
+
+    <!-- ICONS + CONTAINED -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.breadcrumbs.styles' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.breadcrumbs.stylesHint' | translate }}</p>
+      </div>
+      <app-breadcrumb [items]="withIcons" />
+      <div class="bg-base-200 rounded-xl p-3 flex flex-col gap-3">
+        <app-breadcrumb [items]="withIcons" variant="contained" />
+        <app-breadcrumb [items]="basic" variant="contained" separator="slash" />
+      </div>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">variant="contained" · item.icon</code>
+    </section>
+
+    <!-- COLLAPSED -->
+    <section class="xl:col-span-2 bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.breadcrumbs.collapsed' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.breadcrumbs.collapsedHint' | translate }}</p>
+      </div>
+      <div class="flex flex-col gap-1.5">
+        <span class="text-[11px] font-semibold uppercase tracking-wide text-(--secondary-text)">{{ 'ui.breadcrumbs.full' | translate }}</span>
+        <app-breadcrumb [items]="long" [home]="false" [maxItems]="10" />
+      </div>
+      <div class="flex flex-col gap-1.5">
+        <span class="text-[11px] font-semibold uppercase tracking-wide text-(--secondary-text)">maxItems = 4</span>
+        <app-breadcrumb [items]="long" [home]="false" [maxItems]="4" />
+      </div>
+      <div class="flex flex-col gap-1.5">
+        <span class="text-[11px] font-semibold uppercase tracking-wide text-(--secondary-text)">maxItems = 3 · contained</span>
+        <app-breadcrumb [items]="long" [home]="false" [maxItems]="3" variant="contained" />
+      </div>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">[maxItems]="4"</code>
+    </section>
+
+    <!-- PAGE HEADER -->
+    <section class="xl:col-span-2 bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.breadcrumbs.header' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.breadcrumbs.headerHint' | translate }}</p>
+      </div>
+      <div class="rounded-xl bg-base-200 border border-(--border-color-1)/40 p-4 sm:p-5 flex flex-col sm:flex-row sm:items-end justify-between gap-4 min-w-0">
+        <div class="flex flex-col gap-2 min-w-0">
+          <app-breadcrumb [items]="header" />
+          <h4 class="text-[20px] font-bold text-(--text-color) truncate">Verano 2026 · 20% en toda la tienda</h4>
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="ui-badge ui-badge-pill ui-badge-success ui-badge-dot">{{ 'tables.active' | translate }}</span>
+            <span class="text-[12px] text-(--secondary-text)">{{ 'tables.detail.updated' | translate }} 02/11/2026</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <button type="button" class="ui-btn ui-btn-default flex-1 sm:flex-none"><app-tabler-icon name="edit" [size]="18" />{{ 'ui.action.edit' | translate }}</button>
+          <button type="button" class="ui-btn flex-1 sm:flex-none"><app-tabler-icon name="download" [size]="18" />{{ 'ui.action.download' | translate }}</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

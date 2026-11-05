@@ -1,0 +1,47 @@
+<div class="p-3 shrink-0">
+  <label class="relative block">
+    <span class="sr-only">{{ 'chat.search' | translate }}</span>
+    <app-tabler-icon name="search" [size]="16" class="absolute left-3 top-1/2 -translate-y-1/2 text-(--secondary-text) pointer-events-none" />
+    <input
+      type="search"
+      class="form-input pl-9! h-9! rounded-full! bg-(--bg-2)!"
+      [placeholder]="'chat.search' | translate"
+      [value]="query()"
+      (input)="query.set($any($event.target).value)"
+    />
+  </label>
+</div>
+
+<ul class="flex-1 min-h-0 overflow-y-auto overscroll-contain px-2 pb-2 flex flex-col gap-0.5">
+  @for (row of items(); track row.item.id) {
+    <li>
+      <button
+        type="button"
+        (click)="conversationSelect.emit(row.item.id)"
+        [attr.aria-current]="row.item.id === selectedId() ? 'true' : null"
+        class="w-full flex items-center gap-3 rounded-xl px-2.5 py-2.5 text-left transition cursor-pointer"
+        [class]="row.item.id === selectedId() ? 'bg-(--primary-color)/10' : 'hover:bg-(--bg-2)'"
+      >
+        <app-avatar [name]="row.item.contact.name" size="md" [status]="row.item.contact.status" />
+        <span class="flex flex-col min-w-0 flex-1">
+          <span class="flex items-baseline justify-between gap-2">
+            <span class="text-[13px] text-(--text-color) truncate" [class.font-bold]="row.item.unread" [class.font-semibold]="!row.item.unread">{{ row.item.contact.name }}</span>
+            <span class="text-[11px] shrink-0" [class]="row.item.unread ? 'text-(--primary-color) font-semibold' : 'text-(--secondary-text)'">{{ row.date }}</span>
+          </span>
+          <span class="flex items-center justify-between gap-2">
+            @if (row.item.typing) {
+              <span class="text-[12px] text-(--primary-color) font-medium truncate">{{ 'chat.typing' | translate }}</span>
+            } @else {
+              <span class="text-[12px] truncate" [class]="row.item.unread ? 'text-(--text-color) font-medium' : 'text-(--secondary-text)'">{{ row.preview }}</span>
+            }
+            @if (row.item.unread) {
+              <span class="min-w-5 h-5 px-1.5 shrink-0 rounded-full bg-(--primary-color) text-white text-[11px] font-bold inline-flex items-center justify-center" [attr.aria-label]="'chat.unread' | translate: { count: row.item.unread }">{{ row.item.unread }}</span>
+            }
+          </span>
+        </span>
+      </button>
+    </li>
+  } @empty {
+    <li class="px-4 py-10 text-center text-[13px] text-(--secondary-text)">{{ 'chat.noResults' | translate }}</li>
+  }
+</ul>

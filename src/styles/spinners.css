@@ -1,0 +1,128 @@
+/*
+ * Spinners and loading states.
+ *   <span class="ui-spinner" role="status" aria-label="Loading"></span>
+ * Variants: ui-spinner-dual, ui-spinner-grow, ui-spinner-dots / ui-spinner-bars (with 3 empty <span>).
+ * Sizes: ui-spinner-{xs,sm,md,lg,xl}. ui-spinner-current takes the text color (inside buttons).
+ */
+@layer components {
+  .ui-spinner {
+    --size: 1.5rem;
+    display: inline-block;
+    flex-shrink: 0;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 9999px;
+    --track: color-mix(in oklab, var(--c) 20%, transparent);
+    border: max(2px, calc(var(--size) * 0.12)) solid;
+    border-color: var(--c) var(--track) var(--track);
+    vertical-align: middle;
+    animation: ui-spin 0.7s linear infinite;
+  }
+  .ui-spinner-xs { --size: 1rem; }
+  .ui-spinner-sm { --size: 1.25rem; }
+  .ui-spinner-md { --size: 1.5rem; }
+  .ui-spinner-lg { --size: 2.25rem; }
+  .ui-spinner-xl { --size: 3rem; }
+  .ui-spinner-current {
+    --c: currentColor;
+  }
+  .ui-spinner-dual {
+    border-color: var(--c) transparent;
+    animation-duration: 1s;
+  }
+  .ui-spinner-grow {
+    border: 0;
+    background: var(--c);
+    animation: ui-spinner-grow 1s ease-in-out infinite;
+  }
+  .ui-spinner-dots,
+  .ui-spinner-bars {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: calc(var(--size) * 0.12);
+    border: 0;
+    border-radius: 0;
+    animation: none;
+  }
+  .ui-spinner-dots > span {
+    width: calc(var(--size) * 0.26);
+    height: calc(var(--size) * 0.26);
+    border-radius: 9999px;
+    background: var(--c);
+    animation: ui-spinner-dot 1s ease-in-out infinite;
+  }
+  .ui-spinner-bars > span {
+    width: calc(var(--size) * 0.18);
+    height: 100%;
+    border-radius: 9999px;
+    background: var(--c);
+    animation: ui-spinner-bar 1s ease-in-out infinite;
+  }
+  .ui-spinner-dots > span:nth-child(2),
+  .ui-spinner-bars > span:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+  .ui-spinner-dots > span:nth-child(3),
+  .ui-spinner-bars > span:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  /* Placeholder blocks while content loads. */
+  .ui-skeleton {
+    display: block;
+    border-radius: 0.375rem;
+    background: linear-gradient(90deg, var(--bg-2) 25%, color-mix(in oklab, var(--border-color-1) 45%, var(--bg-2)) 37%, var(--bg-2) 63%);
+    background-size: 400% 100%;
+    animation: ui-skeleton 1.4s ease infinite;
+  }
+
+  /* Covers a card (its parent needs position: relative) while it loads. */
+  .ui-loading-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    border-radius: inherit;
+    background: color-mix(in oklab, var(--color-base-100) 75%, transparent);
+    backdrop-filter: blur(2px);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--secondary-text);
+  }
+}
+
+@keyframes ui-spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes ui-spinner-grow {
+  0% { transform: scale(0); opacity: 1; }
+  100% { transform: scale(1); opacity: 0; }
+}
+@keyframes ui-spinner-dot {
+  0%, 80%, 100% { transform: scale(0.5); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
+}
+@keyframes ui-spinner-bar {
+  0%, 80%, 100% { transform: scaleY(0.4); opacity: 0.5; }
+  40% { transform: scaleY(1); opacity: 1; }
+}
+@keyframes ui-skeleton {
+  from { background-position: 100% 50%; }
+  to { background-position: 0 50%; }
+}
+
+/* Spinners keep moving (they mean "wait"), just slower. */
+@media (prefers-reduced-motion: reduce) {
+  .ui-spinner,
+  .ui-spinner > span {
+    animation-duration: 1.6s !important;
+  }
+  .ui-skeleton {
+    animation: none;
+  }
+}

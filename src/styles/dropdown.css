@@ -1,0 +1,107 @@
+/*
+ * Dropdown menu (see <app-dropdown>). The panel opens in the top layer, so it is never cut by
+ * overflow: hidden parents (tables, cards).
+ */
+@layer components {
+  .ui-dropdown-menu {
+    position: fixed;
+    inset: auto;
+    margin: 0;
+    min-width: min(12rem, calc(100vw - 1rem));
+    max-width: calc(100vw - 1rem);
+    max-height: min(24rem, calc(100dvh - 1rem));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0.375rem;
+    border: 1px solid color-mix(in oklab, var(--border-color-1) 40%, transparent);
+    border-radius: 0.75rem;
+    background: var(--color-base-100);
+    color: var(--text-color);
+    box-shadow: 0 12px 32px -12px rgb(0 0 0 / 0.25), 0 4px 8px -4px rgb(0 0 0 / 0.08);
+    outline: none;
+  }
+  .ui-dropdown-menu:popover-open {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    animation: ui-dropdown-in 0.12s ease-out;
+  }
+  .ui-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    width: 100%;
+    padding: 0.5rem 0.625rem;
+    border-radius: 0.5rem;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-color);
+    text-align: start;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.12s, color 0.12s;
+  }
+  .ui-dropdown-item > app-tabler-icon {
+    color: var(--secondary-text);
+  }
+  .ui-dropdown-item:hover,
+  .ui-dropdown-item:focus-visible {
+    background: color-mix(in oklab, var(--c) 10%, transparent);
+    color: var(--c-text);
+  }
+  .ui-dropdown-item:hover > app-tabler-icon,
+  .ui-dropdown-item:focus-visible > app-tabler-icon {
+    color: inherit;
+  }
+  .ui-dropdown-item[aria-checked='true'],
+  .ui-dropdown-item.is-active {
+    color: var(--c-text);
+    font-weight: 600;
+  }
+  .ui-dropdown-item-danger,
+  .ui-dropdown-item-danger > app-tabler-icon {
+    --c: var(--danger);
+    color: var(--danger);
+  }
+  .ui-dropdown-item:disabled,
+  .ui-dropdown-item[aria-disabled='true'] {
+    opacity: 0.45;
+    cursor: not-allowed;
+    background: none;
+  }
+  .ui-dropdown-header {
+    padding: 0.5rem 0.625rem 0.25rem;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--secondary-text);
+  }
+  .ui-dropdown-divider {
+    flex-shrink: 0;
+    height: 1px;
+    margin: 0.25rem -0.375rem;
+    background: color-mix(in oklab, var(--border-color-1) 40%, transparent);
+  }
+  /* Keyboard hint or counter at the end of an item. */
+  .ui-dropdown-shortcut {
+    margin-inline-start: auto;
+    padding-inline-start: 1rem;
+    font-size: 11px;
+    color: var(--secondary-text);
+  }
+  @media (pointer: coarse) {
+    .ui-dropdown-item {
+      padding-block: 0.625rem;
+    }
+  }
+}
+
+@keyframes ui-dropdown-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+}

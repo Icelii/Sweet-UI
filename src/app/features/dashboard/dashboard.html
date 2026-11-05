@@ -1,0 +1,43 @@
+<div class="px-4 md:px-8 py-5 flex flex-col gap-6">
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+    @for (kpi of kpis; track kpi.label) {
+      <app-kpi-card [label]="kpi.label | translate" [value]="kpi.value" [icon]="kpi.icon" [tone]="kpi.tone" [trend]="kpi.trend" [hint]="'dashboard.kpi.vsLastMonth' | translate" />
+    }
+  </div>
+
+  <div class="grid grid-cols-1 xl:grid-cols-3 gap-4">
+    <section class="xl:col-span-2 bg-base-100 border border-(--border-color-1)/40 rounded-xl p-4 sm:p-5 min-w-0">
+      <header class="mb-2">
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'dashboard.chart.revenueTitle' | translate }}</h3>
+        <p class="text-[12px] text-(--secondary-text) mt-0.5">{{ 'dashboard.chart.revenueHint' | translate }}</p>
+      </header>
+      <app-chart [options]="revenueChart()" role="img" [attr.aria-label]="'dashboard.chart.revenueTitle' | translate" />
+    </section>
+
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-4 sm:p-5 min-w-0">
+      <header class="mb-2">
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'dashboard.chart.categoriesTitle' | translate }}</h3>
+        <p class="text-[12px] text-(--secondary-text) mt-0.5">{{ 'dashboard.chart.categoriesHint' | translate }}</p>
+      </header>
+      <app-chart [options]="categoryChart()" role="img" [attr.aria-label]="'dashboard.chart.categoriesTitle' | translate" />
+    </section>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-4 sm:p-5 min-w-0">
+      <header class="mb-2">
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'dashboard.chart.weekdayTitle' | translate }}</h3>
+        <p class="text-[12px] text-(--secondary-text) mt-0.5">{{ 'dashboard.chart.weekdayHint' | translate }}</p>
+      </header>
+      <app-chart [options]="weekdayChart()" role="img" [attr.aria-label]="'dashboard.chart.weekdayTitle' | translate" />
+    </section>
+
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-4 sm:p-5 min-w-0">
+      <header class="mb-2">
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'dashboard.chart.channelsTitle' | translate }}</h3>
+        <p class="text-[12px] text-(--secondary-text) mt-0.5">{{ 'dashboard.chart.channelsHint' | translate }}</p>
+      </header>
+      <app-chart [options]="channelChart()" role="img" [attr.aria-label]="'dashboard.chart.channelsTitle' | translate" />
+    </section>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<div class="px-4 md:px-8 py-5">
+  <div class="flex flex-col lg:flex-row gap-6 items-start w-full mx-auto">
+    <aside class="w-full lg:w-[280px] shrink-0 bg-base-100 rounded-xl border border-(--border-color-1)/40 p-5 shadow-xs">
+      <div class="mb-6 px-1">
+        <h2 class="text-lg font-bold text-(--text-color)">{{ 'accountSettings.title' | translate }}</h2>
+        <p class="text-[13px] text-(--secondary-text) mt-1">{{ 'accountSettings.subtitle' | translate }}</p>
+      </div>
+
+      <nav class="flex flex-col space-y-1.5">
+        @for (item of navItems; track item.path) {
+          <a [routerLink]="item.path" routerLinkActive="bg-(--bg-2) !text-(--primary-color)" class="flex items-center gap-2 px-4 py-2 text-(--secondary-text) hover:bg-(--bg-2) hover:text-(--primary-color) rounded-md font-medium text-[14px] transition-colors outline-none">
+            <app-tabler-icon [name]="item.icon" [size]="22" />
+            {{ item.label | translate }}
+          </a>
+        }
+      </nav>
+    </aside>
+
+    <div class="flex-1 w-full bg-base-100 rounded-xl border border-(--border-color-1)/40 p-6 sm:p-8 shadow-xs">
+      <router-outlet />
+    </div>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+<div class="relative h-6" [class.opacity-60]="isDisabled()">
+  <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-1.5 rounded-full bg-(--border-color-1)/50"></div>
+  <div class="absolute top-1/2 -translate-y-1/2 h-1.5 rounded-full bg-(--primary-color)" [style.left]="position(fromPercent())" [style.width]="'calc(' + (toPercent() - fromPercent()) + '% - ' + (toPercent() - fromPercent()) * 0.18 + 'px)'"></div>
+
+  <input
+    type="range"
+    class="range-thumb"
+    [class.z-20]="fromOnTop()"
+    [attr.id]="inputId()"
+    [min]="min()"
+    [max]="max()"
+    [step]="step()"
+    [value]="from()"
+    [disabled]="isDisabled()"
+    [attr.aria-label]="'rangeSlider.min' | translate"
+    [attr.aria-valuetext]="format(from())"
+    (input)="setFrom($any($event.target).value, $any($event.target))"
+    (blur)="touch()"
+  />
+  <input
+    type="range"
+    class="range-thumb z-10"
+    [min]="min()"
+    [max]="max()"
+    [step]="step()"
+    [value]="to()"
+    [disabled]="isDisabled()"
+    [attr.aria-label]="'rangeSlider.max' | translate"
+    [attr.aria-valuetext]="format(to())"
+    (input)="setTo($any($event.target).value, $any($event.target))"
+    (blur)="touch()"
+  />
+</div>
+
+<div class="flex items-center justify-between gap-3 mt-3">
+  <span class="flex flex-col rounded-lg border border-(--border-color-1)/40 bg-(--bg-2) px-3 py-1.5 min-w-0">
+    <span class="text-[11px] text-(--secondary-text)">{{ 'rangeSlider.min' | translate }}</span>
+    <span class="text-[14px] font-semibold text-(--text-color) truncate">{{ format(from()) }}</span>
+  </span>
+  <span class="h-px flex-1 bg-(--border-color-1)/60"></span>
+  <span class="flex flex-col items-end rounded-lg border border-(--border-color-1)/40 bg-(--bg-2) px-3 py-1.5 min-w-0">
+    <span class="text-[11px] text-(--secondary-text)">{{ 'rangeSlider.max' | translate }}</span>
+    <span class="text-[14px] font-semibold text-(--text-color) truncate">{{ format(to()) }}</span>
+  </span>
+</div>

@@ -1,0 +1,125 @@
+/*
+ * Tooltips ([appTooltip]) and popovers (<app-popover>). Both live in the top layer.
+ * Tooltip colors: dark by default, ui-tooltip-light, or any template color.
+ */
+@layer components {
+  .ui-tooltip {
+    --tt-bg: var(--text-color);
+    --tt-fg: var(--color-base-100);
+    position: fixed;
+    inset: auto;
+    margin: 0;
+    max-width: min(16rem, calc(100vw - 1rem));
+    padding: 0.375rem 0.625rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background: var(--tt-bg);
+    color: var(--tt-fg);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.4;
+    overflow: visible;
+    pointer-events: none;
+    box-shadow: 0 6px 16px -6px rgb(0 0 0 / 0.3);
+  }
+  .ui-tooltip:popover-open {
+    animation: ui-float-in 0.12s ease-out;
+  }
+  .ui-tooltip-primary,
+  .ui-tooltip-secondary,
+  .ui-tooltip-success,
+  .ui-tooltip-warning,
+  .ui-tooltip-danger,
+  .ui-tooltip-info {
+    --tt-bg: var(--c);
+    --tt-fg: var(--c-on);
+  }
+  .ui-tooltip-light {
+    --tt-bg: var(--color-base-100);
+    --tt-fg: var(--text-color);
+    border: 1px solid color-mix(in oklab, var(--border-color-1) 50%, transparent);
+  }
+  .ui-tooltip::before,
+  .ui-popover::before {
+    content: '';
+    position: absolute;
+    width: 0.5rem;
+    height: 0.5rem;
+    background: inherit;
+    transform: rotate(45deg);
+  }
+  .ui-tooltip[data-placement='top']::before,
+  .ui-popover[data-placement='top']::before {
+    bottom: -0.25rem;
+    left: calc(var(--arrow-x, 50%) - 0.25rem);
+  }
+  .ui-tooltip[data-placement='bottom']::before,
+  .ui-popover[data-placement='bottom']::before {
+    top: -0.25rem;
+    left: calc(var(--arrow-x, 50%) - 0.25rem);
+  }
+  .ui-tooltip[data-placement='left']::before,
+  .ui-popover[data-placement='left']::before {
+    right: -0.25rem;
+    top: calc(var(--arrow-y, 50%) - 0.25rem);
+  }
+  .ui-tooltip[data-placement='right']::before,
+  .ui-popover[data-placement='right']::before {
+    left: -0.25rem;
+    top: calc(var(--arrow-y, 50%) - 0.25rem);
+  }
+  .ui-tooltip-light::before {
+    border: inherit;
+    border-width: 0;
+  }
+
+  .ui-popover {
+    position: fixed;
+    inset: auto;
+    margin: 0;
+    width: max-content;
+    max-width: min(20rem, calc(100vw - 1rem));
+    padding: 0;
+    border: 1px solid color-mix(in oklab, var(--border-color-1) 50%, transparent);
+    border-radius: 0.75rem;
+    background: var(--color-base-100);
+    color: var(--text-color);
+    font-size: 13px;
+    overflow: visible;
+    box-shadow: 0 12px 32px -12px rgb(0 0 0 / 0.25), 0 4px 8px -4px rgb(0 0 0 / 0.08);
+  }
+  .ui-popover:popover-open {
+    animation: ui-float-in 0.14s ease-out;
+  }
+  /* Arrow border on the two sides that face out. */
+  .ui-popover::before {
+    border: inherit;
+    border-width: 0;
+  }
+  .ui-popover[data-placement='top']::before { border-right-width: 1px; border-bottom-width: 1px; }
+  .ui-popover[data-placement='bottom']::before { border-left-width: 1px; border-top-width: 1px; }
+  .ui-popover[data-placement='left']::before { border-top-width: 1px; border-right-width: 1px; }
+  .ui-popover[data-placement='right']::before { border-bottom-width: 1px; border-left-width: 1px; }
+  .ui-popover-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid color-mix(in oklab, var(--border-color-1) 40%, transparent);
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .ui-popover-body {
+    padding: 0.875rem 1rem;
+    color: var(--secondary-text);
+    line-height: 1.5;
+  }
+}
+
+@keyframes ui-float-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}

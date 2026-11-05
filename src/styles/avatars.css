@@ -1,0 +1,95 @@
+/*
+ * Avatars: same color system as buttons and badges.
+ *   <app-avatar name="Ana López" size="lg" status="online" />
+ *   <span class="ui-avatar ui-avatar-sm ui-avatar-success">AL</span>
+ * Sizes: ui-avatar-{xs,sm,md,lg,xl,2xl}. Shape: ui-avatar-rounded. Wrap several in .ui-avatar-group to stack them.
+ */
+@layer components {
+  .ui-avatar {
+    --size: 2.5rem;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 9999px;
+    background: color-mix(in oklab, var(--c) 16%, var(--color-base-100));
+    color: var(--c-text);
+    font-size: calc(var(--size) * 0.36);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    user-select: none;
+    vertical-align: middle;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .ui-avatar-xs { --size: 1.5rem; }
+  .ui-avatar-sm { --size: 2rem; }
+  .ui-avatar-md { --size: 2.5rem; }
+  .ui-avatar-lg { --size: 3rem; }
+  .ui-avatar-xl { --size: 4rem; }
+  .ui-avatar-2xl { --size: 5.5rem; }
+
+  .ui-avatar-rounded {
+    border-radius: calc(var(--size) * 0.28);
+  }
+  .ui-avatar-solid {
+    background: var(--c);
+    color: var(--c-on);
+  }
+  /* Colored ring with a gap, e.g. for the current user or a story. */
+  .ui-avatar-ring {
+    box-shadow: 0 0 0 2px var(--color-base-100), 0 0 0 4px var(--c);
+  }
+  .ui-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+  }
+  /* Status dot in the bottom corner. */
+  .ui-avatar-status {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: max(0.5rem, calc(var(--size) * 0.26));
+    height: max(0.5rem, calc(var(--size) * 0.26));
+    border-radius: 9999px;
+    background: var(--status, var(--color-success));
+    box-shadow: 0 0 0 2px var(--color-base-100);
+  }
+  .ui-avatar-rounded .ui-avatar-status {
+    right: -0.15rem;
+    bottom: -0.15rem;
+  }
+  .ui-avatar-status-online { --status: var(--color-success); }
+  .ui-avatar-status-away { --status: var(--color-warning); }
+  .ui-avatar-status-busy { --status: var(--danger); }
+  .ui-avatar-status-offline { --status: var(--border-color-1); }
+
+  /* Stacked avatars. The last one can be a "+3" counter: <span class="ui-avatar ui-avatar-neutral">+3</span>. */
+  .ui-avatar-group {
+    display: inline-flex;
+    align-items: center;
+    isolation: isolate;
+  }
+  .ui-avatar-group > .ui-avatar {
+    box-shadow: 0 0 0 2px var(--color-base-100);
+  }
+  .ui-avatar-group > .ui-avatar + .ui-avatar {
+    margin-inline-start: calc(var(--size) * -0.3);
+  }
+  .ui-avatar-group > .ui-avatar:hover,
+  .ui-avatar-group > .ui-avatar:focus-visible {
+    z-index: 1;
+    transform: translateY(-2px);
+  }
+  a.ui-avatar:focus-visible,
+  button.ui-avatar:focus-visible {
+    outline: 2px solid color-mix(in oklab, var(--c) 70%, transparent);
+    outline-offset: 2px;
+  }
+}

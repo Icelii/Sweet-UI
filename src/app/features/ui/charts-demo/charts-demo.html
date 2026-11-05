@@ -1,0 +1,122 @@
+<div class="px-4 md:px-8 py-5 flex flex-col gap-6">
+  <div class="flex flex-col gap-2">
+    <h2 class="text-[20px] font-bold text-(--text-color)">{{ 'ui.charts.title' | translate }}</h2>
+    <p class="text-[13px] text-(--secondary-text) -mt-1">{{ 'ui.charts.subtitle' | translate }}</p>
+  </div>
+
+  <!-- ABOUT THE LIBRARY -->
+  <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-5 min-w-0">
+    <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+      <div class="flex items-start gap-3 min-w-0">
+        <span class="size-10 shrink-0 rounded-xl bg-(--primary-color)/10 text-(--primary-color) inline-flex items-center justify-center">
+          <app-tabler-icon name="chart-pie" [size]="20" />
+        </span>
+        <div class="min-w-0">
+          <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.charts.libTitle' | translate }}</h3>
+          <p class="text-[13px] text-(--secondary-text) mt-0.5">{{ 'ui.charts.libIntro' | translate }}</p>
+        </div>
+      </div>
+      <a href="https://apexcharts.com/docs/options/" target="_blank" rel="noopener" class="ui-btn ui-btn-light ui-btn-sm w-fit shrink-0">
+        <app-tabler-icon name="link" [size]="16" />
+        {{ 'ui.charts.docs' | translate }}
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
+      @for (point of points; track point.title) {
+        <div class="rounded-xl bg-(--bg-2) border border-(--border-color-1)/40 p-4 flex flex-col gap-1.5">
+          <app-tabler-icon [name]="point.icon" [size]="18" class="text-(--primary-color)" />
+          <p class="text-[13px] font-semibold text-(--text-color)">{{ point.title | translate }}</p>
+          <p class="text-[12px] text-(--secondary-text)">{{ point.text | translate }}</p>
+        </div>
+      }
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div class="flex flex-col gap-2 min-w-0">
+        <p class="text-[13px] font-semibold text-(--text-color)">{{ 'ui.charts.step1' | translate }}</p>
+        <pre class="text-[12px] leading-relaxed text-(--text-color) bg-(--bg-2) border border-(--border-color-1)/40 rounded-xl p-4 overflow-x-auto"><code>protected readonly salesChart = computed&lt;ApexOptions&gt;(() =&gt;
+  withChartDefaults(this.theme.isDark(), {{ '{' }}
+    chart: {{ '{' }} type: 'bar', height: 300 {{ '}' }},
+    series: [{{ '{' }} name: 'Ventas', data: [12, 18, 9] {{ '}' }}],
+    xaxis: {{ '{' }} categories: ['Ene', 'Feb', 'Mar'] {{ '}' }},
+  {{ '}' }}),
+);</code></pre>
+      </div>
+      <div class="flex flex-col gap-2 min-w-0">
+        <p class="text-[13px] font-semibold text-(--text-color)">{{ 'ui.charts.step2' | translate }}</p>
+        <pre class="text-[12px] leading-relaxed text-(--text-color) bg-(--bg-2) border border-(--border-color-1)/40 rounded-xl p-4 overflow-x-auto"><code>&lt;app-chart
+  [options]="salesChart()"
+  role="img"
+  aria-label="Ventas por mes"
+/&gt;</code></pre>
+        <p class="form-hint">{{ 'ui.charts.step2Hint' | translate }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPARKLINES -->
+  <section class="flex flex-col gap-3">
+    <div>
+      <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.charts.sparkTitle' | translate }}</h3>
+      <p class="form-hint mt-0.5">{{ 'ui.charts.sparkHint' | translate }}</p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+      @for (spark of sparks; track spark.label; let i = $index) {
+        <div class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-4 flex flex-col gap-3 min-w-0">
+          <div class="flex items-start justify-between gap-3">
+            <div class="min-w-0">
+              <p class="text-[12px] text-(--secondary-text)">{{ spark.label | translate }}</p>
+              <p class="text-[22px] font-bold text-(--text-color) leading-tight">{{ spark.value }}</p>
+            </div>
+            <span class="ui-badge ui-badge-pill" [class.ui-badge-success]="spark.trend >= 0" [class.ui-badge-danger]="spark.trend < 0">
+              <app-tabler-icon [name]="spark.trend >= 0 ? 'trending-up' : 'trending-down'" [size]="14" />
+              {{ spark.trend > 0 ? '+' : '' }}{{ spark.trend }}%
+            </span>
+          </div>
+          <app-chart [options]="sparkCharts()[i]" role="img" [attr.aria-label]="spark.label | translate" />
+        </div>
+      }
+    </div>
+  </section>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <!-- DONUT -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-4 sm:p-5 flex flex-col gap-2 min-w-0">
+      <header>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.charts.donutTitle' | translate }}</h3>
+        <p class="text-[12px] text-(--secondary-text) mt-0.5">{{ 'ui.charts.donutHint' | translate }}</p>
+      </header>
+      <app-chart [options]="donutChart()" role="img" [attr.aria-label]="'ui.charts.donutTitle' | translate" />
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">chart: {{ '{' }} type: 'donut' {{ '}' }}</code>
+    </section>
+
+    <!-- RADIAL -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-4 sm:p-5 flex flex-col gap-2 min-w-0">
+      <header>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.charts.goalTitle' | translate }}</h3>
+        <p class="text-[12px] text-(--secondary-text) mt-0.5">{{ 'ui.charts.goalHint' | translate }}</p>
+      </header>
+      <app-chart [options]="radialChart()" role="img" [attr.aria-label]="('ui.charts.goalTitle' | translate) + ': ' + goal + '%'" />
+      <p class="text-[12px] text-(--secondary-text) text-center -mt-4">{{ 'ui.charts.goalNote' | translate }}</p>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto mt-2">chart: {{ '{' }} type: 'radialBar' {{ '}' }}</code>
+    </section>
+
+    <!-- HEATMAP -->
+    <section class="lg:col-span-2 bg-base-100 border border-(--border-color-1)/40 rounded-xl p-4 sm:p-5 flex flex-col gap-2 min-w-0">
+      <header>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.charts.heatTitle' | translate }}</h3>
+        <p class="text-[12px] text-(--secondary-text) mt-0.5">{{ 'ui.charts.heatHint' | translate }}</p>
+      </header>
+      <app-chart [options]="heatmapChart()" role="img" [attr.aria-label]="'ui.charts.heatTitle' | translate" />
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">chart: {{ '{' }} type: 'heatmap' {{ '}' }}</code>
+    </section>
+  </div>
+
+  <!-- MORE -->
+  <section class="bg-(--primary-color)/5 border border-dashed border-(--primary-color)/40 rounded-xl p-5 flex flex-col sm:flex-row sm:items-center gap-3">
+    <app-tabler-icon name="info-circle" [size]="20" class="text-(--primary-color) shrink-0" />
+    <p class="text-[13px] text-(--secondary-text) flex-1">{{ 'ui.charts.more' | translate }}</p>
+    <a routerLink="/dashboard" class="ui-btn ui-btn-light ui-btn-sm w-fit shrink-0">{{ 'ui.charts.seeDashboard' | translate }}</a>
+  </section>
+</div>

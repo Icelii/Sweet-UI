@@ -1,9 +1,10 @@
 import { effect, inject, Injectable, signal } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { RouterStateSnapshot, TitleStrategy } from '@angular/router';
+import { BRAND } from '@core/config/brand';
 import { I18n, TranslationKey } from './i18n';
 
-const DEFAULT_TITLE = 'SweetUi';
+/** Tab title: "<page> · <app name>", or just the app name. */
 
 @Injectable()
 export class TranslatedTitleStrategy extends TitleStrategy {
@@ -25,6 +26,6 @@ export class TranslatedTitleStrategy extends TitleStrategy {
   }
 
   private resolve(key: string | undefined): string {
-    return key ? this.i18n.t(key as TranslationKey) : DEFAULT_TITLE;
+    return key ? `${this.i18n.t(key as TranslationKey)} · ${BRAND.name}` : BRAND.name;
   }
 }

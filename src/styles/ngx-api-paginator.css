@@ -1,0 +1,50 @@
+/*
+ * @icelii/ngx-api-paginator
+ * The library paints with Tailwind's white and gray colors. Here they point to the template
+ * tokens, so it follows the light and dark themes. Unlayered so it wins over the utilities.
+ */
+lib-ngx-api-paginator {
+  display: block;
+  --color-white: var(--color-base-100);
+  --color-gray-50: color-mix(in oklab, var(--primary-color) 10%, var(--color-base-100));
+  --color-gray-100: var(--button-bg);
+  --color-gray-200: color-mix(in oklab, var(--border-color-1) 55%, var(--color-base-100));
+  --color-gray-300: color-mix(in oklab, var(--border-color-1) 85%, var(--color-base-100));
+  --color-gray-400: var(--secondary-text);
+  --color-gray-500: var(--secondary-text);
+  --color-gray-600: var(--secondary-text);
+  --color-gray-700: var(--secondary-text);
+  --color-gray-800: var(--text-color);
+  --color-gray-900: var(--text-color);
+}
+
+/* The template cards already have padding, and nine 36px buttons don't fit on a phone. */
+lib-ngx-api-paginator > div {
+  padding-inline: 0;
+}
+
+@media (max-width: 479px) {
+  lib-ngx-api-paginator nav {
+    gap: 0.25rem;
+  }
+
+  lib-ngx-api-paginator nav > * {
+    width: 1.875rem;
+    min-width: 1.875rem;
+    height: 1.875rem;
+    padding-inline: 0;
+  }
+}
+
+/* The active page keeps white text on the primary color. */
+lib-ngx-api-paginator .text-white {
+  color: #fff;
+}
+
+lib-ngx-api-paginator .text-sm {
+  font-size: 13px;
+}
+
+lib-ngx-api-paginator p.text-sm {
+  font-size: 12px;
+}

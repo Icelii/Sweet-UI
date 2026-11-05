@@ -1,0 +1,51 @@
+@if (!hidden()) {
+  <!-- The window's code downloads the first time it opens, so it doesn't weigh on the first load. -->
+  @if (open()) {
+    <section
+      id="chat-window"
+      role="dialog"
+      [attr.aria-label]="'chat.title' | translate"
+      class="ui-chat-pop fixed z-45 inset-0 sm:inset-auto sm:bottom-24 sm:right-6 sm:w-[360px] sm:h-[min(540px,calc(100dvh-8rem))] flex flex-col overflow-hidden bg-base-100 sm:rounded-2xl sm:border border-(--border-color-1)/40 shadow-2xl"
+    >
+      @if (current(); as id) {
+        <app-chat-thread class="flex-1" [conversationId]="id" back="always" compact (backClick)="current.set(null)">
+          <div chatActions class="contents">
+            <ng-container *ngTemplateOutlet="windowActions" />
+          </div>
+        </app-chat-thread>
+      } @else {
+        <header class="shrink-0 flex items-center gap-2 pl-4 pr-2 py-2.5 border-b border-(--border-color-1)/40">
+          <h2 class="flex-1 text-[16px] font-bold text-(--text-color)">{{ 'chat.title' | translate }}</h2>
+          <ng-container *ngTemplateOutlet="windowActions" />
+        </header>
+        <app-chat-list class="flex-1" (conversationSelect)="current.set($event)" />
+      }
+    </section>
+  }
+
+  <button
+    type="button"
+    (click)="open.set(!open())"
+    [attr.aria-expanded]="open()"
+    aria-controls="chat-window"
+    [attr.aria-label]="(open() ? 'chat.close' : 'chat.open') | translate"
+    class="fixed z-45 bottom-5 right-5 sm:bottom-6 sm:right-6 size-14 rounded-full bg-(--primary-color) text-white shadow-lg shadow-(--primary-color)/30 inline-flex items-center justify-center transition hover:scale-105 active:scale-95 cursor-pointer"
+    [class]="open() ? 'max-sm:hidden' : ''"
+  >
+    <app-tabler-icon [name]="open() ? 'chevron-down' : 'message-circle'" [size]="26" />
+    @if (store.unreadTotal() && !open()) {
+      <span class="absolute -top-1 -right-1 min-w-5 h-5 px-1 rounded-full bg-(--color-error) text-white text-[11px] font-bold inline-flex items-center justify-center ring-2 ring-base-100" aria-hidden="true">{{ store.unreadTotal() }}</span>
+    }
+  </button>
+}
+
+<ng-template #windowActions>
+  <div class="flex items-center gap-0.5 shrink-0">
+    <button type="button" (click)="expand()" class="size-8 inline-flex items-center justify-center rounded-full text-(--secondary-text) hover:bg-(--bg-2) hover:text-(--primary-color) transition cursor-pointer" [attr.aria-label]="'chat.expand' | translate">
+      <app-tabler-icon name="arrows-diagonal" [size]="17" />
+    </button>
+    <button type="button" (click)="open.set(false)" class="size-8 inline-flex items-center justify-center rounded-full text-(--secondary-text) hover:bg-(--bg-2) hover:text-(--text-color) transition cursor-pointer" [attr.aria-label]="'chat.close' | translate">
+      <app-tabler-icon name="close" [size]="18" />
+    </button>
+  </div>
+</ng-template>

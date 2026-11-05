@@ -1,10 +1,10 @@
 @if (layout.notificationsOpen()) {
     <div (click)="layout.closeNotifications()" class="fixed inset-0 z-50 bg-slate-900/20 backdrop-blur-sm touch-none" aria-hidden="true"></div>
 }
-<aside class="fixed top-0 right-0 z-[60] h-[100dvh] w-80 sm:w-96 bg-base-100 shadow-2xl border-l border-(--border-color-1)/40 transition-transform duration-300 ease-in-out transform flex flex-col" [class.translate-x-0]="layout.notificationsOpen()" [class.translate-x-full]="!layout.notificationsOpen()">
+<aside class="fixed top-0 right-0 z-[60] h-[100dvh] w-80 sm:w-96 bg-base-100 shadow-2xl border-l border-(--border-color-1)/40 transition-transform duration-300 ease-in-out transform translate-x-full flex flex-col" [class.translate-x-0!]="layout.notificationsOpen()">
     <div class="flex items-center justify-between px-6 py-4 shrink-0 h-16">
         <h3 class="font-bold text-(--text-color) text-[15px]">{{ 'layout.notifications' | translate }}</h3>
-        <button (click)="layout.closeNotifications()" class="p-2 -mr-2 rounded-xl hover:bg-(--bg-2) text-(--secondary-text) transition hover:cursor-pointer" [attr.aria-label]="'layout.closeNotifications' | translate">
+        <button (click)="layout.closeNotifications()" class="size-9 inline-flex items-center justify-center shrink-0 -mr-2 rounded-xl hover:bg-(--bg-2) text-(--secondary-text) transition hover:cursor-pointer" [attr.aria-label]="'layout.closeNotifications' | translate">
             <app-tabler-icon name="close" [size]="20" />
         </button>
     </div>
@@ -18,23 +18,23 @@
 
     <div class="flex-1 overflow-y-auto overscroll-contain">
         @for (notification of notifications(); track notification.id) {
-            <div (click)="markAsRead(notification.id)" class="px-6 py-4 border-b border-(--border-color-1)/40 hover:bg-(--bg-2) transition cursor-pointer flex gap-4 items-start relative group">
+            <button type="button" (click)="markAsRead(notification.id)" class="w-full text-left px-6 py-4 border-b border-(--border-color-1)/40 hover:bg-(--bg-2) focus-visible:bg-(--bg-2) outline-none transition cursor-pointer flex gap-4 items-start relative group">
                 @if (!notification.read) {
-                    <div class="absolute left-2 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-(--primary-color)"></div>
+                    <span class="dot-live absolute left-2 top-[23px] size-1.5" style="--dot-color: var(--primary-color)" aria-hidden="true"></span>
                 }
-                <div class="w-10 h-10 rounded-full bg-(--primary-color)/10 text-(--primary-color) border border-(--border-color-1)/40 flex items-center justify-center shrink-0 font-bold text-sm select-none">
+                <span class="w-10 h-10 rounded-full bg-(--primary-color)/10 text-(--primary-color) border border-(--border-color-1)/40 flex items-center justify-center shrink-0 font-bold text-sm select-none" aria-hidden="true">
                     {{ notification.author | initials }}
-                </div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex justify-between items-baseline mb-0.5">
-                        <h4 class="text-[14px] font-bold text-(--text-color) truncate">{{ notification.author }}</h4>
+                </span>
+                <span class="flex-1 min-w-0">
+                    <span class="flex justify-between items-baseline mb-0.5">
+                        <span class="text-[14px] font-bold text-(--text-color) truncate">{{ notification.author }}</span>
                         <span class="text-[11px] font-medium text-(--primary-color) shrink-0 ml-2">{{ notification.time.key | translate: notification.time.params }}</span>
-                    </div>
-                    <p class="text-[13px] text-(--secondary-text) line-clamp-2 leading-snug">
+                    </span>
+                    <span class="block text-[13px] text-(--secondary-text) line-clamp-2 leading-snug">
                         {{ notification.message | translate }}
-                    </p>
-                </div>
-            </div>
+                    </span>
+                </span>
+            </button>
         }
     </div>
 </aside>

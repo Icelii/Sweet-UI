@@ -1,0 +1,160 @@
+<div class="px-4 md:px-8 py-5 flex flex-col gap-6">
+  <div class="flex flex-col gap-2">
+    <h2 class="text-[20px] font-bold text-(--text-color)">{{ 'ui.progress.title' | translate }}</h2>
+    <p class="text-[13px] text-(--secondary-text) -mt-1">{{ 'ui.progress.subtitle' | translate }}</p>
+  </div>
+
+  <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 items-start">
+    <!-- COLORS -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.progress.colors' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.progress.colorsHint' | translate }}</p>
+      </div>
+      <div class="flex flex-col gap-3.5">
+        @for (tone of tones; track tone.key; let i = $index) {
+          <app-progress [value]="toneValues[i]" [tone]="tone.key" [label]="tone.label | translate" valuePosition="top" />
+        }
+      </div>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">&lt;app-progress [value]="72" tone="success" label="…" valuePosition="top" /&gt;</code>
+    </section>
+
+    <div class="flex flex-col gap-4 min-w-0">
+      <!-- SIZES -->
+      <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4">
+        <div>
+          <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.progress.sizes' | translate }}</h3>
+          <p class="form-hint mt-0.5">{{ 'ui.progress.sizesHint' | translate }}</p>
+        </div>
+        @for (size of sizes; track size.key) {
+          <div class="grid grid-cols-[5.5rem_1fr] items-center gap-3">
+            <span class="text-[12px] text-(--secondary-text)">{{ size.label | translate }}</span>
+            <app-progress [value]="60" [size]="size.key" [label]="size.label | translate" hideLabel />
+          </div>
+        }
+        <div class="grid grid-cols-[5.5rem_1fr] items-center gap-3">
+          <span class="text-[12px] text-(--secondary-text)">{{ 'ui.progress.inside' | translate }}</span>
+          <app-progress [value]="value()" valuePosition="inside" tone="success" />
+        </div>
+      </section>
+
+      <!-- STRIPED / INDETERMINATE -->
+      <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4">
+        <div>
+          <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.progress.styles' | translate }}</h3>
+          <p class="form-hint mt-0.5">{{ 'ui.progress.stylesHint' | translate }}</p>
+        </div>
+        <app-progress [value]="55" striped tone="info" [label]="'ui.progress.striped' | translate" valuePosition="top" />
+        <app-progress [value]="70" animated tone="secondary" [label]="'ui.progress.animated' | translate" valuePosition="top" />
+        <app-progress [value]="null" [label]="'ui.progress.indeterminate' | translate" />
+      </section>
+    </div>
+
+    <!-- INTERACTIVE -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.progress.interactive' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.progress.interactiveHint' | translate }}</p>
+      </div>
+      <div class="flex flex-col sm:flex-row sm:items-center gap-5">
+        <app-progress-ring [value]="value()" [size]="96" [stroke]="8" [tone]="value() >= 100 ? 'success' : 'primary'" [label]="'ui.progress.interactive' | translate" />
+        <div class="flex-1 flex flex-col gap-3 min-w-0">
+          <app-progress [value]="value()" [tone]="value() >= 100 ? 'success' : 'primary'" size="lg" />
+          <div class="flex flex-wrap gap-2">
+            <button type="button" class="ui-btn ui-btn-default ui-btn-sm" (click)="step(-10)" [disabled]="value() <= 0">−10%</button>
+            <button type="button" class="ui-btn ui-btn-light ui-btn-sm" (click)="step(10)" [disabled]="value() >= 100">+10%</button>
+            <button type="button" class="ui-btn ui-btn-ghost ui-btn-neutral ui-btn-sm" (click)="value.set(0)"><app-tabler-icon name="refresh" [size]="16" />{{ 'ui.badges.reset' | translate }}</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RINGS -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.progress.rings' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.progress.ringsHint' | translate }}</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        @for (goal of goals; track goal.label) {
+          <div class="flex sm:flex-col items-center gap-4 sm:gap-2 rounded-xl border border-(--border-color-1)/40 p-4 sm:text-center">
+            <app-progress-ring [value]="goal.value" [tone]="goal.tone" [size]="72" [label]="goal.label | translate" />
+            <div class="flex flex-col min-w-0">
+              <span class="text-[13px] font-semibold text-(--text-color)">{{ goal.label | translate }}</span>
+              <span class="text-[12px] text-(--secondary-text)">{{ goal.detail }}</span>
+            </div>
+          </div>
+        }
+      </div>
+      <div class="flex items-center gap-4">
+        <app-progress-ring [value]="null" [size]="40" [stroke]="4" [label]="'ui.progress.indeterminate' | translate" />
+        <app-progress-ring [value]="100" [size]="40" [stroke]="4" tone="success" [label]="'ui.progress.done' | translate">
+          <app-tabler-icon name="check" [size]="18" [stroke]="3" class="text-success" />
+        </app-progress-ring>
+        <span class="text-[12px] text-(--secondary-text)">{{ 'ui.progress.ringSlot' | translate }}</span>
+      </div>
+    </section>
+
+    <!-- UPLOADS -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+        <div>
+          <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.progress.uploads' | translate }}</h3>
+          <p class="form-hint mt-0.5">{{ 'ui.progress.uploadsHint' | translate }}</p>
+        </div>
+        <button type="button" class="ui-btn ui-btn-sm shrink-0 w-full sm:w-auto" (click)="toggleUpload()">
+          <app-tabler-icon [name]="uploading() ? 'player-pause' : allDone() ? 'refresh' : 'player-play'" [size]="16" />
+          {{ (uploading() ? 'ui.progress.pause' : allDone() ? 'ui.progress.restart' : 'ui.progress.start') | translate }}
+        </button>
+      </div>
+      <ul class="ui-list-group">
+        @for (file of uploads(); track file.name) {
+          <li class="ui-list-item">
+            <span class="size-9 rounded-lg inline-flex items-center justify-center shrink-0" [class]="file.progress >= 100 ? 'bg-success/15 text-success' : 'bg-(--primary-color)/10 text-(--primary-color)'">
+              <app-tabler-icon [name]="file.progress >= 100 ? 'circle-check' : file.icon" [size]="18" />
+            </span>
+            <div class="flex-1 min-w-0 flex flex-col gap-1.5">
+              <div class="flex items-center justify-between gap-3 text-[13px]">
+                <span class="font-medium text-(--text-color) truncate">{{ file.name }}</span>
+                <span class="text-(--secondary-text) tabular-nums shrink-0">{{ file.progress >= 100 ? file.size : (file.progress | number: '1.0-0') + '%' }}</span>
+              </div>
+              <app-progress [value]="file.progress" size="sm" [tone]="file.progress >= 100 ? 'success' : 'primary'" [label]="file.name" hideLabel />
+            </div>
+          </li>
+        }
+      </ul>
+    </section>
+
+    <!-- STACKED -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.progress.stacked' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.progress.stackedHint' | translate }}</p>
+      </div>
+      <div class="flex items-end justify-between gap-3">
+        <div class="flex items-center gap-2.5">
+          <span class="size-9 rounded-lg bg-(--primary-color)/10 text-(--primary-color) inline-flex items-center justify-center"><app-tabler-icon name="database" [size]="18" /></span>
+          <div class="flex flex-col">
+            <span class="text-[13px] font-semibold text-(--text-color)">{{ 'ui.progress.storage.title' | translate }}</span>
+            <span class="text-[12px] text-(--secondary-text)">{{ storageUsed }} GB / {{ storageTotal }} GB</span>
+          </div>
+        </div>
+        <span class="text-[20px] font-bold text-(--text-color) tabular-nums">{{ (storageUsed / storageTotal) * 100 | number: '1.0-0' }}%</span>
+      </div>
+      <div class="ui-progress ui-progress-lg ui-progress-neutral" role="img" [attr.aria-label]="('ui.progress.storage.title' | translate) + ': ' + storageUsed + ' GB / ' + storageTotal + ' GB'">
+        @for (item of storage; track item.label) {
+          <div class="ui-progress-bar ui-progress-{{ item.tone }}" [style.width.%]="(item.gb / storageTotal) * 100"></div>
+        }
+      </div>
+      <ul class="flex flex-wrap gap-x-5 gap-y-2 text-[12px] text-(--secondary-text)">
+        @for (item of storage; track item.label) {
+          <li class="flex items-center gap-1.5">
+            <span class="ui-badge ui-badge-solid ui-badge-{{ item.tone }} size-2.5! p-0! rounded-full!" aria-hidden="true"></span>
+            {{ item.label | translate }} <span class="font-semibold text-(--text-color)">{{ item.gb }} GB</span>
+          </li>
+        }
+      </ul>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">&lt;div class="ui-progress"&gt;&lt;div class="ui-progress-bar ui-progress-warning" style="width: 20%"&gt;&lt;/div&gt;…&lt;/div&gt;</code>
+    </section>
+  </div>
+</div>

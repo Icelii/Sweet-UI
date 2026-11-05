@@ -1,0 +1,100 @@
+<nav [attr.aria-label]="'breadcrumb.label' | translate" [class]="variant() === 'contained' ? 'bg-base-100 border border-(--border-color-1)/40 rounded-xl px-3.5 py-2.5 w-fit max-w-full' : ''">
+  <ol class="flex items-center gap-1.5 min-w-0 text-[13px] leading-none">
+    @if (trail().length > 1) {
+      <li class="flex items-center min-w-0 shrink-0">
+        <ng-container *ngTemplateOutlet="link; context: { $implicit: first(), isHome: first()?.path === '/dashboard' }" />
+      </li>
+
+      <!-- Phones: everything in the middle folds into a menu. -->
+      @if (middle().length) {
+        <li class="flex sm:hidden items-center gap-1.5 shrink-0">
+          <ng-container *ngTemplateOutlet="separatorTpl" />
+          <ng-container *ngTemplateOutlet="more; context: { $implicit: middle() }" />
+        </li>
+      }
+
+      <!-- Desktop: fold only when the trail is too long. -->
+      @if (collapsed().length) {
+        <li class="hidden sm:flex items-center gap-1.5 shrink-0">
+          <ng-container *ngTemplateOutlet="separatorTpl" />
+          <ng-container *ngTemplateOutlet="more; context: { $implicit: collapsed() }" />
+        </li>
+      }
+
+      @for (item of shown(); track $index) {
+        <li class="hidden sm:flex items-center gap-1.5 min-w-0">
+          <ng-container *ngTemplateOutlet="separatorTpl" />
+          <ng-container *ngTemplateOutlet="link; context: { $implicit: item }" />
+        </li>
+      }
+    }
+
+    @if (last(); as item) {
+      <li class="flex items-center gap-1.5 min-w-0">
+        @if (trail().length > 1) {
+          <ng-container *ngTemplateOutlet="separatorTpl" />
+        }
+        <span aria-current="page" class="inline-flex items-center gap-1.5 min-w-0 font-semibold text-(--text-color)">
+          @if (item.icon) {
+            <app-tabler-icon [name]="item.icon" [size]="16" class="text-(--primary-color)" />
+          }
+          <span class="truncate">{{ label(item) }}</span>
+        </span>
+      </li>
+    }
+  </ol>
+</nav>
+
+<ng-template #link let-item let-isHome="isHome">
+  @if (item.path) {
+    <a [routerLink]="item.path" class="inline-flex items-center gap-1.5 min-w-0 rounded-md text-(--secondary-text) hover:text-(--primary-color) transition-colors outline-none focus-visible:ring-2 focus-visible:ring-(--primary-color)/40" [attr.aria-label]="isHome ? label(item) : null">
+      @if (item.icon) {
+        <app-tabler-icon [name]="item.icon" [size]="16" />
+      }
+      <!-- The home label hides on phones to save room; the icon stays. -->
+      <span class="truncate max-w-40" [class]="isHome ? 'hidden sm:inline' : ''">{{ label(item) }}</span>
+    </a>
+  } @else {
+    <span class="inline-flex items-center gap-1.5 min-w-0 text-(--secondary-text)">
+      @if (item.icon) {
+        <app-tabler-icon [name]="item.icon" [size]="16" />
+      }
+      <span class="truncate max-w-40">{{ label(item) }}</span>
+    </span>
+  }
+</ng-template>
+
+<ng-template #separatorTpl>
+  <span class="text-(--secondary-text)/60 shrink-0 select-none inline-flex" aria-hidden="true">
+    @switch (separator()) {
+      @case ('slash') { <span class="px-0.5">/</span> }
+      @case ('dot') { <span class="size-1 rounded-full bg-current mx-1"></span> }
+      @default { <app-tabler-icon name="chevron-right" [size]="14" [stroke]="2.5" /> }
+    }
+  </span>
+</ng-template>
+
+<ng-template #more let-items>
+  <div class="dropdown">
+    <button type="button" tabindex="0" class="size-6 inline-flex items-center justify-center rounded-md text-(--secondary-text) hover:text-(--primary-color) hover:bg-(--button-bg) cursor-pointer transition-colors" [attr.aria-label]="'breadcrumb.more' | translate">
+      <app-tabler-icon name="dots" [size]="16" />
+    </button>
+    <ul tabindex="0" class="dropdown-content z-30 mt-2 w-56 max-w-[calc(100vw-2rem)] rounded-xl bg-base-100 p-1.5 shadow-md border border-(--border-color-1)/40 flex flex-col gap-0.5">
+      @for (item of items; track $index) {
+        <li>
+          @if (item.path) {
+            <a [routerLink]="item.path" (click)="closeMenu()" class="flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-[13px] text-(--text-color) hover:bg-(--primary-color)/10 hover:text-(--primary-color) transition-colors">
+              <app-tabler-icon [name]="item.icon ?? 'folder'" [size]="16" class="text-(--secondary-text)" />
+              <span class="truncate">{{ label(item) }}</span>
+            </a>
+          } @else {
+            <span class="flex items-center gap-2.5 px-2.5 py-2 text-[13px] text-(--secondary-text)">
+              <app-tabler-icon [name]="item.icon ?? 'folder'" [size]="16" />
+              <span class="truncate">{{ label(item) }}</span>
+            </span>
+          }
+        </li>
+      }
+    </ul>
+  </div>
+</ng-template>

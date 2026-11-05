@@ -1,0 +1,137 @@
+<div class="px-4 md:px-8 py-5 flex flex-col gap-6">
+  <div>
+    <h2 class="text-[20px] font-bold text-(--text-color)">{{ 'ui.badges.title' | translate }}</h2>
+    <p class="text-[13px] text-(--secondary-text) mt-1">{{ 'ui.badges.subtitle' | translate }}</p>
+  </div>
+
+  <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 items-start">
+    <!-- VARIANTS × COLORS -->
+    @for (variant of variants; track variant.key) {
+      <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4">
+        <div>
+          <h3 class="text-[15px] font-bold text-(--text-color)">{{ variant.title | translate }}</h3>
+          <p class="form-hint mt-0.5">{{ variant.hint | translate }}</p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          @for (tone of tones; track tone.key) {
+            <span class="ui-badge {{ variant.classes }} ui-badge-{{ tone.key }}">{{ tone.label | translate }}</span>
+          }
+        </div>
+        <div class="flex flex-wrap gap-2">
+          @for (tone of tones; track tone.key) {
+            <span class="ui-badge ui-badge-pill ui-badge-caps {{ variant.classes }} ui-badge-{{ tone.key }}">{{ tone.label | translate }}</span>
+          }
+        </div>
+        <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">class="ui-badge {{ variant.classes ? variant.classes + ' ' : '' }}ui-badge-success"</code>
+      </section>
+    }
+
+    <!-- WITH ICONS -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.badges.icons' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.badges.iconsHint' | translate }}</p>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        @for (item of withIcons; track item.label) {
+          <span class="ui-badge ui-badge-{{ item.tone }}"><app-tabler-icon [name]="item.icon" [size]="12" [stroke]="2.5" />{{ item.label | translate }}</span>
+        }
+      </div>
+      <div class="flex flex-wrap gap-2">
+        @for (item of withIcons; track item.label) {
+          <span class="ui-badge ui-badge-solid ui-badge-pill ui-badge-{{ item.tone }}">{{ item.label | translate }}<app-tabler-icon [name]="item.icon" [size]="12" [stroke]="2.5" /></span>
+        }
+      </div>
+    </section>
+
+    <!-- REMOVABLE -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.badges.removable' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.badges.removableHint' | translate }}</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-2 min-h-7">
+        @for (tag of tags(); track tag) {
+          <span class="ui-badge ui-badge-lg ui-badge-pill">
+            {{ tag }}
+            <button type="button" class="ui-badge-close" (click)="removeTag(tag)" [attr.aria-label]="('ui.badges.remove' | translate) + ' ' + tag"><app-tabler-icon name="close" [size]="12" [stroke]="2.5" /></button>
+          </span>
+        } @empty {
+          <span class="text-[13px] text-(--secondary-text)">{{ 'ui.badges.noTags' | translate }}</span>
+        }
+      </div>
+      <button type="button" (click)="resetTags()" class="ui-btn ui-btn-ghost ui-btn-sm w-fit"><app-tabler-icon name="refresh" [size]="16" />{{ 'ui.badges.reset' | translate }}</button>
+    </section>
+
+    <!-- SIZES -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.badges.sizes' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.badges.sizesHint' | translate }}</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        @for (size of sizes; track size.key) {
+          <span class="ui-badge ui-badge-solid {{ sizeClass(size.key) }}">{{ size.label | translate }}</span>
+        }
+        @for (size of sizes; track size.key) {
+          <span class="ui-badge ui-badge-dot ui-badge-success ui-badge-pill {{ sizeClass(size.key) }}">{{ size.label | translate }}</span>
+        }
+      </div>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">ui-badge-sm · ui-badge-lg · ui-badge-pill · ui-badge-caps</code>
+    </section>
+
+    <!-- IN CONTEXT -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.badges.context' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.badges.contextHint' | translate }}</p>
+      </div>
+
+      <!-- Counters on buttons -->
+      <div class="flex flex-wrap items-center gap-5">
+        <button type="button" class="ui-btn ui-btn-icon ui-btn-outline ui-btn-neutral ui-btn-pill relative" [attr.aria-label]="('layout.notifications' | translate) + ': 5'">
+          <app-tabler-icon name="bell" [size]="20" />
+          <span class="ui-badge-count ui-badge ui-badge-danger absolute -top-1.5 -right-1.5 ring-2 ring-base-100" aria-hidden="true">5</span>
+        </button>
+        <button type="button" class="ui-btn ui-btn-icon ui-btn-outline ui-btn-neutral ui-btn-pill relative" [attr.aria-label]="('ui.badges.messages' | translate) + ': 128'">
+          <app-tabler-icon name="mail" [size]="20" />
+          <span class="ui-badge-count ui-badge ui-badge-primary absolute -top-1.5 -right-2.5 ring-2 ring-base-100" aria-hidden="true">99+</span>
+        </button>
+        <button type="button" class="ui-btn ui-btn-light">
+          {{ 'ui.badges.inbox' | translate }}
+          <span class="ui-badge ui-badge-solid ui-badge-pill ui-badge-sm">12</span>
+        </button>
+        <button type="button" class="ui-btn">
+          {{ 'ui.badges.updates' | translate }}
+          <span class="ui-badge ui-badge-pill ui-badge-sm bg-white/25 text-current">3</span>
+        </button>
+      </div>
+
+      <!-- Statuses with live dot -->
+      <ul class="flex flex-col divide-y divide-(--border-color-1)/40 rounded-xl border border-(--border-color-1)/40">
+        @for (person of people; track person.name) {
+          <li class="flex items-center justify-between gap-3 px-4 py-2.5">
+            <span class="flex items-center gap-2.5 text-[13px] font-medium text-(--text-color)">
+              <span class="size-8 rounded-full bg-(--primary-color)/10 text-(--primary-color) inline-flex items-center justify-center text-[11px] font-bold">{{ person.initials }}</span>
+              {{ person.name }}
+            </span>
+            <span class="ui-badge ui-badge-pill ui-badge-{{ person.tone }}">
+              @if (person.tone === 'success') {
+                <span class="dot-live size-1.5" aria-hidden="true"></span>
+              } @else {
+                <span class="size-1.5 rounded-full bg-current" aria-hidden="true"></span>
+              }
+              {{ person.status | translate }}
+            </span>
+          </li>
+        }
+      </ul>
+
+      <!-- In a heading -->
+      <h4 class="flex items-center gap-2 text-[16px] font-bold text-(--text-color)">
+        {{ 'ui.badges.headingExample' | translate }}
+        <span class="ui-badge ui-badge-solid ui-badge-success ui-badge-caps ui-badge-sm">{{ 'ui.badge.new' | translate }}</span>
+      </h4>
+    </section>
+  </div>
+</div>

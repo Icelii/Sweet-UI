@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TablerIcon } from '@shared/components/tabler-icon/tabler-icon';
 import { InitialsPipe } from '@shared/pipes/initials-pipe';
 import { TranslatePipe } from '@shared/pipes/translate-pipe';
-import { LayoutNotification } from '@layouts/interfaces/layout';
 import { LayoutState } from '@layouts/main-layout/layout-state';
 
 @Component({
@@ -14,23 +13,14 @@ import { LayoutState } from '@layouts/main-layout/layout-state';
 export class NotificationsPanel {
   protected readonly layout = inject(LayoutState);
 
-  protected readonly notifications = signal<LayoutNotification[]>([
-    { id: 1, author: 'Ana López', message: 'notifications.newOrder', time: { key: 'time.minutesAgo', params: { count: 5 } }, read: false },
-    { id: 2, author: 'Carlos Ruiz', message: 'notifications.reviewPending', time: { key: 'time.minutesAgo', params: { count: 32 } }, read: false },
-    { id: 3, author: 'María Fernanda Torres', message: 'notifications.couponExpiring', time: { key: 'time.hoursAgo', params: { count: 2 } }, read: false },
-    { id: 4, author: 'Jorge Méndez', message: 'notifications.lowStock', time: { key: 'time.hoursAgo', params: { count: 6 } }, read: false },
-    { id: 5, author: 'Lucía Herrera', message: 'notifications.newUser', time: { key: 'time.yesterday' }, read: false },
-  ]);
-
-  protected readonly unreadCount = computed(() => this.notifications().filter((notification) => !notification.read).length);
+  protected readonly notifications = this.layout.notifications;
+  protected readonly unreadCount = this.layout.unreadCount;
 
   protected markAllAsRead(): void {
-    this.notifications.update((list) => list.map((notification) => ({ ...notification, read: true })));
+    this.layout.markAllNotificationsAsRead();
   }
 
   protected markAsRead(id: number): void {
-    this.notifications.update((list) =>
-      list.map((notification) => (notification.id === id ? { ...notification, read: true } : notification)),
-    );
+    this.layout.markNotificationAsRead(id);
   }
 }

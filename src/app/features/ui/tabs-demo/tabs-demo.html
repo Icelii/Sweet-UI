@@ -1,0 +1,164 @@
+<div class="px-4 md:px-8 py-5 flex flex-col gap-6">
+  <div class="flex flex-col gap-2">
+    <h2 class="text-[20px] font-bold text-(--text-color)">{{ 'ui.tabs.title' | translate }}</h2>
+    <p class="text-[13px] text-(--secondary-text) -mt-1">{{ 'ui.tabs.subtitle' | translate }}</p>
+  </div>
+
+  <section class="xl:col-span-2 bg-(--primary-color)/5 border border-dashed border-(--primary-color)/40 rounded-xl p-5 flex items-start gap-3">
+    <app-tabler-icon name="info-circle" [size]="20" class="text-(--primary-color) mt-0.5" />
+    <p class="text-[13px] text-(--secondary-text)">{{ 'ui.tabs.keyboard' | translate }}</p>
+  </section>
+
+  <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 items-start">
+    <!-- LINE -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.tabs.line' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.tabs.lineHint' | translate }}</p>
+      </div>
+      <app-tabs [(selected)]="lineTab" [label]="'ui.tabs.line' | translate">
+        <app-tab id="overview" [label]="'ui.tabs.overview' | translate" icon="dashboard">
+          <p class="text-[14px] text-(--secondary-text)">{{ 'ui.tabs.overviewBody' | translate }}</p>
+        </app-tab>
+        <app-tab id="activity" [label]="'ui.tabs.activity' | translate" icon="bell" [badge]="3">
+          <ul class="flex flex-col gap-3">
+            @for (item of activity; track item.name) {
+              <li class="flex items-center gap-3 min-w-0">
+                <app-avatar [name]="item.name" size="sm" />
+                <p class="flex-1 min-w-0 text-[13px] text-(--secondary-text)"><span class="font-semibold text-(--text-color)">{{ item.name }}</span> {{ item.text | translate }}</p>
+                <span class="text-[11px] text-(--secondary-text) shrink-0">{{ item.time }}</span>
+              </li>
+            }
+          </ul>
+        </app-tab>
+        <app-tab id="files" [label]="'ui.tabs.files' | translate" icon="folder">
+          <p class="text-[14px] text-(--secondary-text)">{{ 'ui.tabs.filesBody' | translate }}</p>
+        </app-tab>
+        <app-tab id="locked" [label]="'ui.lists.locked' | translate" icon="lock" disabled>
+          …
+        </app-tab>
+      </app-tabs>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">&lt;app-tabs [(selected)]="tab"&gt;&lt;app-tab id="a" label="…" icon="bell" [badge]="3"&gt;…&lt;/app-tab&gt;&lt;/app-tabs&gt;</code>
+    </section>
+
+    <!-- PILLS -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.tabs.pills' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.tabs.pillsHint' | translate }}</p>
+      </div>
+      <app-tabs variant="pills" [label]="'ui.tabs.pills' | translate">
+        <app-tab id="description" [label]="'ui.tabs.description' | translate">
+          <p class="text-[14px] text-(--secondary-text)">{{ 'ui.tabs.descriptionBody' | translate }}</p>
+        </app-tab>
+        <app-tab id="specs" [label]="'ui.tabs.specs' | translate">
+          <dl class="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-[13px]">
+            <dt class="text-(--secondary-text)">{{ 'ui.tabs.spec.material' | translate }}</dt><dd class="font-semibold text-(--text-color)">{{ 'ui.tabs.spec.linen' | translate }}</dd>
+            <dt class="text-(--secondary-text)">{{ 'ui.dropdowns.sort.size' | translate }}</dt><dd class="font-semibold text-(--text-color)">S · M · L · XL</dd>
+            <dt class="text-(--secondary-text)">{{ 'ui.tabs.spec.care' | translate }}</dt><dd class="font-semibold text-(--text-color)">{{ 'ui.tabs.spec.careValue' | translate }}</dd>
+          </dl>
+        </app-tab>
+        <app-tab id="reviews" [label]="'ui.tabs.reviews' | translate" [badge]="24">
+          <div class="flex items-center gap-2 text-warning">
+            @for (n of [1, 2, 3, 4, 5]; track n) {
+              <app-tabler-icon name="star" [size]="18" class="[&_path]:fill-current" />
+            }
+            <span class="text-[13px] text-(--secondary-text) ml-1">4.9 · 24</span>
+          </div>
+        </app-tab>
+      </app-tabs>
+    </section>
+
+    <!-- BOXED -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.tabs.boxed' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.tabs.boxedHint' | translate }}</p>
+      </div>
+      <app-tabs variant="boxed" [(selected)]="period" [label]="'ui.tabs.period' | translate">
+        @for (key of ['day', 'week', 'month', 'year']; track key) {
+          <app-tab [id]="key" [label]="$any('ui.period.' + key) | translate">
+            <div class="grid grid-cols-3 gap-3">
+              <div class="rounded-xl bg-(--bg-2) p-3">
+                <p class="text-[11px] text-(--secondary-text)">{{ 'ui.lists.stat.revenue' | translate }}</p>
+                <p class="text-[17px] sm:text-[20px] font-bold text-(--text-color) truncate">{{ periodData[key].revenue }}</p>
+              </div>
+              <div class="rounded-xl bg-(--bg-2) p-3">
+                <p class="text-[11px] text-(--secondary-text)">{{ 'ui.lists.stat.orders' | translate }}</p>
+                <p class="text-[17px] sm:text-[20px] font-bold text-(--text-color) truncate">{{ periodData[key].orders }}</p>
+              </div>
+              <div class="rounded-xl bg-success/10 p-3">
+                <p class="text-[11px] text-(--secondary-text)">{{ 'ui.tabs.change' | translate }}</p>
+                <p class="text-[17px] sm:text-[20px] font-bold text-success truncate">{{ periodData[key].change }}</p>
+              </div>
+            </div>
+          </app-tab>
+        }
+      </app-tabs>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">variant="line | pills | boxed"</code>
+    </section>
+
+    <!-- JUSTIFIED + OVERFLOW -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.tabs.width' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.tabs.widthHint' | translate }}</p>
+      </div>
+      <app-tabs variant="boxed" justified [label]="'ui.tabs.width' | translate">
+        <app-tab id="login" [label]="'nav.login' | translate" icon="lock"><p class="text-[13px] text-(--secondary-text)">{{ 'ui.tabs.loginBody' | translate }}</p></app-tab>
+        <app-tab id="register" [label]="'nav.register' | translate" icon="user-plus"><p class="text-[13px] text-(--secondary-text)">{{ 'ui.tabs.registerBody' | translate }}</p></app-tab>
+      </app-tabs>
+      <app-tabs [label]="'ui.tabs.orders' | translate">
+        @for (key of many; track key; let i = $index) {
+          <app-tab [id]="key" [label]="key | translate" [badge]="i === 1 ? 5 : null">
+            <p class="text-[13px] text-(--secondary-text)">{{ 'ui.tabs.ordersBody' | translate: { status: (key | translate) } }}</p>
+          </app-tab>
+        }
+      </app-tabs>
+    </section>
+
+    <!-- VERTICAL -->
+    <section class="xl:col-span-2 bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.tabs.vertical' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.tabs.verticalHint' | translate }}</p>
+      </div>
+      <app-tabs vertical [(selected)]="settingsTab" [label]="'ui.action.settings' | translate">
+        <app-tab id="account" [label]="'ui.tabs.account' | translate" icon="user-circle">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="flex flex-col gap-1">
+              <label for="tab-name" class="form-label">{{ 'ui.modals.field.name' | translate }}</label>
+              <input id="tab-name" type="text" class="form-input" value="Lizeth Juarez" />
+            </div>
+            <div class="flex flex-col gap-1">
+              <label for="tab-email" class="form-label">{{ 'ui.modals.field.email' | translate }}</label>
+              <input id="tab-email" type="email" class="form-input" value="lizeth@sweetui.dev" />
+            </div>
+          </div>
+          <div class="flex justify-end mt-4">
+            <button type="button" class="ui-btn w-full sm:w-auto">{{ 'common.saveChanges' | translate }}</button>
+          </div>
+        </app-tab>
+        <app-tab id="notifications" [label]="'layout.notifications' | translate" icon="bell">
+          <div class="ui-list-group">
+            @for (item of [{ key: 'email', label: 'ui.tabs.notify.email' }, { key: 'push', label: 'ui.tabs.notify.push' }, { key: 'weekly', label: 'ui.tabs.notify.weekly' }]; track item.key) {
+              <label class="ui-list-item justify-between">
+                <span>{{ $any(item.label) | translate }}</span>
+                <input type="checkbox" class="toggle toggle-sm toggle-primary" [checked]="$any(notifications())[item.key]" (change)="toggleNotification($any(item.key))" />
+              </label>
+            }
+          </div>
+        </app-tab>
+        <app-tab id="billing" [label]="'ui.tabs.billing' | translate" icon="credit-card" [badge]="1">
+          <div class="rounded-xl border border-warning/40 bg-warning/10 p-4 text-[13px] text-(--text-color) flex items-start gap-3">
+            <app-tabler-icon name="alert-triangle" [size]="18" class="text-warning mt-0.5" />
+            {{ 'ui.tabs.billingBody' | translate }}
+          </div>
+        </app-tab>
+        <app-tab id="security" [label]="'ui.tabs.security' | translate" icon="lock">
+          <p class="text-[14px] text-(--secondary-text)">{{ 'ui.tabs.securityBody' | translate }}</p>
+        </app-tab>
+      </app-tabs>
+    </section>
+  </div>
+</div>

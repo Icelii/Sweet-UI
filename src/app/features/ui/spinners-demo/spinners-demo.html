@@ -1,0 +1,172 @@
+<div class="px-4 md:px-8 py-5 flex flex-col gap-6">
+  <div class="flex flex-col gap-2">
+    <h2 class="text-[20px] font-bold text-(--text-color)">{{ 'ui.spinners.title' | translate }}</h2>
+    <p class="text-[13px] text-(--secondary-text) -mt-1">{{ 'ui.spinners.subtitle' | translate }}</p>
+  </div>
+
+  <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 items-start">
+    <!-- VARIANTS -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.spinners.variants' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.spinners.variantsHint' | translate }}</p>
+      </div>
+      <div class="grid grid-cols-3 sm:grid-cols-5 gap-4">
+        @for (variant of variants; track variant.label) {
+          <div class="flex flex-col items-center gap-2.5 rounded-xl border border-(--border-color-1)/40 py-4">
+            <span class="ui-spinner ui-spinner-lg {{ variant.key }}" role="status" [attr.aria-label]="'ui.progress.indeterminate' | translate">
+              @if (variant.spans) {
+                <span></span><span></span><span></span>
+              }
+            </span>
+            <span class="text-[12px] text-(--secondary-text)">{{ variant.label | translate }}</span>
+          </div>
+        }
+      </div>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">&lt;span class="ui-spinner" role="status" aria-label="Cargando"&gt;&lt;/span&gt;</code>
+    </section>
+
+    <!-- COLORS & SIZES -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.spinners.colors' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.spinners.colorsHint' | translate }}</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-4">
+        @for (tone of tones; track tone.key) {
+          <span class="ui-spinner ui-spinner-{{ tone.key }}" role="status" [attr.aria-label]="tone.label | translate"></span>
+        }
+      </div>
+      <div class="flex flex-wrap items-center gap-4">
+        @for (tone of tones; track tone.key) {
+          <span class="ui-spinner ui-spinner-dots ui-spinner-{{ tone.key }}" role="status" [attr.aria-label]="tone.label | translate"><span></span><span></span><span></span></span>
+        }
+      </div>
+      <div class="flex flex-wrap items-end gap-5 pt-1">
+        @for (size of sizes; track size.key) {
+          <div class="flex flex-col items-center gap-2">
+            <span class="ui-spinner ui-spinner-{{ size.key }}" role="status" [attr.aria-label]="size.label | translate"></span>
+            <span class="text-[11px] text-(--secondary-text)">{{ size.key }}</span>
+          </div>
+        }
+      </div>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">ui-spinner-success · ui-spinner-{{ '{' }}xs,sm,md,lg,xl{{ '}' }}</code>
+    </section>
+
+    <!-- BUTTONS -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.spinners.buttons' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.spinners.buttonsHint' | translate }}</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-2.5">
+        <button type="button" class="ui-btn" (click)="fake(saving)" [disabled]="saving()" [attr.aria-busy]="saving()">
+          @if (saving()) {
+            <span class="ui-spinner ui-spinner-xs ui-spinner-current" aria-hidden="true"></span>{{ 'ui.buttons.saving' | translate }}
+          } @else {
+            {{ 'common.saveChanges' | translate }}
+          }
+        </button>
+        <button type="button" class="ui-btn ui-btn-light ui-btn-success" (click)="fake(sending)" [disabled]="sending()" [attr.aria-busy]="sending()">
+          @if (sending()) {
+            <span class="ui-spinner ui-spinner-dots ui-spinner-xs ui-spinner-current" aria-hidden="true"><span></span><span></span><span></span></span>
+          } @else {
+            <app-tabler-icon name="send" [size]="18" />
+          }
+          {{ 'ui.action.send' | translate }}
+        </button>
+        <button type="button" class="ui-btn ui-btn-default ui-btn-icon" (click)="fake(refreshing)" [disabled]="refreshing()" [attr.aria-busy]="refreshing()" [attr.aria-label]="'ui.spinners.refresh' | translate">
+          @if (refreshing()) {
+            <span class="ui-spinner ui-spinner-xs ui-spinner-current" aria-hidden="true"></span>
+          } @else {
+            <app-tabler-icon name="refresh" [size]="18" />
+          }
+        </button>
+        <button type="button" class="ui-btn ui-btn-outline" disabled aria-busy="true">
+          <span class="ui-spinner ui-spinner-xs ui-spinner-current" aria-hidden="true"></span>{{ 'ui.progress.indeterminate' | translate }}
+        </button>
+      </div>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">&lt;span class="ui-spinner ui-spinner-xs ui-spinner-current"&gt;&lt;/span&gt;</code>
+    </section>
+
+    <!-- INLINE / SECTION -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.spinners.inline' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.spinners.inlineHint' | translate }}</p>
+      </div>
+      <p class="flex items-center gap-2 text-[13px] text-(--secondary-text)" role="status">
+        <span class="ui-spinner ui-spinner-xs" aria-hidden="true"></span>{{ 'ui.spinners.syncing' | translate }}
+      </p>
+      <div class="rounded-xl border-2 border-dashed border-(--border-color-1)/60 py-10 flex flex-col items-center justify-center gap-3 text-center" role="status">
+        <span class="ui-spinner ui-spinner-xl ui-spinner-dual" aria-hidden="true"></span>
+        <div>
+          <p class="text-[14px] font-semibold text-(--text-color)">{{ 'ui.spinners.loadingData' | translate }}</p>
+          <p class="text-[12px] text-(--secondary-text)">{{ 'ui.spinners.loadingDataHint' | translate }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- OVERLAY -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+        <div>
+          <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.spinners.overlay' | translate }}</h3>
+          <p class="form-hint mt-0.5">{{ 'ui.spinners.overlayHint' | translate }}</p>
+        </div>
+        <button type="button" class="ui-btn ui-btn-light ui-btn-sm shrink-0 w-full sm:w-auto" (click)="cardLoading.set(!cardLoading())">{{ (cardLoading() ? 'ui.spinners.hide' : 'ui.spinners.show') | translate }}</button>
+      </div>
+      <div class="relative rounded-xl border border-(--border-color-1)/40 p-4 flex flex-col gap-3" [attr.aria-busy]="cardLoading()">
+        <div class="flex items-center justify-between">
+          <span class="text-[13px] font-semibold text-(--text-color)">{{ 'ui.lists.stat.revenue' | translate }}</span>
+          <span class="ui-badge ui-badge-pill ui-badge-success">+12%</span>
+        </div>
+        <span class="text-[28px] font-black text-(--text-color)">$48,210</span>
+        <div class="flex items-end gap-1.5 h-16">
+          @for (h of [40, 65, 50, 80, 60, 95, 70]; track $index) {
+            <span class="flex-1 rounded-t-md bg-(--primary-color)/70" [style.height.%]="h"></span>
+          }
+        </div>
+        @if (cardLoading()) {
+          <div class="ui-loading-overlay" role="status">
+            <span class="ui-spinner ui-spinner-lg" aria-hidden="true"></span>
+            {{ 'ui.spinners.updating' | translate }}
+          </div>
+        }
+      </div>
+    </section>
+
+    <!-- SKELETON -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+        <div>
+          <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.spinners.skeleton' | translate }}</h3>
+          <p class="form-hint mt-0.5">{{ 'ui.spinners.skeletonHint' | translate }}</p>
+        </div>
+        <button type="button" class="ui-btn ui-btn-light ui-btn-sm shrink-0 w-full sm:w-auto" (click)="listLoading.set(!listLoading())">{{ (listLoading() ? 'ui.spinners.showContent' : 'ui.spinners.showSkeleton') | translate }}</button>
+      </div>
+      <ul class="ui-list-group" [attr.aria-busy]="listLoading()">
+        @for (person of people; track person.name) {
+          <li class="ui-list-item">
+            @if (listLoading()) {
+              <span class="ui-skeleton size-10 rounded-full! shrink-0"></span>
+              <div class="flex-1 flex flex-col gap-2">
+                <span class="ui-skeleton h-3 w-2/5"></span>
+                <span class="ui-skeleton h-2.5 w-3/5"></span>
+              </div>
+              <span class="ui-skeleton h-7 w-16 rounded-lg! shrink-0"></span>
+            } @else {
+              <app-avatar [name]="person.name" />
+              <div class="flex-1 flex flex-col min-w-0">
+                <span class="text-[14px] font-semibold text-(--text-color) truncate">{{ person.name }}</span>
+                <span class="text-[12px] text-(--secondary-text) truncate">{{ person.role }}</span>
+              </div>
+              <button type="button" class="ui-btn ui-btn-light ui-btn-sm shrink-0">{{ 'tables.view' | translate }}</button>
+            }
+          </li>
+        }
+      </ul>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">&lt;span class="ui-skeleton h-3 w-2/5"&gt;&lt;/span&gt;</code>
+    </section>
+  </div>
+</div>

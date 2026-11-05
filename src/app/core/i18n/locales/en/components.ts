@@ -1,0 +1,91 @@
+import type { components as es } from '../es/components';
+
+/** English for ../es/components.ts. A missing or extra key is a type error. */
+export const components: Record<keyof typeof es, string> = {
+  'validation.thisField': 'This field',
+  'validation.required': '{label} is required',
+  'validation.requiredF': '{label} is required',
+  'validation.email': 'Invalid email format',
+  'validation.pattern': 'Invalid format',
+  'validation.minLength': 'Minimum {length} characters',
+  'validation.maxLength': 'Maximum {length} characters',
+  'validation.min': 'Minimum {value}',
+  'validation.max': 'Maximum {value}',
+  'validation.noMatch': 'Passwords do not match',
+  'validation.acceptTerms': 'You must accept the terms and the privacy notice',
+  'validation.minimumAge': 'You must be older than {age}',
+  'validation.hourInPast': 'The selected time has already passed',
+  'validation.fileType': 'The file must be a JPEG, JPG, PNG or WEBP image',
+  'validation.invalidFile': 'Invalid file',
+  'validation.maxSize': 'The file is too large',
+  'validation.emailOrPhone': 'Must be a valid email or a 10-digit phone number',
+  'validation.profanity': 'The content contains disallowed words',
+  'validation.clabeFormat': 'The CLABE must be exactly 18 digits',
+  'validation.clabeInvalid': 'The CLABE is invalid (check digit does not match)',
+  'validation.rfcInvalid': 'Invalid format. Example: XEXX010101000 (individual)',
+  'validation.passwordFormat': 'At least 8 characters long. Must include at least one uppercase letter, one lowercase letter, one number and one symbol',
+
+  // Datepicker
+  'datepicker.placeholder': 'Select a date',
+  'datepicker.placeholderRange': 'Select a range',
+  'datepicker.placeholderMultiple': 'Select dates',
+  'datepicker.selectedCount': '{count} dates selected',
+  'datepicker.clear': 'Clear',
+  'datepicker.today': 'Today',
+  'datepicker.apply': 'Apply',
+  'datepicker.previous': 'Previous',
+  'datepicker.next': 'Next',
+  'datepicker.chooseMonth': 'Choose month',
+  'datepicker.chooseYear': 'Choose year',
+  'datepicker.time': 'Time',
+  'datepicker.hours': 'Hours',
+  'datepicker.minutes': 'Minutes',
+  'datepicker.preset.today': 'Today',
+  'datepicker.preset.yesterday': 'Yesterday',
+  'datepicker.preset.last7Days': 'Last 7 days',
+  'datepicker.preset.last30Days': 'Last 30 days',
+  'datepicker.preset.thisMonth': 'This month',
+  'datepicker.preset.lastMonth': 'Last month',
+
+  // Select, dropzone and forms demo
+  'select.placeholder': 'Select an option',
+  'select.placeholderMultiple': 'Select options',
+  'select.search': 'Search...',
+  'select.empty': 'No results',
+  'select.clear': 'Clear selection',
+  'select.remove': 'Remove',
+  'dropzone.title': 'Drag and drop your files here',
+  'dropzone.drop': 'Drop to add them',
+  'dropzone.or': 'or',
+  'dropzone.browse': 'browse your device',
+  'dropzone.hintTypes': 'Formats: {types}',
+  'dropzone.hintSize': 'Max. {size} MB per file',
+  'dropzone.hintCount': 'Up to {count} files',
+  'dropzone.remove': 'Remove',
+  'dropzone.errorType': '{name}: format not allowed',
+  'dropzone.errorSize': '{name}: larger than {size} MB',
+  'dropzone.errorCount': 'You can only upload {count} files',
+  'rangeSlider.min': 'Minimum',
+  'rangeSlider.max': 'Maximum',
+
+  // Tables demo and pagination
+  'pagination.label': 'Pagination',
+  'pagination.showing': 'Showing {from}–{to} of {total}',
+  'pagination.previous': 'Previous page',
+  'pagination.next': 'Next page',
+  'pagination.page': 'Page',
+
+  // Data table
+  'table.empty': 'No records to show',
+
+  // Buttons and badges demo
+  'ui.action.options': 'Options',
+  'ui.badge.online': 'Online',
+  'ui.badge.away': 'Away',
+  'ui.badge.busy': 'Busy',
+  'ui.badge.offline': 'Offline',
+
+  // Avatars, modals and breadcrumbs
+  'breadcrumb.label': 'Breadcrumb',
+  'breadcrumb.more': 'Show more levels',
+};

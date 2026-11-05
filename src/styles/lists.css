@@ -1,0 +1,152 @@
+/*
+ * List groups: a bordered list with dividers.
+ *   <ul class="ui-list-group"><li class="ui-list-item">…</li></ul>
+ * Use <a>/<button>/<label> items for clickable rows; mark the current one with .is-active or aria-current.
+ * Modifiers: ui-list-group-flush, ui-list-group-horizontal, ui-list-group-numbered,
+ * and ui-list-item-soft + a color (ui-list-item-success…) for tinted rows.
+ */
+@layer components {
+  .ui-list-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    border: 1px solid color-mix(in oklab, var(--border-color-1) 40%, transparent);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background: var(--color-base-100);
+  }
+  .ui-list-group > .ui-list-item + .ui-list-item {
+    border-top: 1px solid color-mix(in oklab, var(--border-color-1) 40%, transparent);
+  }
+  .ui-list-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+    padding: 0.75rem 1rem;
+    font-size: 14px;
+    color: var(--text-color);
+    text-align: start;
+    text-decoration: none;
+  }
+  a.ui-list-item,
+  button.ui-list-item,
+  label.ui-list-item {
+    width: 100%;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.12s, color 0.12s;
+  }
+  a.ui-list-item:hover,
+  button.ui-list-item:hover,
+  label.ui-list-item:hover {
+    background: var(--bg-2);
+  }
+  a.ui-list-item:focus-visible,
+  button.ui-list-item:focus-visible,
+  label.ui-list-item:focus-within {
+    box-shadow: inset 0 0 0 2px color-mix(in oklab, var(--c) 50%, transparent);
+  }
+  .ui-list-item.is-active,
+  .ui-list-item[aria-current='page'],
+  .ui-list-item[aria-current='true'] {
+    background: color-mix(in oklab, var(--c) 10%, transparent);
+    color: var(--c-text);
+    font-weight: 600;
+  }
+  .ui-list-item.is-active::before,
+  .ui-list-item[aria-current='page']::before,
+  .ui-list-item[aria-current='true']::before {
+    content: '';
+    position: absolute;
+    inset-block: 0.5rem;
+    inset-inline-start: 0;
+    width: 3px;
+    border-radius: 0 3px 3px 0;
+    background: var(--c);
+  }
+  .ui-list-item:disabled,
+  .ui-list-item.is-disabled,
+  .ui-list-item[aria-disabled='true'] {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .ui-list-item-soft {
+    background: color-mix(in oklab, var(--c) 10%, transparent);
+    color: var(--c-text);
+  }
+  .ui-list-group-flush {
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+  .ui-list-group-numbered {
+    counter-reset: ui-list;
+  }
+  .ui-list-group-numbered > .ui-list-item {
+    counter-increment: ui-list;
+  }
+  .ui-list-group-numbered > .ui-list-item::before {
+    content: counter(ui-list);
+    position: static;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 9999px;
+    background: color-mix(in oklab, var(--c) 14%, transparent);
+    color: var(--c-text);
+    font-size: 12px;
+    font-weight: 700;
+  }
+  /* Side by side from 640px; stacked on phones. */
+  @media (min-width: 640px) {
+    .ui-list-group-horizontal {
+      flex-direction: row;
+    }
+    .ui-list-group-horizontal > .ui-list-item {
+      flex: 1;
+      justify-content: center;
+    }
+    .ui-list-group-horizontal > .ui-list-item + .ui-list-item {
+      border-top: 0;
+      border-inline-start: 1px solid color-mix(in oklab, var(--border-color-1) 40%, transparent);
+    }
+  }
+
+  /* Plain lists without borders. ui-list-check adds a check mark, ui-list-dot a colored dot. */
+  .ui-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 14px;
+    color: var(--text-color);
+  }
+  .ui-list > li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.625rem;
+  }
+  .ui-list-check > li::before,
+  .ui-list-dot > li::before {
+    content: '';
+    flex-shrink: 0;
+  }
+  .ui-list-check > li::before {
+    width: 1.125rem;
+    height: 1.125rem;
+    margin-top: 0.05rem;
+    background: var(--color-success);
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5l10 -10'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+  .ui-list-dot > li::before {
+    width: 0.375rem;
+    height: 0.375rem;
+    margin-top: 0.5rem;
+    border-radius: 9999px;
+    background: var(--primary-color);
+  }
+}

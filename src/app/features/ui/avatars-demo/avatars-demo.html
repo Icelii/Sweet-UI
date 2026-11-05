@@ -1,0 +1,206 @@
+<div class="px-4 md:px-8 py-5 flex flex-col gap-6">
+  <div class="flex flex-col gap-2">
+    <h2 class="text-[20px] font-bold text-(--text-color)">{{ 'ui.avatars.title' | translate }}</h2>
+    <p class="text-[13px] text-(--secondary-text) -mt-1">{{ 'ui.avatars.subtitle' | translate }}</p>
+  </div>
+
+  <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 items-start">
+    <!-- SIZES -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.avatars.sizes' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.avatars.sizesHint' | translate }}</p>
+      </div>
+      <div class="flex flex-wrap items-end gap-3">
+        @for (size of sizes; track size) {
+          <app-avatar name="Ana López" [src]="team[0].photo" [size]="size" />
+        }
+      </div>
+      <div class="flex flex-wrap items-end gap-3">
+        @for (size of sizes; track size) {
+          <app-avatar name="Lizeth Juarez" [size]="size" />
+        }
+      </div>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">size="xs | sm | md | lg | xl | 2xl"</code>
+    </section>
+
+    <!-- SHAPES -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.avatars.shapes' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.avatars.shapesHint' | translate }}</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-3">
+        <app-avatar name="Jaret González" [src]="team[1].photo" size="lg" />
+        <app-avatar name="Jaret González" [src]="team[1].photo" size="lg" shape="rounded" />
+        <app-avatar name="Diego Hernandez" size="lg" />
+        <app-avatar name="Diego Hernandez" size="lg" shape="rounded" />
+        <app-avatar size="lg" />
+        <app-avatar size="lg" shape="rounded" icon="camera" />
+      </div>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">shape="rounded"</code>
+    </section>
+
+    <!-- COLORS -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.avatars.colors' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.avatars.colorsHint' | translate }}</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-2.5">
+        @for (tone of tones; track tone.key) {
+          <app-avatar [name]="tone.label | translate" [tone]="tone.key" />
+        }
+      </div>
+      <div class="flex flex-wrap items-center gap-2.5">
+        @for (tone of tones; track tone.key) {
+          <app-avatar [name]="tone.label | translate" [tone]="tone.key" [solid]="true" />
+        }
+      </div>
+      <div class="flex flex-wrap items-center gap-2.5">
+        @for (person of team; track person.name) {
+          <app-avatar [name]="person.name" />
+        }
+      </div>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">tone="auto" · tone="success" · [solid]="true"</code>
+    </section>
+
+    <!-- STATUS -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.avatars.status' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.avatars.statusHint' | translate }}</p>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        @for (status of statuses; track status.key; let i = $index) {
+          <div class="flex flex-col items-center gap-2 text-center">
+            <app-avatar [name]="team[i].name" [src]="team[i].photo" size="lg" [status]="status.key" />
+            <app-avatar [name]="team[i].name" [src]="team[i].photo" size="lg" shape="rounded" [status]="status.key" />
+            <span class="text-[12px] text-(--secondary-text)">{{ status.label | translate }}</span>
+          </div>
+        }
+      </div>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">status="online | away | busy | offline"</code>
+    </section>
+
+    <!-- FALLBACK -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.avatars.fallback' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.avatars.fallbackHint' | translate }}</p>
+      </div>
+      <div class="flex flex-wrap items-start gap-6">
+        <div class="flex flex-col items-center gap-2 w-20 text-center">
+          <app-avatar [name]="team[1].name" [src]="team[1].photo" size="xl" />
+          <span class="text-[12px] text-(--secondary-text)">{{ 'ui.avatars.photo' | translate }}</span>
+        </div>
+        <div class="flex flex-col items-center gap-2 w-20 text-center">
+          <app-avatar [name]="team[1].name" src="/broken-image.jpg" size="xl" />
+          <span class="text-[12px] text-(--secondary-text)">{{ 'ui.avatars.brokenPhoto' | translate }}</span>
+        </div>
+        <div class="flex flex-col items-center gap-2 w-20 text-center">
+          <app-avatar size="xl" />
+          <span class="text-[12px] text-(--secondary-text)">{{ 'ui.avatars.noData' | translate }}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- RING -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.avatars.ring' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.avatars.ringHint' | translate }}</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-4 px-1 py-1">
+        @for (person of team.slice(0, 6); track person.name) {
+          <button type="button" class="rounded-full cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-(--primary-color)/50 focus-visible:ring-offset-4 focus-visible:ring-offset-base-100" (click)="selected.set(person.name)" [attr.aria-pressed]="selected() === person.name" [attr.aria-label]="person.name">
+            <app-avatar [name]="person.name" [src]="person.photo" size="lg" tone="primary" [ring]="selected() === person.name" />
+          </button>
+        }
+      </div>
+      <p class="text-[13px] text-(--secondary-text)">{{ 'ui.avatars.selected' | translate }} <span class="font-semibold text-(--text-color)">{{ selected() }}</span></p>
+    </section>
+
+    <!-- GROUPS -->
+    <section class="xl:col-span-2 bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.avatars.groups' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.avatars.groupsHint' | translate }}</p>
+      </div>
+      <div class="flex flex-col sm:flex-row flex-wrap sm:items-center gap-6">
+        <div class="ui-avatar-group">
+          @for (person of team.slice(0, groupMax); track person.name) {
+            <app-avatar [name]="person.name" [src]="person.photo" size="sm" />
+          }
+          <span class="ui-avatar ui-avatar-sm ui-avatar-neutral text-[11px]" [attr.aria-label]="('ui.avatars.more' | translate: { count: team.length - groupMax })">+{{ team.length - groupMax }}</span>
+        </div>
+        <div class="ui-avatar-group">
+          @for (person of team.slice(0, groupMax); track person.name) {
+            <app-avatar [name]="person.name" [src]="person.photo" />
+          }
+          <span class="ui-avatar ui-avatar-neutral text-[13px]" [attr.aria-label]="('ui.avatars.more' | translate: { count: team.length - groupMax })">+{{ team.length - groupMax }}</span>
+        </div>
+        <div class="ui-avatar-group">
+          @for (person of team.slice(0, 4); track person.name) {
+            <app-avatar [name]="person.name" [src]="person.photo" size="lg" shape="rounded" />
+          }
+          <button type="button" class="ui-avatar ui-avatar-lg ui-avatar-rounded ui-avatar-primary cursor-pointer" [attr.aria-label]="'ui.avatars.invite' | translate">
+            <app-tabler-icon name="user-plus" [size]="20" />
+          </button>
+        </div>
+      </div>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">&lt;div class="ui-avatar-group"&gt;…&lt;span class="ui-avatar ui-avatar-neutral"&gt;+3&lt;/span&gt;&lt;/div&gt;</code>
+    </section>
+
+    <!-- IN CONTEXT: team list -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.avatars.list' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.avatars.listHint' | translate }}</p>
+      </div>
+      <ul class="flex flex-col divide-y divide-(--border-color-1)/40 rounded-xl border border-(--border-color-1)/40">
+        @for (person of team.slice(0, 5); track person.name) {
+          <li class="flex items-center gap-3 px-4 py-3 min-w-0">
+            <app-avatar [name]="person.name" [src]="person.photo" [status]="person.status" />
+            <div class="flex flex-col min-w-0 flex-1">
+              <span class="text-[14px] font-semibold text-(--text-color) truncate">{{ person.name }}</span>
+              <span class="text-[12px] text-(--secondary-text) truncate">{{ person.role }}</span>
+            </div>
+            <button type="button" class="ui-btn ui-btn-ghost ui-btn-neutral ui-btn-sm ui-btn-icon shrink-0" [attr.aria-label]="('ui.avatars.message' | translate) + ' ' + person.name">
+              <app-tabler-icon name="mail" [size]="18" />
+            </button>
+          </li>
+        }
+      </ul>
+    </section>
+
+    <!-- IN CONTEXT: profile card -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl overflow-hidden flex flex-col">
+      <div class="h-24 bg-linear-to-r from-(--primary-color)/30 via-secondary/25 to-accent/30"></div>
+      <div class="px-5 pb-5 -mt-11 flex flex-col items-center text-center gap-3">
+        <div class="relative">
+          <app-avatar [name]="team[1].name" [src]="team[1].photo" size="2xl" class="shadow-[0_0_0_4px_var(--color-base-100)]" />
+          <button type="button" class="absolute bottom-0 right-0 size-8 rounded-full bg-(--primary-color) text-white inline-flex items-center justify-center ring-4 ring-base-100 cursor-pointer hover:brightness-110 transition" [attr.aria-label]="'ui.avatars.changePhoto' | translate">
+            <app-tabler-icon name="camera" [size]="16" />
+          </button>
+        </div>
+        <div>
+          <p class="text-[16px] font-bold text-(--text-color)">{{ team[1].name }}</p>
+          <p class="text-[13px] text-(--secondary-text)">{{ team[1].role }}</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="ui-badge ui-badge-pill ui-badge-success"><span class="dot-live size-1.5" aria-hidden="true"></span>{{ 'ui.badge.online' | translate }}</span>
+          <span class="ui-badge ui-badge-pill ui-badge-warning"><app-tabler-icon name="star" [size]="12" [stroke]="2.5" />{{ 'ui.badge.featured' | translate }}</span>
+        </div>
+        <div class="w-full pt-3 mt-1 border-t border-(--border-color-1)/40 flex items-center justify-between gap-3">
+          <span class="text-[12px] text-(--secondary-text)">{{ 'ui.avatars.team' | translate }}</span>
+          <div class="ui-avatar-group">
+            @for (person of team.slice(5); track person.name) {
+              <app-avatar [name]="person.name" [src]="person.photo" size="xs" />
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

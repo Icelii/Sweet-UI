@@ -1,4 +1,6 @@
 @import 'tailwindcss';
+@source '../node_modules/@icelii/ngx-api-paginator/fesm2022';
+@source inline("bg-{red,orange,yellow,green,blue,purple,cyan,pink,indigo,emerald,amber,lime,teal,sky,violet,fuchsia,rose,slate,gray,zinc,neutral,stone,taupe,mauve,mist,olive}-{400,500,600,700}");
 
 @plugin 'daisyui' {
   themes: false;
@@ -17,18 +19,18 @@
   --color-primary: #5facd3;
   --color-primary-content: #ffffff;
   --color-secondary: #a78bfa;
-  --color-secondary-content: #1e1240;
+  --color-secondary-content: #ffffff;
   --color-accent: #f6a5c0;
   --color-accent-content: #3d0f1f;
   --color-neutral: #2d3748;
   --color-neutral-content: #f7fafc;
 
   --color-info: #63b3ed;
-  --color-info-content: #0a2540;
+  --color-info-content: #ffffff;
   --color-success: #68d391;
-  --color-success-content: #0f3320;
+  --color-success-content: #ffffff;
   --color-warning: #f6ad55;
-  --color-warning-content: #3b2106;
+  --color-warning-content: #ffffff;
   --color-error: #fc8181;
   --color-error-content: #3f0d0d;
 
@@ -47,26 +49,26 @@
   prefersdark: true;
   color-scheme: dark;
 
-  --color-base-100: #18181b;
-  --color-base-200: #09090b;
-  --color-base-300: #27272a;
+  --color-base-100: #212226;
+  --color-base-200: #1b1c1f;
+  --color-base-300: #2c2e33;
   --color-base-content: #f4f4f5;
 
   --color-primary: #5facd3;
   --color-primary-content: #ffffff;
   --color-secondary: #a78bfa;
-  --color-secondary-content: #1e1240;
+  --color-secondary-content: #ffffff;
   --color-accent: #f6a5c0;
   --color-accent-content: #3d0f1f;
-  --color-neutral: #27272a;
+  --color-neutral: #2c2e33;
   --color-neutral-content: #f4f4f5;
 
   --color-info: #38bdf8;
-  --color-info-content: #082f49;
+  --color-info-content: #ffffff;
   --color-success: #4ade80;
-  --color-success-content: #052e16;
+  --color-success-content: #ffffff;
   --color-warning: #fbbf24;
-  --color-warning-content: #451a03;
+  --color-warning-content: #ffffff;
   --color-error: #f87171;
   --color-error-content: #450a0a;
 
@@ -95,9 +97,9 @@
   --primary-color: var(--color-primary);
   --text-color: #f4f4f5;
   --secondary-text: #a1a1aa;
-  --border-color-1: #3f3f46;
-  --button-bg: #27272a;
-  --bg-2: #09090b;
+  --border-color-1: #34363c;
+  --button-bg: #2c2e33;
+  --bg-2: #1b1c1f;
   --danger: #f87171;
 }
 
@@ -118,3 +120,23 @@
     @apply font-heading;
   }
 }
+
+/*
+ * Component styles, one file per component in src/styles/.
+ * Delete a file (and its line here) when you remove that component.
+ */
+@import './styles/forms.css';
+@import './styles/buttons-badges.css';
+@import './styles/avatars.css';
+@import './styles/dropdown.css';
+@import './styles/lists.css';
+@import './styles/progress.css';
+@import './styles/ribbons.css';
+@import './styles/spinners.css';
+@import './styles/tabs.css';
+@import './styles/tooltips-popovers.css';
+@import './styles/cards.css';
+@import './styles/timelines.css';
+@import './styles/accordion.css';
+@import './styles/chat.css';
+@import './styles/ngx-api-paginator.css';

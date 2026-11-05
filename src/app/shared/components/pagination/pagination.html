@@ -1,0 +1,32 @@
+<nav class="flex flex-col sm:flex-row items-center justify-between gap-3" [attr.aria-label]="'pagination.label' | translate">
+  <p class="text-[12px] text-(--secondary-text)">
+    {{ 'pagination.showing' | translate: { from: from(), to: to(), total: total() } }}
+  </p>
+
+  <div class="flex items-center gap-1">
+    <button type="button" (click)="go(page() - 1)" [disabled]="page() <= 1" [attr.aria-label]="'pagination.previous' | translate" class="size-8 inline-flex items-center justify-center rounded-lg border border-(--border-color-1)/40 text-(--secondary-text) hover:bg-(--primary-color)/10 hover:text-(--primary-color) disabled:opacity-40 disabled:pointer-events-none transition cursor-pointer">
+      <app-tabler-icon name="chevron-left" [size]="16" />
+    </button>
+
+    @for (item of pages(); track $index) {
+      @if (item === null) {
+        <span class="size-8 inline-flex items-center justify-center text-[13px] text-(--secondary-text)" aria-hidden="true">…</span>
+      } @else {
+        <button
+          type="button"
+          (click)="go(item)"
+          [attr.aria-current]="item === page() ? 'page' : null"
+          [attr.aria-label]="('pagination.page' | translate) + ' ' + item"
+          class="min-w-8 h-8 px-2 inline-flex items-center justify-center rounded-lg text-[13px] font-semibold transition cursor-pointer"
+          [class]="item === page() ? 'bg-(--primary-color) text-white' : 'text-(--secondary-text) hover:bg-(--primary-color)/10 hover:text-(--primary-color)'"
+        >
+          {{ item }}
+        </button>
+      }
+    }
+
+    <button type="button" (click)="go(page() + 1)" [disabled]="page() >= pageCount()" [attr.aria-label]="'pagination.next' | translate" class="size-8 inline-flex items-center justify-center rounded-lg border border-(--border-color-1)/40 text-(--secondary-text) hover:bg-(--primary-color)/10 hover:text-(--primary-color) disabled:opacity-40 disabled:pointer-events-none transition cursor-pointer">
+      <app-tabler-icon name="chevron-right" [size]="16" />
+    </button>
+  </div>
+</nav>

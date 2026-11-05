@@ -1,0 +1,491 @@
+<div class="px-4 md:px-8 py-5">
+  <div class="mb-6">
+    <h2 class="text-[20px] font-bold text-(--text-color)">{{ 'nav.formElements' | translate }}</h2>
+    <p class="text-[13px] text-(--secondary-text) mt-1">{{ 'forms.subtitle' | translate }}</p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="grid grid-cols-1 xl:grid-cols-2 gap-4 items-start">
+    <!-- BASIC INPUTS -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'forms.basic.title' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'forms.basic.hint' | translate }}</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="flex flex-col gap-1">
+          <label for="f-name" class="form-label">{{ 'forms.field.name' | translate }}</label>
+          <input id="f-name" type="text" formControlName="fullName" autocomplete="name" [placeholder]="'forms.field.namePlaceholder' | translate" class="form-input" />
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="f-email" class="form-label">{{ 'forms.field.email' | translate }}</label>
+          <input id="f-email" type="email" formControlName="email" autocomplete="email" placeholder="nombre@empresa.com" class="form-input" />
+          <span class="form-hint">{{ 'forms.field.emailHint' | translate }}</span>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="f-password" class="form-label">{{ 'forms.field.password' | translate }}</label>
+          <div class="relative">
+            <input id="f-password" [type]="passwordVisible() ? 'text' : 'password'" formControlName="password" autocomplete="new-password" placeholder="••••••••" class="form-input pr-10" />
+            <button type="button" (click)="passwordVisible.set(!passwordVisible())" [attr.aria-label]="'auth.togglePassword' | translate" class="absolute right-1.5 top-1/2 -translate-y-1/2 size-8 inline-flex items-center justify-center rounded-md text-(--secondary-text) hover:text-(--primary-color) transition cursor-pointer">
+              <app-tabler-icon [name]="passwordVisible() ? 'eye-closed' : 'eye'" [size]="18" />
+            </button>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="f-age" class="form-label">{{ 'forms.field.age' | translate }} <span class="text-[11px] font-normal">{{ 'common.optional' | translate }}</span></label>
+          <input id="f-age" type="number" min="0" max="120" formControlName="age" placeholder="30" class="form-input" />
+        </div>
+
+        <div class="flex flex-col gap-1 sm:col-span-2">
+          <div class="flex items-center justify-between">
+            <label for="f-bio" class="form-label">{{ 'forms.field.bio' | translate }}</label>
+            <span class="form-hint">{{ form.controls.bio.value.length }}/200</span>
+          </div>
+          <textarea id="f-bio" rows="3" maxlength="200" formControlName="bio" [placeholder]="'forms.field.bioPlaceholder' | translate" class="form-input resize-y"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATES + SIZES -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'forms.states.title' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'forms.states.hint' | translate }}</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="flex flex-col gap-1">
+          <label for="f-readonly" class="form-label">{{ 'forms.states.readonly' | translate }}</label>
+          <input id="f-readonly" type="text" readonly formControlName="readonlyField" class="form-input" />
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="f-disabled" class="form-label">{{ 'forms.states.disabled' | translate }}</label>
+          <input id="f-disabled" type="text" formControlName="disabledField" class="form-input" />
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="f-error" class="form-label">{{ 'forms.states.error' | translate }}</label>
+          <input id="f-error" type="email" formControlName="errorField" class="form-input" />
+          <app-error-messages [control]="form.controls.errorField" [label]="'validation.thisField' | translate" />
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="f-valid" class="form-label">{{ 'forms.states.valid' | translate }}</label>
+          <div class="relative">
+            <input id="f-valid" type="email" formControlName="validField" class="form-input is-valid pr-10" />
+            <app-tabler-icon name="circle-check" [size]="18" class="absolute right-3 top-1/2 -translate-y-1/2 text-success" />
+          </div>
+          <span class="text-[12px] text-success">{{ 'forms.states.validHint' | translate }}</span>
+        </div>
+      </div>
+
+      <hr class="border-(--border-color-1)/40" />
+
+      <div>
+        <h4 class="text-[13px] font-bold text-(--text-color) mb-3">{{ 'forms.sizes.title' | translate }}</h4>
+        <div class="flex flex-col gap-3">
+          <input type="text" formControlName="sizeSm" [attr.aria-label]="'forms.sizes.sm' | translate" [placeholder]="'forms.sizes.sm' | translate" class="form-input form-input-sm" />
+          <input type="text" formControlName="sizeMd" [attr.aria-label]="'forms.sizes.md' | translate" [placeholder]="'forms.sizes.md' | translate" class="form-input" />
+          <input type="text" formControlName="sizeLg" [attr.aria-label]="'forms.sizes.lg' | translate" [placeholder]="'forms.sizes.lg' | translate" class="form-input form-input-lg" />
+        </div>
+      </div>
+    </section>
+
+    <!-- WITH ICONS -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'forms.icons.title' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'forms.icons.hint' | translate }}</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="flex flex-col gap-1">
+          <label for="f-search" class="form-label">{{ 'forms.icons.search' | translate }}</label>
+          <div class="relative">
+            <app-tabler-icon name="search" [size]="18" class="absolute left-3 top-1/2 -translate-y-1/2 text-(--secondary-text) pointer-events-none" />
+            <input id="f-search" type="search" formControlName="search" [placeholder]="'forms.icons.searchPlaceholder' | translate" class="form-input pl-10" />
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="f-mail" class="form-label">{{ 'forms.field.email' | translate }}</label>
+          <div class="relative">
+            <app-tabler-icon name="mail" [size]="18" class="absolute left-3 top-1/2 -translate-y-1/2 text-(--secondary-text) pointer-events-none" />
+            <input id="f-mail" type="email" formControlName="mail" placeholder="nombre@empresa.com" class="form-input pl-10" />
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="f-location" class="form-label">{{ 'forms.icons.location' | translate }}</label>
+          <div class="relative">
+            <input id="f-location" type="text" formControlName="location" [placeholder]="'forms.icons.locationPlaceholder' | translate" class="form-input pr-10" />
+            <app-tabler-icon name="map-pin" [size]="18" class="absolute right-3 top-1/2 -translate-y-1/2 text-(--secondary-text) pointer-events-none" />
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="f-phone-icon" class="form-label">{{ 'forms.icons.loading' | translate }}</label>
+          <div class="relative">
+            <app-tabler-icon name="phone" [size]="18" class="absolute left-3 top-1/2 -translate-y-1/2 text-(--secondary-text) pointer-events-none" />
+            <input id="f-phone-icon" type="tel" formControlName="phoneIcon" placeholder="55 1234 5678" class="form-input pl-10 pr-10" />
+            <span class="loading loading-spinner loading-xs absolute right-3 top-1/2 -translate-y-1/2 text-(--primary-color)"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INPUT GROUPS -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'forms.groups.title' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'forms.groups.hint' | translate }}</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="flex flex-col gap-1">
+          <label for="f-website" class="form-label">{{ 'forms.groups.website' | translate }}</label>
+          <div class="input-group">
+            <span class="input-addon">https://</span>
+            <input id="f-website" type="text" formControlName="website" placeholder="miempresa" />
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="f-domain" class="form-label">{{ 'forms.groups.domain' | translate }}</label>
+          <div class="input-group">
+            <input id="f-domain" type="text" formControlName="domain" placeholder="tienda" />
+            <span class="input-addon">.sweetui.com</span>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="f-price" class="form-label">{{ 'forms.groups.price' | translate }}</label>
+          <div class="input-group">
+            <span class="input-addon"><app-tabler-icon name="currency-dollar" [size]="16" /></span>
+            <input id="f-price" type="number" min="0" step="0.01" formControlName="price" placeholder="0.00" />
+            <span class="input-addon">MXN</span>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="f-phone" class="form-label">{{ 'forms.groups.phone' | translate }}</label>
+          <div class="input-group">
+            <select formControlName="phoneCode" [attr.aria-label]="'forms.groups.phoneCode' | translate">
+              <option value="+52">+52</option>
+              <option value="+1">+1</option>
+              <option value="+34">+34</option>
+              <option value="+57">+57</option>
+            </select>
+            <input id="f-phone" type="tel" formControlName="phone" placeholder="55 1234 5678" />
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-1 sm:col-span-2">
+          <label for="f-query" class="form-label">{{ 'forms.groups.button' | translate }}</label>
+          <div class="input-group">
+            <span class="input-addon"><app-tabler-icon name="link" [size]="16" /></span>
+            <input id="f-query" type="url" formControlName="query" placeholder="https://..." />
+            <button type="button" class="input-group-button">
+              <app-tabler-icon name="search" [size]="16" />
+              {{ 'forms.groups.check' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SELECTS -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'forms.selects.title' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'forms.selects.hint' | translate }}</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="flex flex-col gap-1">
+          <label for="f-native" class="form-label">{{ 'forms.selects.native' | translate }}</label>
+          <select id="f-native" formControlName="nativeSelect" class="form-input">
+            <option value="small">{{ 'forms.sizes.sm' | translate }}</option>
+            <option value="medium">{{ 'forms.sizes.md' | translate }}</option>
+            <option value="large">{{ 'forms.sizes.lg' | translate }}</option>
+          </select>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="f-role" class="form-label">{{ 'forms.selects.single' | translate }}</label>
+          <app-select inputId="f-role" formControlName="role" [options]="roleOptions()" />
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="f-country" class="form-label">{{ 'forms.selects.searchable' | translate }}</label>
+          <app-select inputId="f-country" formControlName="country" [options]="countryOptions()" searchable icon="world" [placeholder]="'forms.selects.countryPlaceholder' | translate" />
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="f-frameworks" class="form-label">{{ 'forms.selects.multiple' | translate }}</label>
+          <app-select inputId="f-frameworks" formControlName="frameworks" [options]="frameworkOptions" multiple />
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="f-skills" class="form-label">{{ 'forms.selects.multipleSearchable' | translate }}</label>
+          <app-select inputId="f-skills" formControlName="skills" [options]="skillOptions" multiple searchable />
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="f-locked" class="form-label">{{ 'forms.states.disabled' | translate }}</label>
+          <app-select inputId="f-locked" formControlName="lockedSelect" [options]="roleOptions()" />
+        </div>
+      </div>
+    </section>
+
+    <!-- FILE INPUTS -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'forms.files.title' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'forms.files.hint' | translate }}</p>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label for="f-file" class="form-label">{{ 'forms.files.default' | translate }}</label>
+        <input id="f-file" type="file" multiple (change)="onNativeFiles($event)" class="form-file" />
+        @if (fileNames().length) {
+          <span class="form-hint">{{ fileNames().join(', ') }}</span>
+        }
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="flex flex-col gap-1">
+          <label for="f-file-sm" class="form-label">{{ 'forms.files.small' | translate }}</label>
+          <input id="f-file-sm" type="file" accept="image/*" class="form-file form-file-sm" />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="f-file-disabled" class="form-label">{{ 'forms.states.disabled' | translate }}</label>
+          <input id="f-file-disabled" type="file" disabled class="form-file form-file-sm" />
+        </div>
+      </div>
+
+      <hr class="border-(--border-color-1)/40" />
+
+      <div class="flex flex-col gap-1">
+        <label for="f-contract" class="form-label">{{ 'forms.files.compact' | translate }}</label>
+        <app-dropzone inputId="f-contract" formControlName="contract" [multiple]="false" accept=".pdf,.docx" [maxSizeMb]="5" compact />
+      </div>
+    </section>
+
+    <!-- DROPZONE -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 xl:col-span-2">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'forms.dropzone.title' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'forms.dropzone.hint' | translate }}</p>
+      </div>
+      <app-dropzone inputId="f-photos" formControlName="photos" accept="image/*" [maxSizeMb]="2" [maxFiles]="6" />
+    </section>
+
+    <!-- CHECKBOXES -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'forms.checkboxes.title' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'forms.checkboxes.hint' | translate }}</p>
+      </div>
+
+      <fieldset class="flex flex-col gap-3" formGroupName="channels">
+        <legend class="sr-only">{{ 'forms.checkboxes.channels' | translate }}</legend>
+        <label class="flex items-center gap-3 cursor-pointer">
+          <input type="checkbox" class="checkbox checkbox-sm checkbox-primary" [checked]="allChannels()" [indeterminate]="someChannels()" (change)="toggleAllChannels($any($event.target).checked)" />
+          <span class="text-[14px] font-semibold text-(--text-color)">{{ 'forms.checkboxes.all' | translate }}</span>
+        </label>
+        <div class="flex flex-col gap-3 pl-7">
+          @for (key of channelKeys; track key) {
+            <label class="flex items-center gap-3 cursor-pointer">
+              <input type="checkbox" class="checkbox checkbox-sm checkbox-primary" [formControlName]="key" />
+              <span class="text-[14px] text-(--text-color)">{{ channelLabels[key] | translate }}</span>
+            </label>
+          }
+        </div>
+      </fieldset>
+
+      <hr class="border-(--border-color-1)/40" />
+
+      <label class="flex items-start gap-3 cursor-pointer">
+        <input type="checkbox" formControlName="terms" class="checkbox checkbox-sm checkbox-primary mt-0.5" />
+        <span>
+          <span class="block text-[14px] font-medium text-(--text-color)">{{ 'forms.checkboxes.terms' | translate }}</span>
+          <span class="block form-hint">{{ 'forms.checkboxes.termsHint' | translate }}</span>
+          @if (form.controls.terms.invalid && form.controls.terms.touched) {
+            <span class="block text-[12px] text-(--danger) mt-1">• {{ 'forms.checkboxes.termsRequired' | translate }}</span>
+          }
+        </span>
+      </label>
+
+      <label class="flex items-center gap-3 cursor-not-allowed opacity-60">
+        <input type="checkbox" checked disabled class="checkbox checkbox-sm checkbox-primary" />
+        <span class="text-[14px] text-(--text-color)">{{ 'forms.checkboxes.disabled' | translate }}</span>
+      </label>
+    </section>
+
+    <!-- TOGGLES -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'forms.toggles.title' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'forms.toggles.hint' | translate }}</p>
+      </div>
+
+      <div class="flex flex-col divide-y divide-(--border-color-1)/40 border border-(--border-color-1)/40 rounded-xl">
+        <label class="flex items-center justify-between gap-4 p-4 cursor-pointer">
+          <span class="flex items-start gap-3">
+            <span class="size-9 shrink-0 rounded-lg bg-(--primary-color)/10 text-(--primary-color) inline-flex items-center justify-center"><app-tabler-icon name="bell" [size]="18" /></span>
+            <span>
+              <span class="block text-[14px] font-semibold text-(--text-color)">{{ 'forms.toggles.notifications' | translate }}</span>
+              <span class="block form-hint">{{ 'forms.toggles.notificationsHint' | translate }}</span>
+            </span>
+          </span>
+          <input type="checkbox" formControlName="notifications" class="toggle toggle-sm toggle-primary" />
+        </label>
+        <label class="flex items-center justify-between gap-4 p-4 cursor-pointer">
+          <span class="flex items-start gap-3">
+            <span class="size-9 shrink-0 rounded-lg bg-(--primary-color)/10 text-(--primary-color) inline-flex items-center justify-center"><app-tabler-icon name="mail" [size]="18" /></span>
+            <span>
+              <span class="block text-[14px] font-semibold text-(--text-color)">{{ 'forms.toggles.marketing' | translate }}</span>
+              <span class="block form-hint">{{ 'forms.toggles.marketingHint' | translate }}</span>
+            </span>
+          </span>
+          <input type="checkbox" formControlName="marketing" class="toggle toggle-sm toggle-primary" />
+        </label>
+        <label class="flex items-center justify-between gap-4 p-4 cursor-pointer">
+          <span class="flex items-start gap-3">
+            <span class="size-9 shrink-0 rounded-lg bg-(--primary-color)/10 text-(--primary-color) inline-flex items-center justify-center"><app-tabler-icon name="lock" [size]="18" /></span>
+            <span>
+              <span class="block text-[14px] font-semibold text-(--text-color)">{{ 'forms.toggles.twoFactor' | translate }}</span>
+              <span class="block form-hint">{{ 'forms.toggles.twoFactorHint' | translate }}</span>
+            </span>
+          </span>
+          <input type="checkbox" formControlName="twoFactor" class="toggle toggle-sm toggle-primary" />
+        </label>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-x-6 gap-y-3">
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" checked class="toggle toggle-xs toggle-primary" />
+          <span class="text-[13px] text-(--text-color)">{{ 'forms.sizes.sm' | translate }}</span>
+        </label>
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" checked class="toggle toggle-sm toggle-primary" />
+          <span class="text-[13px] text-(--text-color)">{{ 'forms.sizes.md' | translate }}</span>
+        </label>
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" checked class="toggle toggle-md toggle-primary" />
+          <span class="text-[13px] text-(--text-color)">{{ 'forms.sizes.lg' | translate }}</span>
+        </label>
+        <label class="flex items-center gap-2 cursor-not-allowed opacity-60">
+          <input type="checkbox" disabled class="toggle toggle-sm toggle-primary" />
+          <span class="text-[13px] text-(--text-color)">{{ 'forms.states.disabled' | translate }}</span>
+        </label>
+      </div>
+    </section>
+
+    <!-- RADIOS -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'forms.radios.title' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'forms.radios.hint' | translate }}</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <fieldset class="flex flex-col gap-3">
+          <legend class="form-label mb-2">{{ 'forms.radios.plan' | translate }}</legend>
+          @for (card of planCards; track card.value) {
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input type="radio" formControlName="plan" [value]="card.value" class="radio radio-sm radio-primary mt-0.5" />
+              <span>
+                <span class="block text-[14px] font-medium text-(--text-color)">{{ card.label | translate }}</span>
+                <span class="block form-hint">{{ card.description | translate }}</span>
+              </span>
+            </label>
+          }
+        </fieldset>
+
+        <fieldset class="flex flex-col gap-3">
+          <legend class="form-label mb-2">{{ 'forms.radios.size' | translate }}</legend>
+          <div class="flex flex-wrap gap-2">
+            @for (size of sizes; track size) {
+              <label class="relative cursor-pointer">
+                <input type="radio" formControlName="size" [value]="size" class="peer sr-only" />
+                <span class="inline-flex items-center justify-center min-w-11 h-10 px-3 rounded-lg border-2 border-(--border-color-1)/40 text-[13px] font-semibold uppercase text-(--secondary-text) transition peer-checked:border-(--primary-color) peer-checked:bg-(--primary-color)/10 peer-checked:text-(--primary-color) peer-focus-visible:ring-2 peer-focus-visible:ring-(--primary-color)/40 hover:border-(--primary-color)/60">{{ size }}</span>
+              </label>
+            }
+          </div>
+          <label class="flex items-center gap-3 cursor-not-allowed opacity-60 mt-1">
+            <input type="radio" disabled class="radio radio-sm radio-primary" />
+            <span class="text-[14px] text-(--text-color)">{{ 'forms.states.disabled' | translate }}</span>
+          </label>
+        </fieldset>
+      </div>
+
+      <fieldset>
+        <legend class="form-label mb-2">{{ 'forms.radios.payment' | translate }}</legend>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          @for (card of paymentCards; track card.value) {
+            <label class="relative cursor-pointer">
+              <input type="radio" formControlName="payment" [value]="card.value" class="peer sr-only" />
+              <span class="flex h-full flex-col gap-2 rounded-xl border-2 border-(--border-color-1)/40 p-4 transition hover:border-(--primary-color)/60 peer-checked:border-(--primary-color) peer-checked:bg-(--primary-color)/5 peer-focus-visible:ring-2 peer-focus-visible:ring-(--primary-color)/40">
+                <span class="size-9 rounded-lg bg-(--primary-color)/10 text-(--primary-color) inline-flex items-center justify-center"><app-tabler-icon [name]="card.icon" [size]="18" /></span>
+                <span class="text-[14px] font-semibold text-(--text-color)">{{ card.label | translate }}</span>
+                <span class="form-hint">{{ card.description | translate }}</span>
+              </span>
+              <span class="absolute top-3 right-3 size-5 rounded-full bg-(--primary-color) text-white items-center justify-center hidden peer-checked:inline-flex">
+                <app-tabler-icon name="check" [size]="12" [stroke]="3" />
+              </span>
+            </label>
+          }
+        </div>
+      </fieldset>
+    </section>
+
+    <!-- RANGE -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'forms.range.title' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'forms.range.hint' | translate }}</p>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <div class="flex items-center justify-between">
+          <label for="f-volume" class="form-label">{{ 'forms.range.volume' | translate }}</label>
+          <span class="text-[13px] font-semibold text-(--primary-color)">{{ form.controls.volume.value }}%</span>
+        </div>
+        <div class="relative h-6">
+          <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-1.5 rounded-full bg-(--border-color-1)/50"></div>
+          <div class="absolute left-0 top-1/2 -translate-y-1/2 h-1.5 rounded-full bg-(--primary-color)" [style.width]="'calc(' + form.controls.volume.value + '% + ' + (9 - form.controls.volume.value * 0.18) + 'px)'"></div>
+          <input id="f-volume" type="range" min="0" max="100" formControlName="volume" class="range-thumb pointer-events-auto cursor-pointer" />
+        </div>
+        <div class="flex justify-between form-hint"><span>0</span><span>50</span><span>100</span></div>
+      </div>
+
+      <hr class="border-(--border-color-1)/40" />
+
+      <div class="flex flex-col gap-3">
+        <label for="f-price-range" class="form-label">{{ 'forms.range.price' | translate }}</label>
+        <app-range-slider inputId="f-price-range" formControlName="priceRange" [min]="0" [max]="10000" [step]="100" [minGap]="500" prefix="$" />
+      </div>
+    </section>
+
+    <!-- FORM VALUE -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0 xl:col-span-2">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'forms.value.title' | translate }}</h3>
+          <p class="form-hint mt-0.5">{{ 'forms.value.hint' | translate }}</p>
+        </div>
+        <div class="flex gap-2">
+          <button type="button" (click)="reset()" class="btn btn-sm bg-base-100 hover:bg-(--bg-2) text-(--secondary-text) border border-(--border-color-1) rounded-lg px-4 font-medium shadow-sm">{{ 'forms.value.reset' | translate }}</button>
+          <button type="submit" class="btn btn-sm bg-(--primary-color) hover:brightness-110 text-white border-none rounded-lg px-4 font-semibold shadow-sm">{{ 'forms.value.submit' | translate }}</button>
+        </div>
+      </div>
+      <pre class="text-[12px] text-(--secondary-text) bg-(--bg-2) rounded-lg p-3 overflow-auto max-h-80">{{ preview() }}</pre>
+    </section>
+  </form>
+</div>

@@ -1,0 +1,116 @@
+/*
+ * Cards.
+ *   <article class="ui-card">
+ *     <header class="ui-card-header">…</header>
+ *     <div class="ui-card-body">…</div>
+ *     <footer class="ui-card-footer">…</footer>
+ *   </article>
+ * Extras: ui-card-media (image on top), ui-card-horizontal (media on the side from 640px),
+ * ui-card-hover (lifts on hover), ui-card-accent / ui-card-soft + a color (ui-card-success…).
+ */
+@layer components {
+  .ui-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    border: 1px solid color-mix(in oklab, var(--border-color-1) 40%, transparent);
+    border-radius: 0.75rem;
+    background: var(--color-base-100);
+    color: var(--text-color);
+    text-decoration: none;
+  }
+  .ui-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-width: 0;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid color-mix(in oklab, var(--border-color-1) 40%, transparent);
+  }
+  .ui-card-title {
+    font-family: var(--font-heading);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-color);
+  }
+  .ui-card-subtitle {
+    font-size: 12px;
+    color: var(--secondary-text);
+  }
+  .ui-card-body {
+    flex: 1;
+    min-width: 0;
+    padding: 1.25rem;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--secondary-text);
+  }
+  .ui-card-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding: 0.875rem 1.25rem;
+    border-top: 1px solid color-mix(in oklab, var(--border-color-1) 40%, transparent);
+  }
+  .ui-card-media {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: calc(0.75rem - 1px) calc(0.75rem - 1px) 0 0;
+    background: var(--bg-2);
+  }
+  .ui-card-media > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  @media (min-width: 640px) {
+    .ui-card-horizontal {
+      flex-direction: row;
+    }
+    .ui-card-horizontal > .ui-card-media {
+      flex-shrink: 0;
+      width: 40%;
+      aspect-ratio: auto;
+      border-radius: calc(0.75rem - 1px) 0 0 calc(0.75rem - 1px);
+    }
+  }
+
+  .ui-card-hover {
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  }
+  .ui-card-hover:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in oklab, var(--c) 40%, transparent);
+    box-shadow: 0 12px 28px -12px rgb(0 0 0 / 0.18);
+  }
+  a.ui-card,
+  button.ui-card,
+  label.ui-card {
+    text-align: start;
+    cursor: pointer;
+    outline: none;
+  }
+  a.ui-card:focus-visible,
+  button.ui-card:focus-visible,
+  label.ui-card:has(:focus-visible) {
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--c) 40%, transparent);
+  }
+  /* Selectable card (e.g. a radio inside a <label class="ui-card">). */
+  .ui-card.is-selected,
+  label.ui-card:has(input:checked) {
+    border-color: var(--c);
+    box-shadow: 0 0 0 1px var(--c);
+  }
+  .ui-card-accent {
+    border-top: 3px solid var(--c);
+  }
+  .ui-card-soft {
+    border-color: color-mix(in oklab, var(--c) 25%, transparent);
+    background: color-mix(in oklab, var(--c) 7%, var(--color-base-100));
+  }
+}

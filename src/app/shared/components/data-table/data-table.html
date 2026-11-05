@@ -1,0 +1,85 @@
+<!-- Table: always on tablet/desktop; on phones too when there is no card template -->
+<div class="rounded-xl border border-(--border-color-1)/40 overflow-x-auto" [class]="card() ? 'hidden md:block' : ''">
+  <table class="w-full text-[13px] text-left" [style.min-width]="minWidth()" [attr.aria-label]="label()" [attr.aria-busy]="loading() || null">
+    <thead class="bg-(--bg-2) border-b border-(--border-color-1)/40">
+      <tr class="text-[11px] font-bold uppercase tracking-wide text-(--secondary-text)">
+        @for (column of columns(); track column.key) {
+          <th scope="col" class="px-4 py-3 whitespace-nowrap" [class]="align(column) + ' ' + (column.class ?? '')" [attr.aria-sort]="ariaSort(column)">
+            @if (column.sortable) {
+              <button type="button" (click)="toggleSort(column)" class="inline-flex items-center gap-1 uppercase hover:text-(--text-color) transition cursor-pointer">
+                {{ column.label }}
+                @if (sort()?.key === column.key) {
+                  <app-tabler-icon [name]="sort()?.direction === 'asc' ? 'chevron-up' : 'chevron-down'" [size]="14" [stroke]="2.5" class="text-(--primary-color)" />
+                } @else {
+                  <app-tabler-icon name="selector" [size]="14" class="opacity-50" />
+                }
+              </button>
+            } @else {
+              {{ column.label }}
+            }
+          </th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @if (loading()) {
+        @for (row of skeleton(); track $index) {
+          <tr class="border-b border-(--border-color-1)/30 last:border-b-0">
+            @for (column of columns(); track column.key; let col = $index) {
+              <td class="px-4 py-3.5" [class]="column.class ?? ''">
+                <div class="skeleton h-4" [class]="skeletonWidths[col % skeletonWidths.length] + (column.align === 'right' ? ' ml-auto' : column.align === 'center' ? ' mx-auto' : '')"></div>
+              </td>
+            }
+          </tr>
+        }
+      } @else {
+        @for (row of rows(); track trackBy()(row); let index = $index) {
+          <tr class="border-b border-(--border-color-1)/30 last:border-b-0 hover:bg-(--bg-2)/60 transition-colors" [class]="(striped() ? 'even:bg-(--bg-2)/50 ' : '') + (rowClass()?.(row) ?? '')">
+            @for (column of columns(); track column.key) {
+              <td class="px-4 py-3" [class]="align(column) + ' ' + (column.class ?? '')">
+                @if (cellTemplates().get(column.key); as template) {
+                  <ng-container *ngTemplateOutlet="template; context: { $implicit: row, index }" />
+                } @else {
+                  <span class="text-(--text-color)">{{ value(row, column.key) }}</span>
+                }
+              </td>
+            }
+          </tr>
+        } @empty {
+          <tr>
+            <td [attr.colspan]="columns().length">
+              <ng-container *ngTemplateOutlet="emptyState" />
+            </td>
+          </tr>
+        }
+      }
+    </tbody>
+  </table>
+</div>
+
+<!-- Phones: one card per row, only when a card template is given -->
+@if (card(); as cardDef) {
+  <div class="md:hidden grid grid-cols-1 gap-3">
+    @if (loading()) {
+      @for (row of skeleton(); track $index) {
+        <div class="skeleton h-40 w-full rounded-xl"></div>
+      }
+    } @else {
+      @for (row of rows(); track trackBy()(row); let index = $index) {
+        <article class="rounded-xl border border-(--border-color-1)/40 p-4 flex flex-col gap-3" [class]="rowClass()?.(row) ?? ''">
+          <ng-container *ngTemplateOutlet="cardDef.template; context: { $implicit: row, index }" />
+        </article>
+      } @empty {
+        <ng-container *ngTemplateOutlet="emptyState" />
+      }
+    }
+  </div>
+}
+
+<ng-template #emptyState>
+  @if (empty(); as emptyDef) {
+    <ng-container *ngTemplateOutlet="emptyDef.template" />
+  } @else {
+    <p class="py-10 text-center text-[13px] text-(--secondary-text)">{{ 'table.empty' | translate }}</p>
+  }
+</ng-template>

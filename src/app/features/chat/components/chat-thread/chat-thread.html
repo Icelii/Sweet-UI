@@ -1,0 +1,104 @@
+@let chat = conversation();
+@if (chat) {
+  <!-- Header -->
+  <header class="shrink-0 flex items-center gap-2 border-b border-(--border-color-1)/40" [class]="compact() ? 'px-2 py-2' : 'px-3 sm:px-4 py-3'">
+    @if (back() !== 'none') {
+      <button
+        type="button"
+        (click)="backClick.emit()"
+        class="size-9 shrink-0 inline-flex items-center justify-center rounded-full text-(--secondary-text) hover:bg-(--bg-2) hover:text-(--text-color) transition cursor-pointer"
+        [class]="back() === 'mobile' ? 'lg:hidden' : ''"
+        [attr.aria-label]="'chat.back' | translate"
+      >
+        <app-tabler-icon name="arrow-left" [size]="18" />
+      </button>
+    }
+    <app-avatar [name]="chat.contact.name" [size]="compact() ? 'sm' : 'md'" [status]="chat.contact.status" />
+    <div class="flex flex-col min-w-0 flex-1">
+      <span class="text-[14px] font-bold text-(--text-color) truncate leading-tight">{{ chat.contact.name }}</span>
+      @if (chat.typing) {
+        <span class="text-[11px] text-(--primary-color) font-medium">{{ 'chat.typing' | translate }}</span>
+      } @else {
+        <span class="text-[11px] text-(--secondary-text) truncate">{{ statusLabel()! | translate }} · {{ chat.contact.role | translate }}</span>
+      }
+    </div>
+    <ng-content select="[chatActions]" />
+  </header>
+
+  <!-- Messages -->
+  <div #scroller class="flex-1 min-h-0 overflow-y-auto overscroll-contain flex flex-col" [class]="compact() ? 'px-3 py-3' : 'px-3 sm:px-5 py-4'" role="log" aria-live="polite" [attr.aria-label]="chat.contact.name">
+    <!-- Pushes short conversations to the bottom, next to the composer. -->
+    <div class="flex-1"></div>
+    @for (row of rows(); track row.id) {
+      @if (row.kind === 'day') {
+        <div class="flex items-center gap-3 my-3 first:mt-0" role="separator">
+          <span class="h-px flex-1 bg-(--border-color-1)/40"></span>
+          <span class="text-[11px] font-medium text-(--secondary-text)">{{ row.label }}</span>
+          <span class="h-px flex-1 bg-(--border-color-1)/40"></span>
+        </div>
+      } @else {
+        <div class="flex items-end gap-2" [class]="row.first ? 'mt-3' : 'mt-0.5'" [class.justify-end]="row.message.mine">
+          @if (!row.message.mine) {
+            <span class="size-7 shrink-0">
+              @if (row.last) {
+                <app-avatar [name]="chat.contact.name" size="xs" class="size-7!" />
+              }
+            </span>
+          }
+          <div class="flex flex-col min-w-0 max-w-[78%]" [class.items-end]="row.message.mine">
+            <p class="px-3.5 py-2 rounded-2xl text-[13px] leading-snug whitespace-pre-wrap break-words" [class]="row.bubble">{{ row.text }}</p>
+            @if (row.last) {
+              <span class="mt-1 px-1 text-[10px] text-(--secondary-text) inline-flex items-center gap-1">
+                {{ row.time }}
+                @if (row.message.mine) {
+                  <app-tabler-icon [name]="row.message.read ? 'checks' : 'check'" [size]="13" [class]="row.message.read ? 'text-(--primary-color)' : ''" />
+                  <span class="sr-only">{{ (row.message.read ? 'chat.seen' : 'chat.sent') | translate }}</span>
+                }
+              </span>
+            }
+          </div>
+        </div>
+      }
+    }
+    @if (chat.typing) {
+      <div class="flex items-end gap-2 mt-3">
+        <app-avatar [name]="chat.contact.name" size="xs" class="size-7!" />
+        <div class="ui-typing" [attr.aria-label]="'chat.typing' | translate"><span></span><span></span><span></span></div>
+      </div>
+    }
+  </div>
+
+  <!-- Composer -->
+  <form class="shrink-0 flex items-end gap-1.5 border-t border-(--border-color-1)/40" [class]="compact() ? 'p-2' : 'p-3'" (submit)="$event.preventDefault(); send()">
+    <app-dropdown menuClass="w-60">
+      <button type="button" appDropdownTrigger class="size-9 shrink-0 inline-flex items-center justify-center rounded-full text-(--secondary-text) hover:bg-(--bg-2) hover:text-(--primary-color) transition cursor-pointer" [attr.aria-label]="'chat.emoji' | translate">
+        <app-tabler-icon name="mood-smile" [size]="20" />
+      </button>
+      <div class="grid grid-cols-6 gap-0.5">
+        @for (emoji of emojis; track emoji) {
+          <button type="button" appDropdownItem class="justify-center! px-0! text-[20px]" (click)="addEmoji(emoji)">{{ emoji }}</button>
+        }
+      </div>
+    </app-dropdown>
+    <label class="flex-1 min-w-0">
+      <span class="sr-only">{{ 'chat.placeholder' | translate }}</span>
+      <textarea
+        #input
+        rows="1"
+        class="ui-chat-input"
+        [placeholder]="'chat.placeholder' | translate"
+        [value]="draft()"
+        (input)="draft.set($any($event.target).value)"
+        (keydown)="onKeydown($event)"
+      ></textarea>
+    </label>
+    <button
+      type="submit"
+      [disabled]="!draft().trim()"
+      class="size-9 shrink-0 inline-flex items-center justify-center rounded-full bg-(--primary-color) text-white transition cursor-pointer hover:brightness-95 disabled:opacity-40 disabled:cursor-default"
+      [attr.aria-label]="'chat.send' | translate"
+    >
+      <app-tabler-icon name="send" [size]="18" />
+    </button>
+  </form>
+}

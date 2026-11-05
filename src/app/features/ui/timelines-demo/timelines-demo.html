@@ -1,0 +1,131 @@
+<div class="px-4 md:px-8 py-5 flex flex-col gap-6">
+  <div class="flex flex-col gap-2">
+    <h2 class="text-[20px] font-bold text-(--text-color)">{{ 'ui.timelines.title' | translate }}</h2>
+    <p class="text-[13px] text-(--secondary-text) -mt-1">{{ 'ui.timelines.subtitle' | translate }}</p>
+  </div>
+
+  <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 items-start">
+    <!-- ORDER TRACKING -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.timelines.states' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.timelines.statesHint' | translate }}</p>
+      </div>
+      <ol class="ui-timeline">
+        @for (step of order; track step.title) {
+          <li class="ui-timeline-item is-{{ step.state }}" [attr.aria-current]="step.state === 'current' ? 'step' : null">
+            <span class="ui-timeline-marker" aria-hidden="true">
+              <app-tabler-icon [name]="step.state === 'done' ? 'check' : step.icon" [size]="16" [stroke]="step.state === 'done' ? 3 : 2" />
+            </span>
+            <div class="ui-timeline-content flex flex-wrap items-start justify-between gap-x-3">
+              <div class="min-w-0">
+                <p class="ui-timeline-title">{{ step.title | translate }}</p>
+                <p class="ui-timeline-time">{{ step.time }}</p>
+              </div>
+              @if (step.state === 'current') {
+                <span class="ui-badge ui-badge-pill"><span class="dot-live size-1.5" style="--dot-color: var(--primary-color)" aria-hidden="true"></span>{{ 'ui.timelines.inProgress' | translate }}</span>
+              }
+            </div>
+          </li>
+        }
+      </ol>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">ui-timeline-item is-done · is-current · is-pending</code>
+    </section>
+
+    <!-- ACTIVITY FEED -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.timelines.activity' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.timelines.activityHint' | translate }}</p>
+      </div>
+      <ol class="ui-timeline">
+        @for (item of activity; track item.name) {
+          <li class="ui-timeline-item ui-timeline-item-{{ item.tone }}">
+            <span class="ui-timeline-marker" aria-hidden="true"><app-tabler-icon [name]="item.icon" [size]="16" /></span>
+            <div class="ui-timeline-content">
+              <div class="flex items-start justify-between gap-3">
+                <p class="text-[13px] text-(--secondary-text) min-w-0"><span class="font-semibold text-(--text-color)">{{ item.name }}</span> {{ item.text | translate }}</p>
+                <span class="ui-timeline-time shrink-0">{{ item.time }}</span>
+              </div>
+              @if (item.tone === 'info') {
+                <div class="mt-2 rounded-xl bg-(--bg-2) border border-(--border-color-1)/40 p-3 text-[13px] text-(--text-color) flex gap-2.5">
+                  <app-avatar [name]="item.name" size="xs" />
+                  <p class="min-w-0">{{ 'ui.timelines.act.comment' | translate }}</p>
+                </div>
+              }
+            </div>
+          </li>
+        }
+      </ol>
+    </section>
+
+    <!-- ALTERNATE -->
+    <section class="xl:col-span-2 bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.timelines.alternate' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.timelines.alternateHint' | translate }}</p>
+      </div>
+      <ol class="ui-timeline ui-timeline-alternate">
+        @for (item of milestones; track item.year) {
+          <li class="ui-timeline-item ui-timeline-item-{{ item.tone }} is-done">
+            <span class="ui-timeline-marker" aria-hidden="true"><app-tabler-icon [name]="item.icon" [size]="16" /></span>
+            <span class="ui-timeline-opposite text-[13px]! font-bold text-(--c)!">{{ item.year }}</span>
+            <div class="ui-timeline-content">
+              <div class="rounded-xl border border-(--border-color-1)/40 bg-(--bg-2) p-4 mb-1">
+                <p class="ui-timeline-title">{{ item.title | translate }}</p>
+                <p class="ui-timeline-text">{{ item.text | translate }}</p>
+              </div>
+            </div>
+          </li>
+        }
+      </ol>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">ui-timeline ui-timeline-alternate · .ui-timeline-opposite</code>
+    </section>
+
+    <!-- HORIZONTAL -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.timelines.horizontal' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.timelines.horizontalHint' | translate }}</p>
+      </div>
+      <ol class="ui-timeline ui-timeline-horizontal">
+        @for (step of shipping; track step.title) {
+          <li class="ui-timeline-item ui-timeline-item-success is-{{ step.state }}" [attr.aria-current]="step.state === 'current' ? 'step' : null">
+            <span class="ui-timeline-marker" aria-hidden="true">
+              <app-tabler-icon [name]="step.state === 'done' ? 'check' : step.icon" [size]="16" [stroke]="step.state === 'done' ? 3 : 2" />
+            </span>
+            <div class="ui-timeline-content">
+              <p class="ui-timeline-title text-[13px]!">{{ step.title | translate }}</p>
+              <p class="ui-timeline-time">{{ step.time }}</p>
+            </div>
+          </li>
+        }
+      </ol>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">ui-timeline ui-timeline-horizontal</code>
+    </section>
+
+    <!-- GROUPED BY DAY, DOTS -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.timelines.compact' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.timelines.compactHint' | translate }}</p>
+      </div>
+      @for (day of days; track day.label) {
+        <div class="flex flex-col gap-3">
+          <span class="text-[11px] font-semibold uppercase tracking-wide text-(--secondary-text)">{{ day.label | translate }}</span>
+          <ol class="ui-timeline">
+            @for (item of day.items; track item.title) {
+              <li class="ui-timeline-item ui-timeline-item-{{ item.tone }} pb-4!">
+                <span class="ui-timeline-marker ui-timeline-dot" aria-hidden="true"></span>
+                <div class="ui-timeline-content pt-0! flex items-baseline justify-between gap-3">
+                  <p class="ui-timeline-title font-medium! min-w-0">{{ item.title | translate }}</p>
+                  <span class="ui-timeline-time shrink-0 tabular-nums">{{ item.time }}</span>
+                </div>
+              </li>
+            }
+          </ol>
+        </div>
+      }
+    </section>
+  </div>
+</div>

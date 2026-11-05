@@ -1,0 +1,183 @@
+@if (!inline()) {
+  <div class="relative">
+    <button #trigger type="button" [id]="inputId()" (click)="toggle()" (keydown.arrowDown)="openPanel(); $event.preventDefault()" [disabled]="isDisabled()" aria-haspopup="dialog" [attr.aria-expanded]="open()"
+      class="w-full flex items-center gap-2 border-2 rounded-lg py-2 pl-3 bg-transparent text-left text-[14px] outline-none transition-colors cursor-pointer disabled:cursor-not-allowed disabled:opacity-60 focus-visible:border-(--primary-color)"
+      [class]="(open() ? 'border-(--primary-color) ' : 'border-(--border-color-1)/40 ') + (clearable() && hasValue() ? 'pr-9' : 'pr-3')">
+      <app-tabler-icon name="calendar" [size]="18" class="text-(--secondary-text)" />
+      @if (hasValue()) {
+        <span class="truncate text-(--text-color) leading-[21px]">{{ displayText() }}</span>
+      } @else {
+        <span class="truncate text-(--secondary-text) font-extralight text-xs leading-[21px]">{{ placeholderText() }}</span>
+      }
+    </button>
+
+    @if (clearable() && hasValue() && !isDisabled()) {
+      <button type="button" (click)="clear($event)" [attr.aria-label]="'datepicker.clear' | translate" class="absolute right-2 top-1/2 -translate-y-1/2 size-6 inline-flex items-center justify-center rounded-md text-(--secondary-text) hover:text-(--danger) hover:bg-(--danger)/10 transition cursor-pointer">
+        <app-tabler-icon name="close" [size]="14" />
+      </button>
+    }
+  </div>
+}
+
+@if (inline() || open()) {
+  <!-- eslint-disable-next-line @angular-eslint/template/interactive-supports-focus -- Catches keys from the focusable buttons inside. -->
+  <div #panel [attr.popover]="inline() ? null : 'manual'" [attr.role]="inline() ? 'group' : 'dialog'" [attr.aria-modal]="inline() ? null : false" [attr.aria-label]="placeholderText()" (keydown)="onPanelKeydown($event)"
+    class="bg-base-100 text-(--text-color) border rounded-xl p-3 w-max max-w-[calc(100vw-1rem)] select-none"
+    [class]="inline() ? 'border-(--border-color-1)/40' : 'fixed inset-auto m-0 shadow-xl border-(--border-color-1) max-h-[calc(100dvh-1rem)] overflow-y-auto'">
+    <div class="flex flex-col sm:flex-row gap-3">
+      @if (mode() === 'range' && showPresets()) {
+        <div class="flex sm:flex-col gap-1.5 sm:gap-1 overflow-x-auto sm:overflow-visible -mx-3 px-3 sm:mx-0 sm:px-0 sm:w-36 sm:pr-3 sm:border-r border-(--border-color-1)/40 pb-3 sm:pb-0 border-b sm:border-b-0 [scrollbar-width:none]">
+          @for (preset of presets(); track preset.label) {
+            <button type="button" (click)="applyPreset(preset)" class="shrink-0 whitespace-nowrap text-left text-[12px] sm:text-[13px] px-3 sm:px-2.5 py-1.5 rounded-full sm:rounded-lg border sm:border-0 transition cursor-pointer" [class]="isPresetActive(preset) ? 'bg-(--primary-color)/10 text-(--primary-color) font-semibold border-(--primary-color)/30' : 'text-(--secondary-text) border-(--border-color-1)/40 hover:bg-(--primary-color)/10 hover:text-(--primary-color)'">
+              {{ preset.label | translate }}
+            </button>
+          }
+        </div>
+      }
+
+      <div class="flex flex-col gap-3 min-w-0">
+        @switch (view()) {
+          @case ('days') {
+            <!-- eslint-disable-next-line @angular-eslint/template/interactive-supports-focus -- Arrow keys from the focused day button. -->
+            <div class="flex gap-6" (keydown)="onGridKeydown($event)">
+              @for (panel of panels(); track panel.key; let first = $first; let last = $last) {
+                <div class="w-full sm:w-[17rem]" [class]="first ? '' : 'hidden sm:block'">
+                  <div class="flex items-center justify-between mb-2 h-8">
+                    @if (first) {
+                      <button type="button" (click)="previous()" [disabled]="prevDisabled()" [attr.aria-label]="'datepicker.previous' | translate" class="size-8 inline-flex items-center justify-center shrink-0 rounded-lg text-(--secondary-text) hover:bg-(--primary-color)/10 hover:text-(--primary-color) disabled:opacity-30 disabled:pointer-events-none transition cursor-pointer">
+                        <app-tabler-icon name="chevron-left" [size]="18" />
+                      </button>
+                    } @else {
+                      <span class="size-8 shrink-0"></span>
+                    }
+
+                    <div class="flex items-center gap-1 text-[14px] font-bold text-(--text-color)">
+                      <button type="button" (click)="showMonths(panel.date)" [attr.aria-label]="'datepicker.chooseMonth' | translate" class="px-1.5 py-0.5 rounded-md hover:bg-(--primary-color)/10 hover:text-(--primary-color) transition cursor-pointer">{{ panel.monthLabel }}</button>
+                      <button type="button" (click)="showYears(panel.date)" [attr.aria-label]="'datepicker.chooseYear' | translate" class="px-1.5 py-0.5 rounded-md hover:bg-(--primary-color)/10 hover:text-(--primary-color) transition cursor-pointer">{{ panel.year }}</button>
+                    </div>
+
+                    <button type="button" (click)="next()" [disabled]="nextDisabled()" [attr.aria-label]="'datepicker.next' | translate" class="size-8 inline-flex items-center justify-center shrink-0 rounded-lg text-(--secondary-text) hover:bg-(--primary-color)/10 hover:text-(--primary-color) disabled:opacity-30 disabled:pointer-events-none transition cursor-pointer" [class]="last ? '' : 'invisible max-sm:visible'">
+                      <app-tabler-icon name="chevron-right" [size]="18" />
+                    </button>
+                  </div>
+
+                  <div role="grid" [attr.aria-label]="panel.monthLabel + ' ' + panel.year">
+                    <div role="row" class="grid grid-cols-7 mb-1">
+                      @for (weekday of weekdays(); track $index) {
+                        <span role="columnheader" [attr.aria-label]="weekday.long" class="text-center text-[11px] font-semibold uppercase text-(--secondary-text) py-1">{{ weekday.short }}</span>
+                      }
+                    </div>
+
+                    @for (week of panel.weeks; track $index) {
+                      <div role="row" class="grid grid-cols-7">
+                        @for (cell of week; track cell.key) {
+                          <div role="gridcell" class="relative flex justify-center py-0.5" [attr.aria-selected]="isSelected(cell.date)">
+                            @if (isInRange(cell.date) || isRangeStart(cell.date) || isRangeEnd(cell.date)) {
+                              @if (!(cell.outside && panels().length > 1)) {
+                                <span class="absolute inset-y-0.5 bg-(--primary-color)/12" [class]="bandClass(cell.date)"></span>
+                              }
+                            }
+
+                            @if (cell.outside && panels().length > 1) {
+                              <span class="size-9"></span>
+                            } @else {
+                              <button type="button" [tabindex]="isFocusable(cell) ? 0 : -1" [attr.data-active-day]="isFocusable(cell)" [attr.aria-label]="dayLabel(cell.date)" [attr.aria-current]="cell.today ? 'date' : null"
+                                [disabled]="cell.disabled" (click)="selectDay(cell)" (mouseenter)="onDayHover(cell)" class="relative size-9 rounded-lg text-[13px] flex items-center justify-center transition-colors outline-none focus-visible:ring-2 focus-visible:ring-(--primary-color)/60 cursor-pointer disabled:cursor-not-allowed" [class]="dayClass(cell)">
+                                {{ cell.day }}
+                                @if (cell.today && !isSelected(cell.date)) {
+                                  <span class="absolute bottom-1 left-1/2 -translate-x-1/2 size-1 rounded-full bg-(--primary-color)"></span>
+                                }
+                              </button>
+                            }
+                          </div>
+                        }
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          }
+
+          @case ('months') {
+            <div class="w-full sm:w-[17rem]">
+              <div class="flex items-center justify-between mb-2 h-8">
+                <button type="button" (click)="previous()" [disabled]="prevDisabled()" [attr.aria-label]="'datepicker.previous' | translate" class="size-8 inline-flex items-center justify-center shrink-0 rounded-lg text-(--secondary-text) hover:bg-(--primary-color)/10 hover:text-(--primary-color) disabled:opacity-30 disabled:pointer-events-none transition cursor-pointer">
+                  <app-tabler-icon name="chevron-left" [size]="18" />
+                </button>
+                <button type="button" (click)="showYears()" [attr.aria-label]="'datepicker.chooseYear' | translate" class="px-2 py-0.5 rounded-md text-[14px] font-bold text-(--text-color) hover:bg-(--primary-color)/10 hover:text-(--primary-color) transition cursor-pointer">{{ viewDate().getFullYear() }}</button>
+                <button type="button" (click)="next()" [disabled]="nextDisabled()" [attr.aria-label]="'datepicker.next' | translate" class="size-8 inline-flex items-center justify-center shrink-0 rounded-lg text-(--secondary-text) hover:bg-(--primary-color)/10 hover:text-(--primary-color) disabled:opacity-30 disabled:pointer-events-none transition cursor-pointer">
+                  <app-tabler-icon name="chevron-right" [size]="18" />
+                </button>
+              </div>
+              <div class="grid grid-cols-3 gap-2">
+                @for (option of monthOptions(); track option.month) {
+                  <button type="button" (click)="pickMonth(option.month)" [disabled]="option.disabled" class="h-12 rounded-lg text-[13px] font-medium transition cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed" [class]="option.current ? 'bg-(--primary-color) text-white' : 'text-(--text-color) hover:bg-(--primary-color)/10 hover:text-(--primary-color)'">
+                    {{ option.label }}
+                  </button>
+                }
+              </div>
+            </div>
+          }
+
+          @case ('years') {
+            <div class="w-full sm:w-[17rem]">
+              <div class="flex items-center justify-between mb-2 h-8">
+                <button type="button" (click)="previous()" [disabled]="prevDisabled()" [attr.aria-label]="'datepicker.previous' | translate" class="size-8 inline-flex items-center justify-center shrink-0 rounded-lg text-(--secondary-text) hover:bg-(--primary-color)/10 hover:text-(--primary-color) disabled:opacity-30 disabled:pointer-events-none transition cursor-pointer">
+                  <app-tabler-icon name="chevron-left" [size]="18" />
+                </button>
+                <span class="text-[14px] font-bold text-(--text-color)">{{ yearPageStart() }} – {{ yearPageStart() + 11 }}</span>
+                <button type="button" (click)="next()" [disabled]="nextDisabled()" [attr.aria-label]="'datepicker.next' | translate" class="size-8 inline-flex items-center justify-center shrink-0 rounded-lg text-(--secondary-text) hover:bg-(--primary-color)/10 hover:text-(--primary-color) disabled:opacity-30 disabled:pointer-events-none transition cursor-pointer">
+                  <app-tabler-icon name="chevron-right" [size]="18" />
+                </button>
+              </div>
+              <div class="grid grid-cols-3 gap-2">
+                @for (option of yearOptions(); track option.year) {
+                  <button type="button" (click)="pickYear(option.year)" [disabled]="option.disabled" class="h-12 rounded-lg text-[13px] font-medium transition cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed" [class]="option.current ? 'bg-(--primary-color) text-white' : 'text-(--text-color) hover:bg-(--primary-color)/10 hover:text-(--primary-color)'">
+                    {{ option.year }}
+                  </button>
+                }
+              </div>
+            </div>
+          }
+        }
+
+        @if (timeEnabled() && view() === 'days') {
+          <div class="flex items-center gap-2 border-t border-(--border-color-1)/40 pt-3">
+            <app-tabler-icon name="clock" [size]="18" class="text-(--secondary-text)" />
+            <span class="text-[13px] font-medium text-(--secondary-text) mr-auto">{{ 'datepicker.time' | translate }}</span>
+            <select [value]="hours()" (change)="setHours($any($event.target).value)" [attr.aria-label]="'datepicker.hours' | translate" class="border-2 border-(--border-color-1)/40 rounded-lg py-1 px-2 bg-base-100 text-(--text-color) text-[13px] outline-none focus:border-(--primary-color) cursor-pointer">
+              @for (hour of hourOptions; track hour) {
+                <option [value]="hour" [selected]="hour === hours()">{{ hour < 10 ? '0' + hour : hour }}</option>
+              }
+            </select>
+            <span class="text-(--secondary-text) font-bold">:</span>
+            <select [value]="minutes()" (change)="setMinutes($any($event.target).value)" [attr.aria-label]="'datepicker.minutes' | translate" class="border-2 border-(--border-color-1)/40 rounded-lg py-1 px-2 bg-base-100 text-(--text-color) text-[13px] outline-none focus:border-(--primary-color) cursor-pointer">
+              @for (minute of minuteOptions(); track minute) {
+                <option [value]="minute" [selected]="minute === minutes()">{{ minute < 10 ? '0' + minute : minute }}</option>
+              }
+            </select>
+          </div>
+        }
+
+        <div class="flex items-center justify-between gap-2 border-t border-(--border-color-1)/40 pt-3">
+          <button type="button" (click)="selectToday()" class="text-[13px] font-semibold text-(--primary-color) px-2.5 py-1 rounded-lg hover:bg-(--primary-color)/10 transition cursor-pointer">
+            {{ 'datepicker.today' | translate }}
+          </button>
+          <div class="flex items-center gap-2">
+            @if (clearable()) {
+              <button type="button" (click)="clear()" class="text-[13px] font-medium text-(--secondary-text) px-2.5 py-1 rounded-lg hover:bg-(--bg-2) transition cursor-pointer">
+                {{ 'datepicker.clear' | translate }}
+              </button>
+            }
+            @if (!inline() && (timeEnabled() || mode() === 'multiple')) {
+              <button type="button" (click)="close()" class="text-[13px] font-semibold text-white bg-(--primary-color) hover:brightness-110 px-3 py-1 rounded-lg transition cursor-pointer">
+                {{ 'datepicker.apply' | translate }}
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}

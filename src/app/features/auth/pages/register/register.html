@@ -1,0 +1,79 @@
+<h1 class="text-3xl sm:text-4xl font-black mb-2">{{ 'auth.register.title' | translate }}</h1>
+<p class="text-sm text-(--secondary-text) mb-6">{{ 'auth.register.subtitle' | translate: { app: brand.name } }}</p>
+
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+  <div class="text-left">
+    <span class="font-black label-text font-bold text-sm lg:text-base">{{ 'auth.field.name' | translate }}</span>
+    <input type="text" formControlName="name" autocomplete="name" class="mt-1 border-2 border-(--border-color-1) focus:outline-none focus:ring-0 focus:border-(--primary-color) w-full py-2 px-3 bg-base-100 text-(--text-color) rounded-lg placeholder:font-normal placeholder:text-(--secondary-text) placeholder:font-extralight placeholder:text-xs" [placeholder]="'auth.field.namePlaceholder' | translate"/>
+    <app-error-messages [control]="f['name']" [label]="'validation.thisField' | translate"></app-error-messages>
+  </div>
+
+  <div class="text-left">
+    <span class="font-black label-text font-bold text-sm lg:text-base">{{ 'auth.field.email' | translate }}</span>
+    <input type="email" formControlName="email" autocomplete="email" class="mt-1 border-2 border-(--border-color-1) focus:outline-none focus:ring-0 focus:border-(--primary-color) w-full py-2 px-3 bg-base-100 text-(--text-color) rounded-lg placeholder:font-normal placeholder:text-(--secondary-text) placeholder:font-extralight placeholder:text-xs" [placeholder]="'auth.field.emailPlaceholder' | translate"/>
+    <app-error-messages [control]="f['email']" [label]="'validation.thisField' | translate"></app-error-messages>
+  </div>
+
+  <div class="text-left relative">
+    <span class="font-black label-text font-bold text-sm lg:text-base">{{ 'auth.field.password' | translate }}</span>
+    <div class="relative mt-1">
+      <input [type]="passwordVisible() ? 'text' : 'password'" formControlName="password" autocomplete="new-password" class="pr-11 border-2 border-(--border-color-1) focus:outline-none focus:ring-0 focus:border-(--primary-color) w-full py-2 px-3 bg-base-100 text-(--text-color) rounded-lg placeholder:font-normal placeholder:text-(--secondary-text) placeholder:font-extralight placeholder:text-xs" [placeholder]="'auth.field.password' | translate"/>
+      <button type="button" (click)="togglePasswordVisibility()" class="cursor-pointer absolute inset-y-0 right-0 flex items-center px-3 text-(--secondary-text) hover:text-(--primary-color) transition-colors" [attr.aria-label]="'auth.togglePassword' | translate">
+        @if (passwordVisible()) {
+          <app-tabler-icon name="eye-closed" [size]="22" />
+        } @else {
+          <app-tabler-icon name="eye" [size]="22" />
+        }
+      </button>
+    </div>
+    <app-error-messages [control]="f['password']" [label]="'validation.thisField' | translate" [messageFormat]="'validation.passwordFormat' | translate"></app-error-messages>
+  </div>
+
+  <div class="text-left relative">
+    <span class="font-black label-text font-bold text-sm lg:text-base">{{ 'auth.field.confirmPassword' | translate }}</span>
+    <div class="relative mt-1">
+      <input [type]="confirmPasswordVisible() ? 'text' : 'password'" formControlName="confirm_password" autocomplete="new-password" class="pr-11 border-2 border-(--border-color-1) focus:outline-none focus:ring-0 focus:border-(--primary-color) w-full py-2 px-3 bg-base-100 text-(--text-color) rounded-lg placeholder:font-normal placeholder:text-(--secondary-text) placeholder:font-extralight placeholder:text-xs" [placeholder]="'auth.field.confirmPassword' | translate"/>
+      <button type="button" (click)="toggleConfirmPasswordVisibility()" class="cursor-pointer absolute inset-y-0 right-0 flex items-center px-3 text-(--secondary-text) hover:text-(--primary-color) transition-colors" [attr.aria-label]="'auth.togglePassword' | translate">
+        @if (confirmPasswordVisible()) {
+          <app-tabler-icon name="eye-closed" [size]="22" />
+        } @else {
+          <app-tabler-icon name="eye" [size]="22" />
+        }
+      </button>
+    </div>
+    <app-error-messages [control]="f['confirm_password']" [label]="'validation.thisField' | translate"></app-error-messages>
+  </div>
+
+  <div class="text-left mt-2">
+    <label class="cursor-pointer flex items-start gap-3">
+      <input type="checkbox" formControlName="accept_terms" class="checkbox checkbox-sm mt-0.5 border-(--border-color-1) checked:border-(--primary-color) checked:bg-(--primary-color) checked:text-white"/>
+      <span class="text-sm font-medium">
+        {{ 'auth.register.acceptTerms' | translate }}
+        <a routerLink="/terms" class="text-(--primary-color) underline underline-offset-2 hover:text-(--primary-color)/80">{{ 'auth.register.terms' | translate }}</a>
+        {{ 'auth.register.and' | translate }}
+        <a routerLink="/privacy" class="text-(--primary-color) underline underline-offset-2 hover:text-(--primary-color)/80">{{ 'auth.register.privacy' | translate }}</a>
+      </span>
+    </label>
+    @if (f['accept_terms'].invalid && f['accept_terms'].touched) {
+      <small class="block mt-1 text-(--danger)">• {{ 'validation.acceptTerms' | translate }}</small>
+    }
+  </div>
+
+  <button type="submit" [disabled]="loading()" class="btn w-full bg-(--primary-color) hover:bg-(--primary-color)/85 text-white border-none rounded-md h-[42px] min-h-0 text-md font-semibold mt-2 shadow-sm flex items-center justify-center gap-2 disabled:bg-(--primary-color)/50">
+    @if (loading()) {
+      <span class="loading loading-spinner loading-sm"></span>
+      <span>{{ 'auth.processing' | translate }}</span>
+    } @else {
+      <span>{{ 'auth.register.submit' | translate }}</span>
+    }
+  </button>
+
+  <p class="text-sm text-center text-(--secondary-text)">
+    {{ 'auth.register.haveAccount' | translate }}
+    <a routerLink="/auth/login" class="text-(--primary-color) font-semibold underline underline-offset-2 hover:text-(--primary-color)/80">{{ 'auth.login.submit' | translate }}</a>
+  </p>
+</form>
+
+<div class="divider text-xs text-(--secondary-text) my-5">{{ 'auth.or' | translate }}</div>
+
+<app-google-button [label]="'auth.register.google' | translate" [disabled]="loading()" (pressed)="onGoogleSignUp()" />

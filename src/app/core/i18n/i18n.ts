@@ -1,6 +1,6 @@
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { effect, inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
-import { Language, TRANSLATIONS, TranslationKey } from './translations';
+import { DICTIONARIES, Dictionary, Language, TranslationKey } from './translations';
 
 export type { Language, TranslationKey } from './translations';
 
@@ -11,13 +11,23 @@ const DEFAULT_LANGUAGE: Language = 'es';
 
 export type TranslationParams = Record<string, string | number>;
 
+/**
+ * Current language and translated texts. The app waits for `ready` before rendering
+ * (see app.config.ts), so `t()` always has the dictionary of the current language.
+ */
 @Injectable({ providedIn: 'root' })
 export class I18n {
   private readonly document = inject(DOCUMENT);
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
+  private readonly loaded = new Map<Language, Dictionary>();
+  private readonly dictionary = signal<Dictionary | null>(null);
+  private readonly current = signal<Language>(this.readInitialLanguage());
+
   readonly languages = LANGUAGES;
-  readonly language = signal<Language>(this.readInitialLanguage());
+  readonly language = this.current.asReadonly();
+  /** Resolves once the first language has downloaded. */
+  readonly ready: Promise<void> = this.use(this.current());
 
   constructor() {
     if (!this.isBrowser) return;
@@ -31,20 +41,31 @@ export class I18n {
     });
   }
 
-  setLanguage(language: Language): void {
-    this.language.set(language);
+  /** Downloads the language if needed, then switches every text at once. */
+  setLanguage(language: Language): Promise<void> {
+    return this.use(language);
   }
 
-  toggle(): void {
-    this.language.update((current) => (current === 'es' ? 'en' : 'es'));
+  toggle(): Promise<void> {
+    return this.use(this.current() === 'es' ? 'en' : 'es');
   }
 
   t(key: TranslationKey, params?: TranslationParams): string {
-    const text = TRANSLATIONS[this.language()][key] ?? key;
+    const text = this.dictionary()?.[key] ?? key;
     if (!params) return text;
     return text.replace(/\{(\w+)\}/g, (match, name: string) =>
       name in params ? String(params[name]) : match,
     );
+  }
+
+  private async use(language: Language): Promise<void> {
+    let dictionary = this.loaded.get(language);
+    if (!dictionary) {
+      dictionary = await DICTIONARIES[language]();
+      this.loaded.set(language, dictionary);
+    }
+    this.dictionary.set(dictionary);
+    this.current.set(language);
   }
 
   private readInitialLanguage(): Language {

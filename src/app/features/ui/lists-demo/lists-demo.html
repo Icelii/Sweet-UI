@@ -1,0 +1,213 @@
+<div class="px-4 md:px-8 py-5 flex flex-col gap-6">
+  <div class="flex flex-col gap-2">
+    <h2 class="text-[20px] font-bold text-(--text-color)">{{ 'ui.lists.title' | translate }}</h2>
+    <p class="text-[13px] text-(--secondary-text) -mt-1">{{ 'ui.lists.subtitle' | translate }}</p>
+  </div>
+
+  <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 items-start">
+    <!-- BASIC -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.lists.basic' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.lists.basicHint' | translate }}</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <ul class="ui-list-group">
+          @for (item of basic; track item) {
+            <li class="ui-list-item">{{ item | translate }}</li>
+          }
+        </ul>
+        <ol class="ui-list-group ui-list-group-numbered">
+          @for (item of basic; track item) {
+            <li class="ui-list-item">{{ item | translate }}</li>
+          }
+        </ol>
+      </div>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">ui-list-group · ui-list-item · ui-list-group-numbered</code>
+    </section>
+
+    <!-- LINKS / ACTIVE -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.lists.actions' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.lists.actionsHint' | translate }}</p>
+      </div>
+      <nav class="ui-list-group" [attr.aria-label]="'ui.lists.mailboxes' | translate">
+        @for (row of nav; track row.key) {
+          <button type="button" class="ui-list-item" [attr.aria-current]="current() === row.key ? 'true' : null" (click)="current.set(row.key)">
+            <app-tabler-icon [name]="row.icon" [size]="18" [class]="current() === row.key ? '' : 'text-(--secondary-text)'" />
+            <span class="flex-1 truncate">{{ row.label | translate }}</span>
+            @if (row.count) {
+              <span class="ui-badge ui-badge-pill" [class.ui-badge-solid]="current() === row.key">{{ row.count }}</span>
+            }
+          </button>
+        }
+        <button type="button" class="ui-list-item" disabled>
+          <app-tabler-icon name="lock" [size]="18" class="text-(--secondary-text)" />
+          <span class="flex-1 truncate">{{ 'ui.lists.locked' | translate }}</span>
+        </button>
+      </nav>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">&lt;a class="ui-list-item" aria-current="page"&gt; · .is-active · disabled</code>
+    </section>
+
+    <!-- WITH AVATARS -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.lists.rich' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.lists.richHint' | translate }}</p>
+      </div>
+      <ul class="ui-list-group">
+        @for (member of members; track member.email) {
+          <li class="ui-list-item">
+            <app-avatar [name]="member.name" [status]="member.status" />
+            <div class="flex flex-col min-w-0 flex-1">
+              <span class="text-[14px] font-semibold text-(--text-color) truncate">{{ member.name }}</span>
+              <span class="text-[12px] text-(--secondary-text) truncate">{{ member.email }}</span>
+            </div>
+            <span class="ui-badge ui-badge-pill shrink-0 hidden sm:inline-flex" [class]="member.role === 'ui.modals.role.admin' ? 'ui-badge-primary' : 'ui-badge-neutral'">{{ member.role | translate }}</span>
+            <app-dropdown align="end">
+              <button type="button" appDropdownTrigger class="ui-btn ui-btn-ghost ui-btn-neutral ui-btn-sm ui-btn-icon" [attr.aria-label]="('ui.action.options' | translate) + ': ' + member.name"><app-tabler-icon name="dots-vertical" [size]="18" /></button>
+              <button type="button" appDropdownItem><app-tabler-icon name="mail" [size]="18" />{{ 'ui.avatars.message' | translate }} {{ member.name }}</button>
+              <button type="button" appDropdownItem><app-tabler-icon name="edit" [size]="18" />{{ 'ui.lists.changeRole' | translate }}</button>
+              <div class="ui-dropdown-divider"></div>
+              <button type="button" appDropdownItem class="ui-dropdown-item-danger"><app-tabler-icon name="user-x" [size]="18" />{{ 'ui.lists.remove' | translate }}</button>
+            </app-dropdown>
+          </li>
+        }
+      </ul>
+    </section>
+
+    <!-- CHECKBOXES -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.lists.checkable' | translate }}</h3>
+          <p class="form-hint mt-0.5">{{ 'ui.lists.checkableHint' | translate }}</p>
+        </div>
+        <span class="ui-badge ui-badge-pill ui-badge-success shrink-0">{{ doneCount() }}/{{ tasks().length }}</span>
+      </div>
+      <div class="ui-list-group">
+        @for (task of tasks(); track task.id) {
+          <label class="ui-list-item">
+            <input type="checkbox" class="checkbox checkbox-sm checkbox-primary" [checked]="task.done" (change)="toggleTask(task.id)" />
+            <span class="flex-1" [class]="task.done ? 'line-through text-(--secondary-text)' : ''">{{ task.label | translate }}</span>
+          </label>
+        }
+      </div>
+
+      <fieldset class="flex flex-col gap-2">
+        <legend class="form-label mb-2">{{ 'ui.lists.choosePlan' | translate }}</legend>
+        <div class="ui-list-group">
+          @for (item of plans; track item.key) {
+            <label class="ui-list-item" [class.is-active]="plan() === item.key">
+              <input type="radio" name="list-plan" class="radio radio-sm radio-primary" [checked]="plan() === item.key" (change)="plan.set(item.key)" />
+              <span class="flex flex-col flex-1 min-w-0">
+                <span class="font-semibold">{{ item.label | translate }}</span>
+                <span class="text-[12px] font-normal text-(--secondary-text)">{{ item.hint | translate }}</span>
+              </span>
+              <span class="text-[15px] font-bold shrink-0">{{ item.price }}<span class="text-[11px] font-normal text-(--secondary-text)">/{{ 'ui.period.month' | translate | lowercase }}</span></span>
+            </label>
+          }
+        </div>
+      </fieldset>
+    </section>
+
+    <!-- COLORS -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.lists.colors' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.lists.colorsHint' | translate }}</p>
+      </div>
+      <ul class="ui-list-group">
+        @for (tone of tones; track tone.key) {
+          <li class="ui-list-item ui-list-item-soft ui-list-item-{{ tone.key }}">
+            <app-tabler-icon [name]="tone.icon" [size]="18" />
+            <span class="flex-1">{{ tone.label | translate }}</span>
+          </li>
+        }
+      </ul>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">class="ui-list-item ui-list-item-soft ui-list-item-success"</code>
+    </section>
+
+    <!-- FLUSH + HORIZONTAL -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.lists.layouts' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.lists.layoutsHint' | translate }}</p>
+      </div>
+      <ul class="ui-list-group ui-list-group-horizontal">
+        @for (stat of stats; track stat.label) {
+          <li class="ui-list-item flex-col gap-1! py-4!">
+            <span class="text-[20px] font-bold text-(--text-color)">{{ stat.value }}</span>
+            <span class="text-[12px] text-(--secondary-text)">{{ stat.label | translate }}</span>
+          </li>
+        }
+      </ul>
+      <div class="rounded-xl border border-(--border-color-1)/40 overflow-hidden">
+        <div class="px-4 py-3 bg-(--bg-2) border-b border-(--border-color-1)/40 text-[13px] font-semibold text-(--text-color)">{{ 'ui.lists.flush' | translate }}</div>
+        <ul class="ui-list-group ui-list-group-flush">
+          @for (item of basic.slice(0, 3); track item) {
+            <li class="ui-list-item justify-between">
+              {{ item | translate }}
+              <app-tabler-icon name="chevron-right" [size]="16" class="text-(--secondary-text)" />
+            </li>
+          }
+        </ul>
+      </div>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">ui-list-group-horizontal · ui-list-group-flush</code>
+    </section>
+
+    <!-- SIMPLE LISTS -->
+    <section class="xl:col-span-2 bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.lists.simple' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.lists.simpleHint' | translate }}</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="flex flex-col gap-3">
+          <span class="text-[11px] font-semibold uppercase tracking-wide text-(--secondary-text)">{{ 'ui.lists.checkList' | translate }}</span>
+          <ul class="ui-list ui-list-check">
+            @for (feature of features; track feature) {
+              <li>{{ feature | translate }}</li>
+            }
+          </ul>
+          <ul class="ui-list ui-list-dot text-(--secondary-text)!">
+            @for (item of basic.slice(0, 3); track item) {
+              <li>{{ item | translate }}</li>
+            }
+          </ul>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <span class="text-[11px] font-semibold uppercase tracking-wide text-(--secondary-text)">{{ 'ui.lists.stepsList' | translate }}</span>
+          <ol class="flex flex-col">
+            @for (step of steps; track step.title; let i = $index, last = $last) {
+              <li class="flex gap-3">
+                <div class="flex flex-col items-center">
+                  <span class="size-7 rounded-full inline-flex items-center justify-center text-[12px] font-bold shrink-0" [class]="i === 0 ? 'bg-(--primary-color) text-white' : 'bg-(--primary-color)/10 text-(--primary-color)'">{{ i + 1 }}</span>
+                  @if (!last) {
+                    <span class="w-px flex-1 my-1 bg-(--border-color-1)/60"></span>
+                  }
+                </div>
+                <div class="flex flex-col pb-4 min-w-0">
+                  <span class="text-[14px] font-semibold text-(--text-color)">{{ step.title | translate }}</span>
+                  <span class="text-[12px] text-(--secondary-text)">{{ step.hint | translate }}</span>
+                </div>
+              </li>
+            }
+          </ol>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <span class="text-[11px] font-semibold uppercase tracking-wide text-(--secondary-text)">{{ 'ui.lists.descriptionList' | translate }}</span>
+          <dl class="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2.5 text-[13px]">
+            @for (row of details; track row.term) {
+              <dt class="text-(--secondary-text)">{{ row.term | translate }}</dt>
+              <dd class="font-semibold text-(--text-color) text-right truncate">{{ row.value }}</dd>
+            }
+          </dl>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

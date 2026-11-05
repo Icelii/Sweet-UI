@@ -1,0 +1,503 @@
+<div class="px-4 md:px-8 py-5 flex flex-col gap-6">
+  <div>
+    <h2 class="text-[20px] font-bold text-(--text-color)">{{ 'layouts.title' | translate }}</h2>
+    <p class="text-[13px] text-(--secondary-text) mt-1">{{ 'layouts.subtitle' | translate }}</p>
+  </div>
+
+  <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 items-start">
+    <!-- 1. VERTICAL -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl">
+      <header class="px-5 py-4 border-b border-(--border-color-1)/40">
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'layouts.vertical.title' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'layouts.vertical.hint' | translate }}</p>
+      </header>
+
+      <form [formGroup]="contactForm" (ngSubmit)="sendContact()" class="p-5 flex flex-col gap-4">
+        <div class="flex flex-col gap-1">
+          <label for="v-name" class="form-label">{{ 'forms.field.name' | translate }}</label>
+          <input id="v-name" type="text" formControlName="name" autocomplete="name" [placeholder]="'forms.field.namePlaceholder' | translate" class="form-input" />
+          <app-error-messages [control]="contactForm.controls.name" [label]="'validation.thisField' | translate" />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="v-email" class="form-label">{{ 'forms.field.email' | translate }}</label>
+          <div class="relative">
+            <app-tabler-icon name="mail" [size]="18" class="absolute left-3 top-1/2 -translate-y-1/2 text-(--secondary-text) pointer-events-none" />
+            <input id="v-email" type="email" formControlName="email" autocomplete="email" placeholder="nombre@empresa.com" class="form-input pl-10" />
+          </div>
+          <app-error-messages [control]="contactForm.controls.email" [label]="'validation.thisField' | translate" />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="v-topic" class="form-label">{{ 'layouts.field.topic' | translate }}</label>
+          <app-select inputId="v-topic" formControlName="topic" [options]="topicOptions()" />
+          <app-error-messages [control]="contactForm.controls.topic" [label]="'validation.thisField' | translate" />
+        </div>
+        <div class="flex flex-col gap-1">
+          <div class="flex items-center justify-between">
+            <label for="v-message" class="form-label">{{ 'layouts.field.message' | translate }}</label>
+            <span class="form-hint">{{ contactForm.controls.message.value.length }}/500</span>
+          </div>
+          <textarea id="v-message" rows="4" maxlength="500" formControlName="message" [placeholder]="'layouts.field.messagePlaceholder' | translate" class="form-input resize-y"></textarea>
+          <app-error-messages [control]="contactForm.controls.message" [label]="'validation.thisField' | translate" />
+        </div>
+        <label class="flex items-center gap-3 cursor-pointer">
+          <input type="checkbox" formControlName="copy" class="checkbox checkbox-sm checkbox-primary" />
+          <span class="text-[14px] text-(--text-color)">{{ 'layouts.field.copy' | translate }}</span>
+        </label>
+
+        @if (contactSent()) {
+          <div class="flex items-center gap-2 rounded-lg border border-success/40 bg-success/10 px-3 py-2 text-[13px] text-(--text-color)" role="status">
+            <app-tabler-icon name="circle-check" [size]="18" class="text-success" />
+            {{ 'layouts.vertical.sent' | translate }}
+          </div>
+        }
+
+        <button type="submit" class="btn bg-(--primary-color) hover:brightness-110 text-white border-none rounded-lg h-10 min-h-0 font-semibold shadow-sm">
+          {{ 'layouts.vertical.submit' | translate }}
+        </button>
+      </form>
+    </section>
+
+    <!-- 2. HORIZONTAL -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl">
+      <header class="px-5 py-4 border-b border-(--border-color-1)/40">
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'layouts.horizontal.title' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'layouts.horizontal.hint' | translate }}</p>
+      </header>
+
+      <form [formGroup]="accountForm" class="p-5 flex flex-col gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-x-6 gap-y-1 items-start">
+          <label for="h-username" class="form-label sm:pt-2.5">{{ 'layouts.field.username' | translate }}</label>
+          <div class="input-group">
+            <span class="input-addon">&#64;</span>
+            <input id="h-username" type="text" formControlName="username" autocomplete="username" />
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-x-6 gap-y-1 items-start">
+          <label for="h-email" class="form-label sm:pt-2.5">{{ 'forms.field.email' | translate }}</label>
+          <div class="flex flex-col gap-1">
+            <input id="h-email" type="email" formControlName="email" class="form-input" />
+            <app-error-messages [control]="accountForm.controls.email" [label]="'validation.thisField' | translate" />
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-x-6 gap-y-1 items-start">
+          <label for="h-password" class="form-label sm:pt-2.5">{{ 'forms.field.password' | translate }}</label>
+          <div class="flex flex-col gap-1">
+            <div class="relative">
+              <input id="h-password" [type]="showAccountPassword() ? 'text' : 'password'" formControlName="password" autocomplete="new-password" placeholder="••••••••" class="form-input pr-10" />
+              <button type="button" (click)="showAccountPassword.set(!showAccountPassword())" [attr.aria-label]="'auth.togglePassword' | translate" [attr.aria-pressed]="showAccountPassword()" class="absolute right-1.5 top-1/2 -translate-y-1/2 size-8 inline-flex items-center justify-center rounded-md text-(--secondary-text) hover:text-(--primary-color) transition cursor-pointer">
+                <app-tabler-icon [name]="showAccountPassword() ? 'eye-closed' : 'eye'" [size]="18" />
+              </button>
+            </div>
+            <span class="form-hint">{{ 'layouts.horizontal.passwordHint' | translate }}</span>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-x-6 gap-y-1 items-start">
+          <label for="h-role" class="form-label sm:pt-2.5">{{ 'layouts.field.role' | translate }}</label>
+          <app-select inputId="h-role" formControlName="role" [options]="roleOptions()" />
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-x-6 gap-y-1 items-center">
+          <span class="form-label">{{ 'layouts.field.status' | translate }}</span>
+          <label class="flex items-center gap-3 cursor-pointer w-fit">
+            <input type="checkbox" formControlName="active" class="toggle toggle-sm toggle-primary" />
+            <span class="text-[14px] text-(--text-color)">{{ (accountForm.controls.active.value ? 'layouts.status.active' : 'layouts.status.inactive') | translate }}</span>
+          </label>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-x-6 pt-4 border-t border-(--border-color-1)/40">
+          <div class="flex gap-2 sm:col-start-2">
+            <button type="button" (click)="accountForm.reset()" class="btn btn-sm bg-base-100 hover:bg-(--bg-2) text-(--secondary-text) border border-(--border-color-1) rounded-lg px-4 font-medium shadow-sm">{{ 'common.cancel' | translate }}</button>
+            <button type="button" class="btn btn-sm bg-(--primary-color) hover:brightness-110 text-white border-none rounded-lg px-4 font-semibold shadow-sm">{{ 'common.saveChanges' | translate }}</button>
+          </div>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <!-- 3. COLUMNS -->
+  <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl">
+    <header class="px-5 py-4 border-b border-(--border-color-1)/40">
+      <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'layouts.columns.title' | translate }}</h3>
+      <p class="form-hint mt-0.5">{{ 'layouts.columns.hint' | translate }}</p>
+    </header>
+
+    <form [formGroup]="addressForm" class="p-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-5 gap-y-4">
+      <h4 class="sm:col-span-2 lg:col-span-3 text-[13px] font-bold uppercase tracking-wide text-(--secondary-text)">{{ 'layouts.columns.personal' | translate }}</h4>
+      <div class="flex flex-col gap-1">
+        <label for="c-first" class="form-label">{{ 'layouts.field.firstName' | translate }}</label>
+        <input id="c-first" type="text" formControlName="firstName" autocomplete="given-name" class="form-input" />
+      </div>
+      <div class="flex flex-col gap-1">
+        <label for="c-last" class="form-label">{{ 'layouts.field.lastName' | translate }}</label>
+        <input id="c-last" type="text" formControlName="lastName" autocomplete="family-name" class="form-input" />
+      </div>
+      <div class="flex flex-col gap-1">
+        <label for="c-birth" class="form-label">{{ 'profile.field.birthdate' | translate }}</label>
+        <app-datepicker inputId="c-birth" formControlName="birthdate" />
+      </div>
+      <div class="flex flex-col gap-1 lg:col-span-2">
+        <label for="c-email" class="form-label">{{ 'forms.field.email' | translate }}</label>
+        <input id="c-email" type="email" formControlName="email" autocomplete="email" placeholder="nombre@empresa.com" class="form-input" />
+      </div>
+      <div class="flex flex-col gap-1">
+        <label for="c-phone" class="form-label">{{ 'forms.groups.phone' | translate }}</label>
+        <div class="input-group">
+          <span class="input-addon">+52</span>
+          <input id="c-phone" type="tel" formControlName="phone" autocomplete="tel-national" placeholder="55 1234 5678" />
+        </div>
+      </div>
+
+      <hr class="sm:col-span-2 lg:col-span-3 border-(--border-color-1)/40" />
+      <h4 class="sm:col-span-2 lg:col-span-3 text-[13px] font-bold uppercase tracking-wide text-(--secondary-text)">{{ 'layouts.columns.address' | translate }}</h4>
+
+      <div class="flex flex-col gap-1 sm:col-span-2">
+        <label for="c-street" class="form-label">{{ 'layouts.field.street' | translate }}</label>
+        <input id="c-street" type="text" formControlName="street" autocomplete="street-address" [placeholder]="'layouts.field.streetPlaceholder' | translate" class="form-input" />
+      </div>
+      <div class="flex flex-col gap-1">
+        <label for="c-neighborhood" class="form-label">{{ 'layouts.field.neighborhood' | translate }}</label>
+        <input id="c-neighborhood" type="text" formControlName="neighborhood" class="form-input" />
+      </div>
+      <div class="flex flex-col gap-1">
+        <label for="c-city" class="form-label">{{ 'layouts.field.city' | translate }}</label>
+        <input id="c-city" type="text" formControlName="city" autocomplete="address-level2" class="form-input" />
+      </div>
+      <div class="flex flex-col gap-1">
+        <label for="c-state" class="form-label">{{ 'layouts.field.state' | translate }}</label>
+        <app-select inputId="c-state" formControlName="state" [options]="stateOptions" searchable />
+      </div>
+      <div class="grid grid-cols-2 gap-x-5">
+        <div class="flex flex-col gap-1">
+          <label for="c-zip" class="form-label">{{ 'layouts.field.zip' | translate }}</label>
+          <input id="c-zip" type="text" inputmode="numeric" maxlength="5" formControlName="zip" autocomplete="postal-code" class="form-input" />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="c-country" class="form-label">{{ 'layouts.field.country' | translate }}</label>
+          <app-select inputId="c-country" formControlName="country" [options]="countryOptions()" [clearable]="false" />
+        </div>
+      </div>
+    </form>
+
+    <footer class="px-5 py-4 border-t border-(--border-color-1)/40 flex flex-col-reverse sm:flex-row sm:justify-end gap-2">
+      <button type="button" (click)="addressForm.reset()" class="btn btn-sm bg-base-100 hover:bg-(--bg-2) text-(--secondary-text) border border-(--border-color-1) rounded-lg px-4 font-medium shadow-sm">{{ 'common.cancel' | translate }}</button>
+      <button type="button" class="btn btn-sm bg-(--primary-color) hover:brightness-110 text-white border-none rounded-lg px-4 font-semibold shadow-sm">{{ 'layouts.columns.submit' | translate }}</button>
+    </footer>
+  </section>
+
+  <!-- 4. INLINE -->
+  <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl">
+    <header class="px-5 py-4 border-b border-(--border-color-1)/40">
+      <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'layouts.inline.title' | translate }}</h3>
+      <p class="form-hint mt-0.5">{{ 'layouts.inline.hint' | translate }}</p>
+    </header>
+
+    <div class="p-5 flex flex-col gap-6">
+      <form [formGroup]="filtersForm" class="flex flex-col lg:flex-row lg:items-end gap-3" role="search">
+        <div class="flex flex-col gap-1 flex-1 min-w-0">
+          <label for="i-search" class="form-label">{{ 'forms.icons.search' | translate }}</label>
+          <div class="relative">
+            <app-tabler-icon name="search" [size]="18" class="absolute left-3 top-1/2 -translate-y-1/2 text-(--secondary-text) pointer-events-none" />
+            <input id="i-search" type="search" formControlName="search" [placeholder]="'layouts.inline.searchPlaceholder' | translate" class="form-input pl-10" />
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:contents">
+          <div class="flex flex-col gap-1 lg:w-48">
+            <label for="i-status" class="form-label">{{ 'layouts.field.status' | translate }}</label>
+            <app-select inputId="i-status" formControlName="status" [options]="statusOptions()" [placeholder]="'layouts.status.all' | translate" />
+          </div>
+          <div class="flex flex-col gap-1 lg:w-64">
+            <label for="i-dates" class="form-label">{{ 'layouts.field.dates' | translate }}</label>
+            <app-datepicker inputId="i-dates" mode="range" showPresets formControlName="dates" />
+          </div>
+        </div>
+        <div class="flex gap-2">
+          <button type="button" (click)="filtersForm.reset()" class="btn bg-base-100 hover:bg-(--bg-2) text-(--secondary-text) border border-(--border-color-1) rounded-lg h-[41px] min-h-0 px-4 font-medium shadow-sm flex-1 lg:flex-none">{{ 'datepicker.clear' | translate }}</button>
+          <button type="submit" class="btn bg-(--primary-color) hover:brightness-110 text-white border-none rounded-lg h-[41px] min-h-0 px-5 font-semibold shadow-sm flex-1 lg:flex-none">
+            <app-tabler-icon name="search" [size]="16" />
+            {{ 'layouts.inline.filter' | translate }}
+          </button>
+        </div>
+      </form>
+
+      <div class="rounded-xl bg-(--primary-color)/5 border border-(--primary-color)/20 p-5 flex flex-col md:flex-row md:items-center gap-4">
+        <div class="flex items-start gap-3 flex-1">
+          <span class="size-10 shrink-0 rounded-lg bg-(--primary-color)/10 text-(--primary-color) inline-flex items-center justify-center"><app-tabler-icon name="mail" [size]="20" /></span>
+          <div>
+            <p class="text-[14px] font-bold text-(--text-color)">{{ 'layouts.inline.newsletter' | translate }}</p>
+            <p class="form-hint">{{ 'layouts.inline.newsletterHint' | translate }}</p>
+          </div>
+        </div>
+        @if (subscribed()) {
+          <p class="flex items-center gap-2 text-[13px] font-medium text-(--text-color)" role="status">
+            <app-tabler-icon name="circle-check" [size]="18" class="text-success" />
+            {{ 'layouts.inline.subscribed' | translate }}
+          </p>
+        } @else {
+          <form [formGroup]="newsletterForm" (ngSubmit)="subscribe()" class="flex flex-col gap-1 md:w-96">
+            <div class="input-group bg-base-100">
+              <input type="email" formControlName="email" autocomplete="email" placeholder="nombre@empresa.com" [attr.aria-label]="'forms.field.email' | translate" />
+              <button type="submit" class="input-group-button">{{ 'layouts.inline.subscribe' | translate }}</button>
+            </div>
+            <app-error-messages [control]="newsletterForm.controls.email" [label]="'validation.thisField' | translate" />
+          </form>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. SECTIONS -->
+  <section class="flex flex-col gap-4">
+    <div>
+      <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'layouts.sections.title' | translate }}</h3>
+      <p class="form-hint mt-0.5">{{ 'layouts.sections.hint' | translate }}</p>
+    </div>
+
+    <form [formGroup]="settingsForm" (ngSubmit)="saveSettings()" class="flex flex-col gap-6">
+      <div class="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-4 lg:gap-8">
+        <div>
+          <h4 class="text-[14px] font-bold text-(--text-color)">{{ 'layouts.sections.public' | translate }}</h4>
+          <p class="form-hint mt-1">{{ 'layouts.sections.publicHint' | translate }}</p>
+        </div>
+        <div class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4">
+          <div class="flex flex-col gap-1">
+            <label for="s-avatar" class="form-label">{{ 'layouts.field.avatar' | translate }}</label>
+            <app-dropzone inputId="s-avatar" formControlName="avatar" [multiple]="false" accept="image/*" [maxSizeMb]="2" compact />
+          </div>
+          <div class="flex flex-col gap-1">
+            <label for="s-username" class="form-label">{{ 'layouts.field.username' | translate }}</label>
+            <div class="input-group">
+              <span class="input-addon">sweetui.com/</span>
+              <input id="s-username" type="text" formControlName="username" />
+            </div>
+          </div>
+          <div class="flex flex-col gap-1">
+            <label for="s-bio" class="form-label">{{ 'forms.field.bio' | translate }}</label>
+            <textarea id="s-bio" rows="3" formControlName="bio" [placeholder]="'forms.field.bioPlaceholder' | translate" class="form-input resize-y"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <hr class="border-(--border-color-1)/40" />
+
+      <div class="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-4 lg:gap-8">
+        <div>
+          <h4 class="text-[14px] font-bold text-(--text-color)">{{ 'layouts.sections.personal' | translate }}</h4>
+          <p class="form-hint mt-1">{{ 'layouts.sections.personalHint' | translate }}</p>
+        </div>
+        <div class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="flex flex-col gap-1">
+            <label for="s-name" class="form-label">{{ 'forms.field.name' | translate }}</label>
+            <input id="s-name" type="text" formControlName="name" class="form-input" />
+          </div>
+          <div class="flex flex-col gap-1">
+            <label for="s-email" class="form-label">{{ 'forms.field.email' | translate }}</label>
+            <input id="s-email" type="email" formControlName="email" class="form-input" />
+            <app-error-messages [control]="settingsForm.controls.email" [label]="'validation.thisField' | translate" />
+          </div>
+          <div class="flex flex-col gap-1 sm:col-span-2">
+            <label for="s-phone" class="form-label">{{ 'forms.groups.phone' | translate }} <span class="text-[11px] font-normal">{{ 'common.optional' | translate }}</span></label>
+            <div class="relative">
+              <app-tabler-icon name="phone" [size]="18" class="absolute left-3 top-1/2 -translate-y-1/2 text-(--secondary-text) pointer-events-none" />
+              <input id="s-phone" type="tel" formControlName="phone" placeholder="55 1234 5678" class="form-input pl-10" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="border-(--border-color-1)/40" />
+
+      <div class="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-4 lg:gap-8">
+        <div>
+          <h4 class="text-[14px] font-bold text-(--text-color)">{{ 'layouts.sections.notifications' | translate }}</h4>
+          <p class="form-hint mt-1">{{ 'layouts.sections.notificationsHint' | translate }}</p>
+        </div>
+        <fieldset class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4">
+          <legend class="sr-only">{{ 'layouts.sections.notifications' | translate }}</legend>
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" formControlName="comments" class="checkbox checkbox-sm checkbox-primary mt-0.5" />
+            <span>
+              <span class="block text-[14px] font-medium text-(--text-color)">{{ 'layouts.notify.comments' | translate }}</span>
+              <span class="block form-hint">{{ 'layouts.notify.commentsHint' | translate }}</span>
+            </span>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" formControlName="mentions" class="checkbox checkbox-sm checkbox-primary mt-0.5" />
+            <span>
+              <span class="block text-[14px] font-medium text-(--text-color)">{{ 'layouts.notify.mentions' | translate }}</span>
+              <span class="block form-hint">{{ 'layouts.notify.mentionsHint' | translate }}</span>
+            </span>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" formControlName="orders" class="checkbox checkbox-sm checkbox-primary mt-0.5" />
+            <span>
+              <span class="block text-[14px] font-medium text-(--text-color)">{{ 'layouts.notify.orders' | translate }}</span>
+              <span class="block form-hint">{{ 'layouts.notify.ordersHint' | translate }}</span>
+            </span>
+          </label>
+        </fieldset>
+      </div>
+
+      <!-- Sticky action bar -->
+      <div class="sticky bottom-4 z-10 bg-base-100 border border-(--border-color-1)/60 rounded-xl shadow-lg px-5 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <p class="text-[13px] flex items-center gap-2" [class]="settingsForm.dirty ? 'text-(--text-color) font-medium' : 'text-(--secondary-text)'">
+          <span class="dot-live" [style.--dot-color]="settingsForm.dirty ? 'var(--color-warning)' : 'var(--color-success)'" aria-hidden="true"></span>
+          {{ (settingsForm.dirty ? 'layouts.sections.unsaved' : 'layouts.sections.saved') | translate }}
+        </p>
+        <div class="flex gap-2">
+          <button type="button" (click)="discardSettings()" [disabled]="!settingsForm.dirty || saving()" class="btn btn-sm bg-base-100 hover:bg-(--bg-2) text-(--secondary-text) border border-(--border-color-1) rounded-lg px-4 font-medium shadow-sm flex-1 sm:flex-none">{{ 'layouts.sections.discard' | translate }}</button>
+          <button type="submit" [disabled]="!settingsForm.dirty || saving()" class="btn btn-sm bg-(--primary-color) hover:brightness-110 text-white border-none rounded-lg px-4 font-semibold shadow-sm disabled:opacity-60 flex-1 sm:flex-none">
+            @if (saving()) {
+              <span class="loading loading-spinner loading-xs"></span>
+            }
+            {{ 'common.saveChanges' | translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </section>
+
+  <!-- 6. WIZARD -->
+  <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl">
+    <header class="px-5 py-4 border-b border-(--border-color-1)/40">
+      <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'layouts.wizard.title' | translate }}</h3>
+      <p class="form-hint mt-0.5">{{ 'layouts.wizard.hint' | translate }}</p>
+    </header>
+
+    @if (finished()) {
+      <div class="p-10 flex flex-col items-center text-center gap-3" role="status">
+        <span class="size-14 rounded-full bg-success/15 text-success inline-flex items-center justify-center"><app-tabler-icon name="circle-check" [size]="30" /></span>
+        <h4 class="text-[17px] font-bold text-(--text-color)">{{ 'layouts.wizard.doneTitle' | translate }}</h4>
+        <p class="form-hint max-w-sm">{{ 'layouts.wizard.doneHint' | translate }}</p>
+        <button type="button" (click)="restart()" class="btn btn-sm bg-base-100 hover:bg-(--bg-2) text-(--secondary-text) border border-(--border-color-1) rounded-lg px-4 font-medium shadow-sm mt-2">{{ 'layouts.wizard.restart' | translate }}</button>
+      </div>
+    } @else {
+      <div class="p-5 flex flex-col gap-6">
+        <!-- Stepper: full on tablet/desktop, compact on phones -->
+        <ol class="hidden sm:flex items-start">
+          @for (item of steps; track item.title; let index = $index; let last = $last) {
+            <li class="flex items-start flex-1 last:flex-none" [attr.aria-current]="index === step() ? 'step' : null">
+              <button type="button" (click)="goTo(index)" [disabled]="index >= step()" class="flex items-center gap-3 text-left disabled:cursor-default enabled:cursor-pointer group">
+                <span class="size-9 shrink-0 rounded-full inline-flex items-center justify-center text-[13px] font-bold border-2 transition-colors" [class]="index < step() ? 'bg-(--primary-color) border-(--primary-color) text-white group-hover:brightness-110' : index === step() ? 'border-(--primary-color) text-(--primary-color) bg-(--primary-color)/10' : 'border-(--border-color-1) text-(--secondary-text)'">
+                  @if (index < step()) {
+                    <app-tabler-icon name="check" [size]="16" [stroke]="3" />
+                  } @else {
+                    {{ index + 1 }}
+                  }
+                </span>
+                <span class="hidden md:block">
+                  <span class="block text-[13px] font-semibold" [class]="index <= step() ? 'text-(--text-color)' : 'text-(--secondary-text)'">{{ item.title | translate }}</span>
+                  <span class="block text-[11px] text-(--secondary-text)">{{ item.hint | translate }}</span>
+                </span>
+              </button>
+              @if (!last) {
+                <span class="flex-1 h-0.5 mx-3 mt-[17px] rounded-full transition-colors" [class]="index < step() ? 'bg-(--primary-color)' : 'bg-(--border-color-1)/60'"></span>
+              }
+            </li>
+          }
+        </ol>
+        <div class="sm:hidden flex flex-col gap-2">
+          <div class="flex items-center justify-between text-[13px]">
+            <span class="font-semibold text-(--text-color)">{{ steps[step()].title | translate }}</span>
+            <span class="text-(--secondary-text)">{{ 'layouts.wizard.stepOf' | translate: { current: step() + 1, total: steps.length } }}</span>
+          </div>
+          <div class="h-1.5 rounded-full bg-(--border-color-1)/50 overflow-hidden">
+            <div class="h-full bg-(--primary-color) transition-all" [style.width.%]="((step() + 1) / steps.length) * 100"></div>
+          </div>
+        </div>
+
+        <form [formGroup]="wizard" (ngSubmit)="step() === steps.length - 1 ? finish() : next()" class="flex flex-col gap-6">
+          @switch (step()) {
+            @case (0) {
+              <div formGroupName="account" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="flex flex-col gap-1 md:col-span-2">
+                  <label for="w-email" class="form-label">{{ 'forms.field.email' | translate }}</label>
+                  <input id="w-email" type="email" formControlName="email" autocomplete="email" placeholder="nombre@empresa.com" class="form-input" />
+                  <app-error-messages [control]="wizard.controls.account.controls.email" [label]="'validation.thisField' | translate" />
+                </div>
+                <div class="flex flex-col gap-1">
+                  <label for="w-password" class="form-label">{{ 'forms.field.password' | translate }}</label>
+                  <div class="relative">
+                    <input id="w-password" [type]="showWizardPassword() ? 'text' : 'password'" formControlName="password" placeholder="••••••••" autocomplete="new-password" class="form-input pr-10" />
+                    <button type="button" (click)="showWizardPassword.set(!showWizardPassword())" [attr.aria-label]="'auth.togglePassword' | translate" [attr.aria-pressed]="showWizardPassword()" class="absolute right-1.5 top-1/2 -translate-y-1/2 size-8 inline-flex items-center justify-center rounded-md text-(--secondary-text) hover:text-(--primary-color) transition cursor-pointer">
+                      <app-tabler-icon [name]="showWizardPassword() ? 'eye-closed' : 'eye'" [size]="18" />
+                    </button>
+                  </div>
+                  <app-error-messages [control]="wizard.controls.account.controls.password" [label]="'validation.thisField' | translate" />
+                </div>
+                <div class="flex flex-col gap-1">
+                  <label for="w-confirm" class="form-label">{{ 'auth.field.confirmPassword' | translate }}</label>
+                  <div class="relative">
+              <input id="w-confirm" [type]="showWizardConfirm() ? 'text' : 'password'" formControlName="confirm" placeholder="••••••••" autocomplete="new-password" class="form-input pr-10" />
+              <button type="button" (click)="showWizardConfirm.set(!showWizardConfirm())" [attr.aria-label]="'auth.togglePassword' | translate" [attr.aria-pressed]="showWizardConfirm()" class="absolute right-1.5 top-1/2 -translate-y-1/2 size-8 inline-flex items-center justify-center rounded-md text-(--secondary-text) hover:text-(--primary-color) transition cursor-pointer">
+                <app-tabler-icon [name]="showWizardConfirm() ? 'eye-closed' : 'eye'" [size]="18" />
+              </button>
+            </div>
+                  <app-error-messages [control]="wizard.controls.account.controls.confirm" [label]="'validation.thisField' | translate" />
+                </div>
+              </div>
+            }
+            @case (1) {
+              <div formGroupName="profile" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="flex flex-col gap-1 md:col-span-2">
+                  <label for="w-name" class="form-label">{{ 'forms.field.name' | translate }}</label>
+                  <input id="w-name" type="text" formControlName="name" autocomplete="name" class="form-input" />
+                  <app-error-messages [control]="wizard.controls.profile.controls.name" [label]="'validation.thisField' | translate" />
+                </div>
+                <div class="flex flex-col gap-1">
+                  <label for="w-role" class="form-label">{{ 'layouts.field.role' | translate }}</label>
+                  <app-select inputId="w-role" formControlName="role" [options]="roleOptions()" />
+                  <app-error-messages [control]="wizard.controls.profile.controls.role" [label]="'validation.thisField' | translate" />
+                </div>
+                <div class="flex flex-col gap-1">
+                  <label for="w-birth" class="form-label">{{ 'profile.field.birthdate' | translate }}</label>
+                  <app-datepicker inputId="w-birth" formControlName="birthdate" />
+                  <app-error-messages [control]="wizard.controls.profile.controls.birthdate" [label]="'validation.thisField' | translate" />
+                </div>
+              </div>
+            }
+            @case (2) {
+              <fieldset formGroupName="plan" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <legend class="sr-only">{{ 'layouts.wizard.plan' | translate }}</legend>
+                @for (plan of plans; track plan.value) {
+                  <label class="relative cursor-pointer">
+                    <input type="radio" formControlName="plan" [value]="plan.value" class="peer sr-only" />
+                    <span class="flex h-full flex-col gap-2 rounded-xl border-2 border-(--border-color-1)/40 p-4 transition hover:border-(--primary-color)/60 peer-checked:border-(--primary-color) peer-checked:bg-(--primary-color)/5 peer-focus-visible:ring-2 peer-focus-visible:ring-(--primary-color)/40">
+                      <span class="size-9 rounded-lg bg-(--primary-color)/10 text-(--primary-color) inline-flex items-center justify-center"><app-tabler-icon [name]="plan.icon" [size]="18" /></span>
+                      <span class="text-[14px] font-semibold text-(--text-color)">{{ plan.label | translate }}</span>
+                      <span class="text-[20px] font-bold text-(--text-color)">{{ plan.price }} <span class="text-[12px] font-normal text-(--secondary-text)">{{ 'layouts.wizard.perMonth' | translate }}</span></span>
+                    </span>
+                    <span class="absolute top-3 right-3 size-5 rounded-full bg-(--primary-color) text-white items-center justify-center hidden peer-checked:inline-flex">
+                      <app-tabler-icon name="check" [size]="12" [stroke]="3" />
+                    </span>
+                  </label>
+                }
+              </fieldset>
+            }
+            @case (3) {
+              <dl class="rounded-xl border border-(--border-color-1)/40 divide-y divide-(--border-color-1)/40">
+                @for (row of summary(); track row.label) {
+                  <div class="grid grid-cols-1 sm:grid-cols-[200px_1fr] gap-1 px-4 py-3">
+                    <dt class="form-label">{{ row.label | translate }}</dt>
+                    <dd class="text-[14px] font-medium text-(--text-color) break-words">{{ row.value || '—' }}</dd>
+                  </div>
+                }
+              </dl>
+            }
+          }
+
+          <div class="flex items-center justify-between gap-2 pt-4 border-t border-(--border-color-1)/40">
+            <button type="button" (click)="back()" [disabled]="step() === 0" class="btn btn-sm bg-base-100 hover:bg-(--bg-2) text-(--secondary-text) border border-(--border-color-1) rounded-lg px-4 font-medium shadow-sm disabled:opacity-50">
+              <app-tabler-icon name="chevron-left" [size]="16" />
+              {{ 'layouts.wizard.back' | translate }}
+            </button>
+            <button type="submit" class="btn btn-sm bg-(--primary-color) hover:brightness-110 text-white border-none rounded-lg px-4 font-semibold shadow-sm">
+              {{ (step() === steps.length - 1 ? 'layouts.wizard.finish' : 'layouts.wizard.next') | translate }}
+              @if (step() < steps.length - 1) {
+                <app-tabler-icon name="chevron-right" [size]="16" />
+              }
+            </button>
+          </div>
+        </form>
+      </div>
+    }
+  </section>
+</div>

@@ -1,22 +1,22 @@
-<aside [ngClass]="{ 'w-66': isExpanded(), 'w-[72px]': !isExpanded(), 'translate-x-0': layout.mobileOpen(), '-translate-x-full': !layout.mobileOpen() }" class="fixed lg:static top-0 left-0 z-40 flex flex-col h-full bg-base-100 border-r border-(--border-color-1)/40 transition-all duration-300 ease-in-out transform lg:translate-x-0 overscroll-none">
+<aside [class]="(isExpanded() ? 'w-66' : 'w-[72px]') + ' ' + (layout.mobileOpen() ? 'translate-x-0' : '-translate-x-full')" class="fixed lg:static top-0 left-0 z-40 flex flex-col h-full bg-base-100 border-r border-(--border-color-1)/40 transition-all duration-300 ease-in-out transform lg:translate-x-0 overscroll-none">
     <div class="relative flex items-center px-4 h-16 mb-2 border-b border-(--border-color-1)/40 shrink-0" [class.justify-between]="isExpanded()" [class.justify-center]="!isExpanded()">
-        <a routerLink="/" class="flex items-center gap-3 overflow-hidden outline-none" aria-label="Sweet UI">
+        <a routerLink="/" class="flex items-center gap-3 overflow-hidden outline-none" [attr.aria-label]="brand.name">
             <div class="w-10 h-10 shrink-0 rounded-xl bg-transparent text-white flex items-center justify-center font-heading font-extrabold text-lg shadow-sm select-none" aria-hidden="true">
-                <img [src]="theme.isDark() ? 'logo/sweet-ui-icon-beta-dark.svg' : 'logo/sweet-ui-icon-beta.svg'" alt="Sweet UI" class="w-full h-full object-contain" />
+                <img [src]="logo()" alt="" class="w-full h-full object-contain" />
             </div>
             @if (isExpanded()) {
-                <span class="font-heading font-bold text-lg text-(--text-color) whitespace-nowrap">Sweet UI</span>
+                <span class="font-heading font-bold text-lg text-(--text-color) whitespace-nowrap">{{ brand.name }}</span>
             }
         </a>
 
-        <button (click)="layout.toggleSidebar()" [ngClass]="isExpanded() ? '-right-4' : '-right-6'" class="hidden lg:flex absolute top-1/2 -translate-y-1/2 w-8 h-8 rounded-md border border-(--border-color-1)/40 bg-base-100 text-(--secondary-text) hover:text-(--primary-color) shadow-sm items-center justify-center hover:cursor-pointer transition z-50" [attr.aria-label]="(isExpanded() ? 'layout.collapseMenu' : 'layout.expandMenu') | translate">
+        <button (click)="layout.toggleSidebar()" [class]="isExpanded() ? '-right-4' : '-right-6'" class="hidden lg:flex absolute top-1/2 -translate-y-1/2 w-8 h-8 rounded-md border border-(--border-color-1)/40 bg-base-100 text-(--secondary-text) hover:text-(--primary-color) shadow-sm items-center justify-center hover:cursor-pointer transition z-50" [attr.aria-label]="(isExpanded() ? 'layout.collapseMenu' : 'layout.expandMenu') | translate">
             @if(!isExpanded()) {
                 <app-tabler-icon name="chevrons-right" [stroke]="2.5" />
             } @else {
                 <app-tabler-icon name="chevrons-left" [stroke]="2.5" />
             }
         </button>
-        <button (click)="layout.closeMobileSidebar()" class="lg:hidden p-2 rounded-xl hover:bg-(--button-bg) text-(--secondary-text) transition duration-150" [attr.aria-label]="'layout.closeMenu' | translate">
+        <button (click)="layout.closeMobileSidebar()" class="lg:hidden size-9 inline-flex items-center justify-center shrink-0 rounded-xl hover:bg-(--button-bg) text-(--secondary-text) transition duration-150" [attr.aria-label]="'layout.closeMenu' | translate">
             <app-tabler-icon name="close" [size]="20" />
         </button>
     </div>
@@ -45,7 +45,8 @@
                         [class.justify-start]="isExpanded()"
                         [class.px-3]="isExpanded()"
                         [class.justify-center]="!isExpanded()"
-                        [ngClass]="isChildActive(item) ? 'text-(--text-color)' : 'text-(--secondary-text)'"
+                        [class]="isChildActive(item) ? (isExpanded() ? 'text-(--text-color)' : 'text-(--text-color) bg-(--button-bg)') : 'text-(--secondary-text)'"
+                        [attr.aria-current]="!isExpanded() && isChildActive(item) ? 'page' : null"
                         [attr.title]="isExpanded() ? null : (item.label | translate)"
                         class="h-10 hover:text-(--text-color) hover:bg-(--button-bg) rounded-md flex items-center gap-2 hover:cursor-pointer outline-none">
 
@@ -60,33 +61,32 @@
                     </button>
 
                     @if (isExpanded()) {
-                        <div [class.max-h-0]="!isSubmenuOpen(item.path)"
-                            [class.max-h-40]="isSubmenuOpen(item.path)"
-                            [class.opacity-0]="!isSubmenuOpen(item.path)"
-                            [class.opacity-100]="isSubmenuOpen(item.path)"
-                            class="overflow-hidden ease-in-out ml-5 pl-4 border-l border-(--border-color-1)/40 space-y-0.5 transition-all duration-200">
+                        <div [class]="isSubmenuOpen(item.path) ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'"
+                            class="grid ease-in-out transition-all duration-200">
+                        <div class="min-h-0 overflow-hidden ml-5 pl-4 border-l border-(--border-color-1)/40 space-y-0.5">
                         @for (child of item.children; track child.path) {
                             <a [routerLink]="child.path"
                             (click)="layout.closeMobileSidebar()"
-                            [ngClass]="{ 'bg-(--button-bg) text-(--text-color) font-semibold': isNavActive(child) }"
-                            class="block py-2 px-2 rounded-md text-xs font-medium text-(--secondary-text) hover:bg-(--button-bg) hover:text-(--text-color) whitespace-nowrap">
+                            [class]="isNavActive(child) ? 'bg-(--button-bg) text-(--text-color) font-semibold' : 'text-(--secondary-text)'"
+                            class="block py-2 px-2 rounded-md text-xs font-medium hover:bg-(--button-bg) hover:text-(--text-color) whitespace-nowrap">
                                 {{ child.label | translate }}
                             </a>
                         }
+                        </div>
                         </div>
                     }
                 </div>
             }@else {
                 <a [routerLink]="item.path"
                     (click)="layout.closeMobileSidebar()"
-                    [ngClass]="{ 'bg-(--button-bg) text-(--text-color) font-semibold': isNavActive(item) }"
+                    [class]="isNavActive(item) ? 'bg-(--button-bg) text-(--text-color) font-semibold' : 'text-(--secondary-text)'"
                     [class.w-full]="isExpanded()"
                     [class.w-11]="!isExpanded()"
                     [class.justify-start]="isExpanded()"
                     [class.px-3]="isExpanded()"
                     [class.justify-center]="!isExpanded()"
                     [attr.title]="isExpanded() ? null : (item.label | translate)"
-                    class="h-10 text-(--secondary-text) hover:text-(--text-color) hover:bg-(--button-bg) rounded-md flex items-center gap-2 hover:cursor-pointer outline-none">
+                    class="h-10 hover:text-(--text-color) hover:bg-(--button-bg) rounded-md flex items-center gap-2 hover:cursor-pointer outline-none">
 
                     <app-tabler-icon [name]="item.icon" [size]="navIconSize(item.icon)" />
 

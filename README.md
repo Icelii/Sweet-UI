@@ -1,302 +1,243 @@
 # SweetUi
 
-Admin dashboard template built with **Angular 22**, **Tailwind CSS 4** and **daisyUI 5**.
+An admin dashboard template built with **Angular 22** (standalone components, signals, SSR and prerendering), **Tailwind CSS 4** and **daisyUI 5**. It has light and dark themes, works in Spanish and English, and is responsive from phones to wide screens.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://iceliiprojects.s3.us-west-004.backblazeb2.com/Sweet+UI+-+dark+theme.png" />
+  <img alt="Sweet UI dashboard with KPI cards, charts and the sidebar menu" src="https://iceliiprojects.s3.us-west-004.backblazeb2.com/Sweet+UI+-+light+theme.png" />
+</picture>
+
+| Light theme | Dark theme |
+| ----------- | ---------- |
+| ![Sweet UI dashboard in the light theme](https://iceliiprojects.s3.us-west-004.backblazeb2.com/Sweet+UI+-+light+theme.png) | ![Sweet UI dashboard in the dark theme](https://iceliiprojects.s3.us-west-004.backblazeb2.com/Sweet+UI+-+dark+theme.png) |
 
 ## Features
 
-- ⚡ Angular 22 with standalone components, signals, `OnPush` and SSR with prerendering
-- 🧱 Ready-made main layout: collapsible sidebar with submenus, topbar, user menu and notifications panel
-- 🎨 Light/dark/system theme, with no flash on load
-- 🌐 Spanish/English i18n with type-checked keys and translated page titles
-- 🧩 [Tabler](https://tabler.io/icons) icons as inline SVG, with type-checked names
-- 🔗 Import aliases to avoid `../` relative paths
+- **Dashboard** with KPI cards and ApexCharts charts that follow the theme and the language.
+- **Chat**: full Messenger-style page plus a floating chat button available on every page.
+- **Authentication pages**: login, register, forgot password, reset password and two-factor code.
+- **Account settings** and a **404** page.
+- **UI elements**, each with its own demo page:
+  - accordions, avatars, badges, breadcrumbs, buttons, cards, dropdowns;
+  - lists and list groups, modals and dialogs, progress bars and rings;
+  - ribbons, spinners and skeletons, tabs, timelines, tooltips and popovers.
+- **Data**: form elements, form layouts, date picker, data tables and pagination.
+- **Charts** page with sparklines, donut, radial and heatmap examples.
+- **Light / dark / system theme**, saved per browser, with no flash on load.
+- **Internationalization** (Spanish and English) with translated page titles.
+- **Global search** (`Ctrl K`), notifications panel and a collapsible sidebar.
+- **Accessibility**: keyboard navigation in menus and tabs, ARIA states, and support for reduced motion.
+- **Ready to maintain**: ESLint with template accessibility rules, Vitest unit tests, and one file per component for styles and per area for translations.
 
-## Table of contents
+## Getting started
 
-- [Requirements](#requirements)
-- [Quick start](#quick-start)
-- [Project structure](#project-structure)
-- [Import aliases](#import-aliases)
-- [Layout](#layout)
-- [Navigation](#navigation)
-- [Adding a page](#adding-a-page)
-- [Theming](#theming)
-- [Internationalization](#internationalization)
-- [Icons](#icons)
-- [Shared pipes](#shared-pipes)
-
-## Requirements
-
-- Node.js (an LTS version supported by Angular 22)
-- npm (the project declares `npm@12.0.2` in `packageManager`)
-
-The Angular CLI is installed locally as a dev dependency, so the npm scripts below work without a global install. If you prefer to type `ng` directly, install it globally with `npm install -g @angular/cli`.
-
-## Quick start
+Requirements: Node.js 22.22+ or 24.15+ (what Angular 22 supports) and npm.
 
 ```bash
 npm install
-npm start      # dev server at http://localhost:4200
-```
-
-### Available scripts
-
-| Script                       | Runs                                            | Description                                  |
-| ---------------------------- | ----------------------------------------------- | -------------------------------------------- |
-| `npm start`                  | `ng serve`                                      | Development server at `http://localhost:4200` |
-| `npm run build`              | `ng build`                                      | Production build (SSR + prerender) in `dist/sweetUi` |
-| `npm run watch`              | `ng build --watch --configuration development`  | Development build in watch mode              |
-| `npm run serve:ssr:sweetUi`  | `node dist/sweetUi/server/server.mjs`           | Serve the SSR build (run `npm run build` first) |
-
-All routes are prerendered (`RenderMode.Prerender` in `src/app/app.routes.server.ts`).
-
-### Formatting
-
-Prettier is configured in `.prettierrc` (`printWidth: 100`, single quotes, Angular parser for `.html`):
-
-```bash
+npm start                  # dev server at http://localhost:4200
+npm run build              # production build with SSR and prerendering
+npm run serve:ssr:sweetUi  # serve the production build
+npm test                   # unit tests with Vitest (watch mode)
+npm run test:ci            # unit tests once, for CI
+npm run lint               # ESLint for TypeScript and templates (includes accessibility rules)
 npx prettier --write "src/**/*.{ts,html,css}"
 ```
 
-> [!NOTE]
-> The template does not include unit tests, and `ng generate` is configured not to create `.spec.ts` files (see `schematics` in `angular.json`).
+Before publishing a change, run `npm run lint`, `npm run test:ci` and `npm run build`. The build warns when the first download goes over 750 kB.
+
+## Make it yours
+
+The template ships with demo pages and sample data so you can see every component working. These steps turn it into your own dashboard.
+
+### 1. Name and logo
+
+- Edit `src/app/core/config/brand.ts`: the name and logo files used in the sidebar, the login pages, the 404 page and the browser tab title.
+- Put your logo files (light and dark versions) in `public/`.
+- Update the static texts and icons in `src/index.html`: `<title>`, description, `og:*` tags and favicons.
+
+### 2. Colors and fonts
+
+- **Colors:** in `src/styles.css`, change `--color-primary` and the other colors inside the two `@plugin 'daisyui/theme'` blocks (light and dark). Everything else follows them.
+- **Fonts:** change `--font-sans` / `--font-heading` in the `@theme` block and the Google Fonts link in `index.html`.
+
+### 3. Remove the demo pages you don't need
+
+Each demo page lives in its own folder under `src/app/features/ui/`. To remove one, for example tabs:
+
+1. Delete `src/app/features/ui/tabs-demo/`.
+2. Remove its route in `app.routes.ts` (`ui/tabs`).
+3. Remove its link in `core/navigation/navigation.ts`.
+4. Optionally delete its texts in `core/i18n/locales/es/demos.ts` and `en/demos.ts` (keys starting with `ui.tabs.`), plus `nav.tabs` and `title.tabs` in `app.ts`.
+
+To remove **all** the demos at once, delete `features/ui/`, their routes and links, and empty both `demos.ts` files.
+
+**Remove a component's styles too:** if you also delete a shared component, delete its file in `src/styles/` and its `@import` line in `styles.css`.
+
+**Keep the shared component** (`src/app/shared/components/tabs/`) if you use it in your own pages. The build tells you if something still points to a deleted file.
+
+### 4. Replace the sample data
+
+These files hold sample data. Each one is marked with a comment that starts with `Sample`:
+
+| What                     | File                                                        |
+| ------------------------ | ----------------------------------------------------------- |
+| Signed-in user           | `layouts/main-layout/components/user-menu/user-menu.ts`     |
+| Notifications            | `layouts/main-layout/layout-state.ts`                       |
+| Dashboard KPIs & charts  | `features/dashboard/dashboard.ts`                           |
+| Chat conversations       | `features/chat/chat-store.ts`                               |
+| Account settings form    | `features/profile/pages/profile/profile.ts`                 |
+
+### 5. Connect your backend
+
+The template is UI only: it has no HTTP calls, route guards or environment files yet.
+
+1. Add `provideHttpClient()` to `app.config.ts` and create your services (for example in `src/app/core/services/`).
+2. **Auth pages:** fill in `onSubmit()` in each page under `features/auth/pages/`. The places to call your API are marked with comments. Login currently goes straight to the dashboard as a demo.
+3. **Route guards:** protect the main layout in `app.routes.ts` with a `canActivate` guard once you have a session.
 
 ## Project structure
 
-```text
-src/
-├── app/
-│   ├── core/
-│   │   ├── i18n/          # Translations dictionary, pipe and I18n service
-│   │   ├── interfaces/    # Shared interfaces
-│   │   ├── navigation/    # Navigation configuration
-│   │   └── services/      # Global services (Theme, etc.)
-│   ├── shared/            # Reusable components (e.g. tabler-icon)
-│   ├── layouts/           # Application layouts
-│   └── features/          # Feature modules
-├── index.html             # Includes the script that applies the theme before Angular loads
-└── styles.css             # daisyUI themes and custom variables
+```
+src/app/
+├── core/          # App-wide singletons
+│   ├── config/brand.ts       # App name and logo
+│   ├── i18n/                 # I18n service, page titles
+│   │   └── locales/es|en/    # Texts: app, auth, components, dashboard, chat, demos
+│   ├── navigation/           # Sidebar menu (edit navigation.ts)
+│   └── services/theme.ts     # Light / dark / system theme
+├── shared/        # Reusable, stateless pieces
+│   ├── components/           # app-avatar, app-modal, app-dropdown, app-tabs, app-chart, …
+│   ├── directives/ pipes/ validators/ utils/
+├── layouts/       # Main layout (sidebar, topbar, floating chat), auth and settings layouts
+└── features/      # Pages, lazy loaded from app.routes.ts
+    ├── dashboard/  chat/  auth/  profile/  not-found/
+    └── ui/                   # One demo page per component
+
+src/styles.css     # Tailwind, daisyUI themes, colors and fonts
+src/styles/        # One CSS file per component (buttons-badges.css, cards.css, …)
 ```
 
-## Import aliases
+Tests live next to the code they check (`*.spec.ts`).
 
-Defined in `tsconfig.json`. Use them instead of relative `../` paths:
+Import aliases (`tsconfig.json`): `@core/*`, `@shared/components/*`, `@shared/pipes/*`, `@layouts/*`, `@features/*` and more.
 
-| Alias                   | Path                           |
-| ----------------------- | ------------------------------ |
-| `@core/i18n/*`          | `src/app/core/i18n/*`          |
-| `@core/interfaces/*`    | `src/app/core/interfaces/*`    |
-| `@core/navigation/*`    | `src/app/core/navigation/*`    |
-| `@core/services/*`      | `src/app/core/services/*`      |
-| `@shared/*`             | `src/app/shared/*`             |
-| `@layouts/*`            | `src/app/layouts/*`            |
-| `@layouts/interfaces/*` | `src/app/layouts/interfaces/*` |
-| `@features/*`           | `src/app/features/*`           |
+## Theming
 
-```ts
-import { Theme } from '@core/services/theme';
-import { TranslatePipe } from '@shared/pipes/translate-pipe';
+Colors are defined in `src/styles.css` as two daisyUI themes (`light` and `dark`) plus a few CSS variables. Use these tokens instead of fixed colors so components work in both modes:
+
+| Use                      | Token                                                          |
+| ------------------------ | -------------------------------------------------------------- |
+| App background           | `bg-base-200`                                                  |
+| Surfaces (cards, panels) | `bg-base-100`                                                  |
+| Text / secondary text    | `text-(--text-color)` / `text-(--secondary-text)`              |
+| Borders                  | `border-(--border-color-1)/40`                                 |
+| Brand color              | `--primary-color` (`bg-(--primary-color)`, …)                  |
+| States                   | `primary`, `secondary`, `success`, `warning`, `error`, `info`  |
+
+Shared component styles (`ui-btn`, `ui-badge`, `ui-card`, `ui-timeline`, …) live in `src/styles/`, one file per component, inside `@layer components`.
+
+The `Theme` service (`@core/services/theme`) exposes:
+
+- `mode()`: `'light' | 'dark' | 'system'` (default `system`)
+- `current()` / `isDark()`: the theme on screen
+- `toggle()` and `setMode(mode)`
+
+The choice is stored in `localStorage` under `theme`. An inline script in `index.html` applies it before Angular loads, which avoids a flash. If you rename the key, change it in both places.
+
+## Translations
+
+Texts live in `src/app/core/i18n/locales/`, one folder per language and one file per area:
+
+| File            | Texts                                                   |
+| --------------- | ------------------------------------------------------- |
+| `app.ts`        | Layout, menu, page titles, profile, 404                 |
+| `auth.ts`       | Login, register, password and two-factor pages          |
+| `components.ts` | Shared components: validation, date picker, select, … |
+| `dashboard.ts`  | Dashboard                                               |
+| `chat.ts`       | Chat                                                    |
+| `demos.ts`      | Demo pages (safe to delete with them)                   |
+
+- **Keys come from Spanish:** the Spanish files define the valid keys. A missing or extra key in English is a type error that points to the exact file.
+- **One language per download:** only the language in use is downloaded. The other one loads when the user switches.
+- **Startup:** the app waits for the texts before its first render, so no keys are ever shown.
+
+```html
+<h2>{{ 'nav.dashboard' | translate }}</h2>
 ```
 
-## Layout
-
-`MainLayout` (`@layouts/main-layout/main-layout`) is the shell for every page under the `''` route. It renders:
-
-| Component             | Description                                                                 |
-| --------------------- | --------------------------------------------------------------------------- |
-| `app-sidebar`         | Logo, collapse button and menu built from `NAVIGATION`, with submenus       |
-| `app-topbar`          | Theme toggle, notifications button and user menu (`mobile` / `desktop` variants) |
-| `app-user-menu`       | Avatar (falls back to initials), language selector and log out              |
-| `app-notifications-panel` | Side panel with unread count and "mark all as read"                     |
-| `app-theme-toggle`    | Light/dark toggle button                                                    |
-
-The UI state is shared through `LayoutState`, which is provided by `MainLayout` (not `root`):
-
-| Member                                     | Description                          |
-| ------------------------------------------ | ------------------------------------ |
-| `isExpanded()` / `toggleSidebar()` / `expandSidebar()` | Desktop sidebar expanded/collapsed |
-| `mobileOpen()` / `toggleMobileSidebar()` / `closeMobileSidebar()` | Mobile drawer        |
-| `notificationsOpen()` / `toggleNotifications()` / `closeNotifications()` | Notifications panel |
-
-> [!NOTE]
-> The user (`UserMenu`) and the notifications (`NotificationsPanel`) are sample data defined as signals inside each component. Replace them with your own data source.
-
-## Navigation
-
-The sidebar menu is configured in `src/app/core/navigation/navigation.ts` as a list of sections:
-
-```ts
-export const NAVIGATION: NavSection[] = [
-  {
-    items: [{ path: '/home', label: 'nav.dashboard', icon: 'dashboard' }],
-  },
-  {
-    title: 'nav.section.features',
-    items: [
-      {
-        path: '/pages',
-        label: 'nav.pages',
-        icon: 'pages',
-        children: [{ path: '/not-found', label: 'nav.404' }],
-      },
-    ],
-  },
-];
-```
-
-Types (`@core/interfaces/navigation`):
-
-- `NavSection`: optional `title` (translation key) and `items`.
-- `NavItem`: `label` (translation key), `path`, `icon` (`TablerIconName`) and optional `children`.
-- `NavLink`: `label`, `path` and optional `match`, extra paths that also mark the link as active.
-
-Since `label`, `title` and `icon` are typed, a missing translation key or icon is a compile error.
+In TypeScript, use `inject(I18n).t('key')`. The language is stored in `localStorage` under `lang`.
 
 ## Adding a page
 
 1. Create the component in `src/app/features/<name>/`.
-2. Add a lazy route as a child of `MainLayout` in `src/app/app.routes.ts`, using a translation key as the `title`:
+2. Register it as a child of `MainLayout` in `app.routes.ts` with `loadComponent` and a `title` key. The tab shows "<title> · <app name>".
+3. Add its link in `core/navigation/navigation.ts`.
+4. Add its texts to the same file in `locales/es/` and `locales/en/` (or a new file listed in each `index.ts`).
 
-   ```ts
-   {
-     path: '',
-     title: 'title.home',
-     component: MainLayout,
-     children: [
-       {
-         path: 'home',
-         title: 'title.home',
-         loadComponent: () => import('@features/home/home').then((m) => m.Home),
-       },
-     ],
-   },
-   ```
+## Charts
 
-3. Add the translation keys (`title.*`, `nav.*`, page texts) to `es` and `en` in `translations.ts`.
-4. Add the entry to `NAVIGATION` (and the icon to `ICONS` if it doesn't exist yet).
-
-> [!NOTE]
-> The `MainLayout` route ships with no children: the menu already points to `/home`, but that page is yours to create. Unknown paths fall through to the `**` route (`NotFound`).
-
-## Theming
-
-Colors are defined as daisyUI themes (`light` and `dark`) in `src/styles.css`, with daisyUI's built-in themes disabled (`themes: false`). For a component to work in both modes, **always use tokens and never hard-coded colors**.
-
-### Recommended tokens
-
-| Use                   | Class                                                                   |
-| --------------------- | ----------------------------------------------------------------------- |
-| App background        | `bg-base-200`                                                           |
-| Surfaces (cards)      | `bg-base-100`                                                           |
-| Borders               | `border-base-300` or `border-(--border-color-1)`                        |
-| Text / secondary text | `text-(--text-color)` / `text-(--secondary-text)`                       |
-| Hover backgrounds     | `hover:bg-(--button-bg)`                                                |
-| Brand and states      | `primary`, `secondary`, `accent`, `success`, `warning`, `error`, `info` |
-
-### Custom variables and fonts
-
-In addition to the daisyUI colors, `styles.css` defines per theme:
-
-- **Variables:** `--primary-color`, `--text-color`, `--secondary-text`, `--border-color-1`, `--button-bg`, `--bg-2`, `--danger`
-- **Fonts:** `font-sans` (Inter) and `font-heading` (Plus Jakarta Sans, applied to `h1`–`h4`). Both are loaded from Google Fonts in `index.html`.
-
-Tailwind's `dark:` variant also follows the active theme.
-
-### `Theme` service
-
-Available at `@core/services/theme`:
-
-| Member                   | Description                                            |
-| ------------------------ | ------------------------------------------------------ |
-| `mode()`                 | `'light' \| 'dark' \| 'system'` (defaults to `system`) |
-| `current()` / `isDark()` | The theme currently being displayed                    |
-| `toggle()`               | Switches between light and dark                        |
-| `setMode(mode)`          | Sets the mode explicitly                               |
-
-The service sets `data-theme` and `color-scheme` on `<html>` and reacts to system changes while in `system` mode. The preference is stored in `localStorage` under the key `theme` (`THEME_STORAGE_KEY`); choosing `system` removes the key. An inline script in `index.html` applies the theme before Angular loads to prevent flashing.
-
-> [!IMPORTANT]
-> If you change the `theme` key, update it in both `THEME_STORAGE_KEY` and the `index.html` script.
-
-## Internationalization
-
-Texts live in `src/app/core/i18n/translations.ts`:
-
-- `es` is the base dictionary; its keys define the `TranslationKey` type.
-- `en` is typed as `Dictionary`, so it must have exactly the same keys; TypeScript enforces this at compile time.
-- Parameters use `{name}` placeholders, e.g. `'{count} unread'`.
-
-The initial language is the one stored in `localStorage` (key `lang`). If there is none, English is used when the browser language starts with `en`, and Spanish otherwise. The active language is also set as `<html lang>`.
-
-### In templates
-
-Import `TranslatePipe` from `@shared/pipes/translate-pipe`:
-
-```html
-{{ 'notFound.title' | translate }}
-{{ 'layout.unread' | translate: { count: 3 } }}
-```
-
-### In code
-
-Inject `I18n` from `@core/i18n/i18n`:
+Charts use [ApexCharts](https://apexcharts.com/) through the `app-chart` component:
 
 ```ts
-i18n.t('notFound.title');          // t(key, params?)
-i18n.t('layout.unread', { count: 3 });
-i18n.language();                   // current language (signal)
-i18n.languages;                    // ['es', 'en']
-i18n.setLanguage('en');            // change language
-i18n.toggle();                     // switch between es and en
+protected readonly salesChart = computed<ApexOptions>(() =>
+  withChartDefaults(this.theme.isDark(), {
+    chart: { type: 'bar', height: 300 },
+    series: [{ name: 'Sales', data: [12, 18, 9] }],
+  }),
+);
 ```
 
-### Route titles
+```html
+<app-chart [options]="salesChart()" role="img" aria-label="Sales by month" />
+```
 
-Each route's `title` is a translation key, resolved by `TranslatedTitleStrategy`. The document title updates automatically when the language changes, and falls back to `SweetUi` when a route has no title.
+- **Browser-only loading:** the library loads only in the browser, so SSR keeps working.
+- **Shared style:** `withChartDefaults()` adds the shared font, grid, legend and series colors (`chart-theme.ts`).
+- **Automatic updates:** the chart redraws when the options change.
 
-### Adding a new text
+## Chat
 
-1. Add the key to the `es` dictionary.
-2. Add the same key to `en` (the compiler fails if it's missing).
-3. Use it with the `translate` pipe or `t()`.
+- **Sample data:** the chat page (`/chat`) and the floating button share `ChatStore` (`features/chat/chat-store.ts`). It holds sample conversations and a fake reply for the demo.
+- **Connecting a backend:** replace `send()` with your API or WebSocket, and the UI keeps working.
+- **Opening a conversation directly:** use `/chat?c=<id>`.
 
-### Adding a language
+## Pagination
 
-1. Add the code to the `Language` type and a new `Dictionary` to `TRANSLATIONS` in `translations.ts`.
-2. Add it to `LANGUAGES` in `i18n.ts` (and adjust `toggle()`, which only switches between `es` and `en`).
-3. Add its name to `languageNames` in `UserMenu` and its flag to `FlagIcon`.
+There are two options:
+
+- **`app-pagination`** (`shared/components/pagination`): small and built into the template. Best when all the rows are already loaded, like the Tables page.
+  ```html
+  <app-pagination [(page)]="page" [total]="rows().length" [pageSize]="10" />
+  ```
+- **[@icelii/ngx-api-paginator](https://www.npmjs.com/package/@icelii/ngx-api-paginator)**: six styles and an event for each page change. Best when your API returns one page at a time, like the Pagination page.
+
+`styles.css` maps the library's colors to the template theme (light and dark) and scans its classes with `@source`.
 
 ## Icons
 
-The `app-tabler-icon` component renders [Tabler Icons](https://tabler.io/icons) as inline SVG. It uses `currentColor`, so it inherits the text color:
+Icons come from [Tabler Icons](https://tabler.io/icons) and are stored as SVG paths in `shared/components/tabler-icon/tabler-icon.ts`, so only the icons you use are shipped. To add one, copy its paths from tabler.io into the `ICONS` list. The instructions are at the top of that file.
 
 ```html
-<app-tabler-icon name="home" [size]="18" [stroke]="2" />
+<app-tabler-icon name="bell" [size]="20" />
 ```
 
-| Input    | Default | Description                  |
-| -------- | ------- | ---------------------------- |
-| `name`   | —       | Icon name (`TablerIconName`) |
-| `size`   | `24`    | Width and height in px       |
-| `stroke` | `2`     | Stroke width                 |
+## Credits
 
-### Adding an icon
+- [Angular](https://angular.dev/), MIT License
+- [Tailwind CSS](https://tailwindcss.com/), MIT License
+- [daisyUI](https://daisyui.com/), MIT License
+- [ApexCharts](https://apexcharts.com/), MIT License
+- [Tabler Icons](https://tabler.io/icons), MIT License; paths are embedded in `tabler-icon.ts`
+- [@icelii/ngx-api-paginator](https://github.com/Icelii/ngx-api-paginator) by Iceli, MIT License
+- [Inter](https://rsms.me/inter/) and [Plus Jakarta Sans](https://fonts.google.com/specimen/Plus+Jakarta+Sans), SIL Open Font License, served by Google Fonts
 
-1. Find the icon at [tabler.io/icons](https://tabler.io/icons) and copy the `d` attribute of each `<path>`.
-2. Add them to the `ICONS` object in `src/app/shared/components/tabler-icon/tabler-icon.ts`. Use `{ d: '...', fill: true }` for a path that must be filled instead of stroked.
-3. The name is typed automatically (`TablerIconName`).
+Demo photos belong to their authors and are only for preview. Replace them with your own images before using the template in production.
 
-### Flags
+## Author
 
-`app-flag-icon` renders the flag for a language (`es` → Mexico, `en` → United States), used in the language selector:
+Made by **Iceli** · [iceli.dev](https://iceli.dev/) · [GitHub](https://github.com/Icelii)
 
-```html
-<app-flag-icon language="es" [size]="16" />
-```
+## License
 
-## Shared pipes
-
-| Pipe        | Import                          | Description                                                         |
-| ----------- | ------------------------------- | ------------------------------------------------------------------- |
-| `translate` | `@shared/pipes/translate-pipe`  | Translates a key, with optional params                              |
-| `initials`  | `@shared/pipes/initials-pipe`   | Two-letter initials from a name (`'Ana López'` → `AL`), `??` if empty |
+Released under the [MIT License](LICENSE). Third-party libraries, icons and fonts keep their own licenses (see [Credits](#credits)).

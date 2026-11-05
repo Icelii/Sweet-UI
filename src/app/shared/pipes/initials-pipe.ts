@@ -1,27 +1,23 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+/**
+ * Two-letter initials for avatars: first name + first surname ("Ana María López" → "AL"),
+ * or the first two letters of a single word. Empty values give "??".
+ *
+ * {{ user.name | initials }}
+ */
 @Pipe({
   name: 'initials',
 })
 export class InitialsPipe implements PipeTransform {
   transform(value: string | null | undefined): string {
-    if (!value || typeof value !== 'string') return '??';
+    const parts = typeof value === 'string' ? value.trim().split(/\s+/).filter(Boolean) : [];
+    if (!parts.length) return '??';
 
-    const parts = value.trim().split(/\s+/);
-    if (parts.length === 0) return '??';
+    const [first] = parts;
+    // With three or more words the third one is usually the first surname.
+    const second = parts.length === 1 ? (first[1] ?? '') : parts.length >= 3 ? parts[2][0] : parts[1][0];
 
-    const firstInitial = parts[0][0];
-
-    let secondInitial = '';
-
-    if (parts.length === 1) {
-      secondInitial = parts[0][1] || '';
-    } else if (parts.length >= 3) {
-      secondInitial = parts[2][0];
-    } else {
-      secondInitial = parts[1][0];
-    }
-
-    return (firstInitial + secondInitial).toUpperCase();
+    return (first[0] + second).toUpperCase();
   }
 }

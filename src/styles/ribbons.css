@@ -1,0 +1,119 @@
+/*
+ * Ribbons for cards. The parent needs `position: relative`.
+ *   corner:   <div class="ui-ribbon ui-ribbon-corner ui-ribbon-success"><span>Nuevo</span></div>
+ *   side:     <span class="ui-ribbon ui-ribbon-side">-20%</span>
+ *   bookmark: <span class="ui-ribbon ui-ribbon-bookmark">★</span>
+ *   banner:   <div class="ui-ribbon ui-ribbon-banner">Más popular</div>
+ * Add ui-ribbon-start to place corner, side and bookmark ribbons on the left.
+ */
+@layer components {
+  .ui-ribbon {
+    z-index: 1;
+    color: var(--c-on);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  /* Diagonal band clipped to the corner of the card. */
+  .ui-ribbon-corner {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 6.5rem;
+    height: 6.5rem;
+    overflow: hidden;
+    pointer-events: none;
+    border-start-end-radius: inherit;
+  }
+  .ui-ribbon-corner > * {
+    position: absolute;
+    top: 1.45rem;
+    right: -2.35rem;
+    width: 9.5rem;
+    padding-block: 0.4rem;
+    background: var(--c);
+    text-align: center;
+    transform: rotate(45deg);
+    box-shadow: 0 2px 6px rgb(0 0 0 / 0.15);
+  }
+  .ui-ribbon-corner.ui-ribbon-start {
+    right: auto;
+    left: 0;
+    border-start-end-radius: 0;
+    border-start-start-radius: inherit;
+  }
+  .ui-ribbon-corner.ui-ribbon-start > * {
+    right: auto;
+    left: -2.35rem;
+    transform: rotate(-45deg);
+  }
+
+  /* Flag that sticks out of the side with a folded tail. */
+  .ui-ribbon-side {
+    position: absolute;
+    top: 1rem;
+    right: -0.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 0.375rem 0.375rem 0 0.375rem;
+    background: var(--c);
+    box-shadow: 0 2px 6px rgb(0 0 0 / 0.12);
+  }
+  .ui-ribbon-side::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    right: 0;
+    border-top: 0.5rem solid color-mix(in oklab, var(--c), black 40%);
+    border-right: 0.5rem solid transparent;
+  }
+  .ui-ribbon-side.ui-ribbon-start {
+    right: auto;
+    left: -0.5rem;
+    border-radius: 0.375rem 0.375rem 0.375rem 0;
+  }
+  .ui-ribbon-side.ui-ribbon-start::after {
+    right: auto;
+    left: 0;
+    border-right: 0;
+    border-left: 0.5rem solid transparent;
+  }
+
+  /* Vertical ribbon hanging from the top edge. */
+  .ui-ribbon-bookmark {
+    position: absolute;
+    top: 0;
+    right: 1rem;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    min-width: 2rem;
+    padding: 0.5rem 0.4rem 0.9rem;
+    background: var(--c);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% calc(100% - 0.45rem), 0 100%);
+  }
+  .ui-ribbon-bookmark.ui-ribbon-start {
+    right: auto;
+    left: 1rem;
+  }
+
+  /* Full-width strip on top of the card, e.g. "Most popular". */
+  .ui-ribbon-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    padding: 0.5rem 1rem;
+    background: var(--c);
+    border-start-start-radius: inherit;
+    border-start-end-radius: inherit;
+  }
+}

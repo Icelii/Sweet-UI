@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.1.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Capa_1" xmlns:c2pa="http://c2pa.org/manifest"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1024 1024"
+	 style="enable-background:new 0 0 1024 1024;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:url(#SVGID_1_);}
+	.st1{fill:url(#SVGID_2_);}
+	.st2{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_3_);}
+	.st3{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_4_);}
+	.st4{display:none;fill:url(#SVGID_5_);}
+	.st5{display:none;fill:url(#SVGID_6_);}
+	.st6{display:none;fill:url(#SVGID_7_);}
+	.st7{display:none;fill:url(#SVGID_8_);}
+	.st8{display:none;fill:url(#SVGID_9_);}
+	.st9{display:none;fill:url(#SVGID_10_);}
+	.st10{display:none;fill:url(#SVGID_11_);}
+	.st11{display:none;fill:url(#SVGID_12_);}
+	.st12{display:none;fill:url(#SVGID_13_);}
+	.st13{display:none;fill:url(#SVGID_14_);}
+	.st14{display:none;fill:url(#SVGID_15_);}
+	.st15{display:none;fill:url(#SVGID_16_);}
+	.st16{display:none;opacity:0.65;fill:none;stroke:#FFFFFF;stroke-width:18;stroke-linecap:round;enable-background:new    ;}
+	.st17{fill:none;stroke:#5FACD3;stroke-width:17;stroke-linecap:round;}
+	.st18{fill:none;stroke:#A78BFA;stroke-width:17;stroke-linecap:round;}
+	.st19{fill:none;stroke:#68D391;stroke-width:17;stroke-linecap:round;}
+	.st20{fill:none;stroke:#FFFFFF;stroke-width:17;stroke-linecap:round;}
+	.st21{fill:none;stroke:#F6AD55;stroke-width:17;stroke-linecap:round;}
+	.st22{fill:#2D3748;}
+	.st23{fill:none;stroke:#2D3748;stroke-width:12;stroke-linecap:round;}
+	.st24{opacity:0.55;fill:#FFFFFF;enable-background:new    ;}
+	.st25{opacity:0.9;fill:#FFFFFF;enable-background:new    ;}
+	.st26{opacity:0.85;fill:#FFFFFF;enable-background:new    ;}
+	.st27{opacity:0.7;fill:#FFFFFF;enable-background:new    ;}
+</style>
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="206.2988" y1="908.1133" x2="206.2988" y2="907.1133" gradientTransform="matrix(1024 0 0 -1024 -210738 929908)">
+	<stop  offset="0" style="stop-color:#2D3748"/>
+	<stop  offset="1" style="stop-color:#1A1030"/>
+</linearGradient>
+<path class="st0" d="M232,0h560c128.1,0,232,103.9,232,232v560c0,128.1-103.9,232-232,232H232C103.9,1024,0,920.1,0,792V232
+	C0,103.9,103.9,0,232,0z"/>
+<radialGradient id="SVGID_2_" cx="206.2809" cy="907.6234" r="0.5" gradientTransform="matrix(940 0 0 -940 -193392 853678)" gradientUnits="userSpaceOnUse">
+	<stop  offset="0" style="stop-color:#A78BFA;stop-opacity:0.65"/>
+	<stop  offset="0.6" style="stop-color:#5FACD3;stop-opacity:0.18"/>
+	<stop  offset="1" style="stop-color:#5FACD3;stop-opacity:0"/>
+</radialGradient>
+<circle class="st1" cx="512" cy="512" r="470"/>
+<g>
+	<g>
+		
+			<linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="411.3452" y1="-0.369" x2="412.3452" y2="0.631" gradientTransform="matrix(630 0 0 630 -258951 429)">
+			<stop  offset="0" style="stop-color:#FAD9A6"/>
+			<stop  offset="1" style="stop-color:#F6AD55"/>
+		</linearGradient>
+		<path class="st2" d="M196.5,511.5c0,174,141,315,315,315s315-141,315-315s-141-315-315-315S196.5,337.5,196.5,511.5z M416.5,511.5
+			c0,52.5,42.5,95,95,95s95-42.5,95-95s-42.5-95-95-95S416.5,459,416.5,511.5L416.5,511.5z"/>
+		<g>
+			
+				<linearGradient id="SVGID_4_" gradientUnits="userSpaceOnUse" x1="411.175" y1="-0.465" x2="412.175" y2="0.535" gradientTransform="matrix(500 0 0 500 -205326 494)">
+				<stop  offset="0" style="stop-color:#FBC3D6"/>
+				<stop  offset="1" style="stop-color:#F6A5C0"/>
+			</linearGradient>
+			<path class="st3" d="M779.3,511.5l-0.2,2.3l-0.3,2.4l-0.4,2.3l-0.4,2.3l-0.5,2.3l-0.5,2.3l-0.6,2.3l-0.6,2.3l-0.7,2.2l-0.8,2.3
+				l-0.7,2.2l-0.9,2.3l-0.9,2.2l-0.9,2.1l-1,2.2l-1,2.2l-1.1,2.1l-1.1,2.1l-1.2,2.1l-1.2,2.1l-1.2,2l-1.3,2.1l-1.3,2l-1.4,1.9
+				l-1.3,2l-1.4,1.9l-1.4,2l-1.4,1.9l-1.5,1.8l-1.4,1.9l-1.5,1.8l-1.5,1.8l-1.4,1.9l-1.4,1.8l-1.4,1.8l-1.2,1.8l-1.2,1.8l-1,1.9
+				l-0.9,1.9l-0.7,2l-0.4,2.1l-0.4,2.1l-0.2,2.2l-0.1,2.3l-0.1,2.2v2.3v2.4l-0.1,2.3v2.4l-0.1,2.3l-0.1,2.4l-0.1,2.4l-0.1,2.3
+				l-0.2,2.4l-0.2,2.4l-0.2,2.4l-0.3,2.4l-0.3,2.3l-0.4,2.4l-0.4,2.3l-0.4,2.4l-0.5,2.3l-0.5,2.4l-0.6,2.3l-0.6,2.3l-0.7,2.3
+				l-0.7,2.2l-0.8,2.3l-0.8,2.2l-0.9,2.2l-0.9,2.2l-1,2.1l-1,2.2l-1.1,2.1l-1.1,2L722,676l-1.2,2l-1.2,2l-1.3,1.9l-1.4,1.9l-1.4,1.9
+				l-1.5,1.9l-1.4,1.8l-1.6,1.7l-1.6,1.8l-1.6,1.7l-1.7,1.6l-1.7,1.6l-1.7,1.6l-1.8,1.5l-1.8,1.5l-1.9,1.4l-1.9,1.4l-1.9,1.3l-2,1.3
+				l-2,1.3l-2,1.2l-2.1,1.1l-2.1,1.2l-2.1,1l-2.1,1l-2.2,1l-2.2,0.9l-2.2,0.9l-2.2,0.9l-2.3,0.7l-2.3,0.8l-2.3,0.7l-2.3,0.7
+				l-2.3,0.6l-2.3,0.5l-2.3,0.6l-2.4,0.5l-2.3,0.4l-2.4,0.5l-2.3,0.3l-2.4,0.4l-2.3,0.3l-2.4,0.3l-2.3,0.3l-2.3,0.3l-2.4,0.2
+				l-2.2,0.3l-2.3,0.3l-2.3,0.3l-2.1,0.4l-2.2,0.5l-2,0.6l-2,0.7l-1.9,1l-1.8,1.1l-1.7,1.3l-1.7,1.4l-1.7,1.5l-1.7,1.5l-1.6,1.6
+				l-1.7,1.6l-1.7,1.7l-1.6,1.6l-1.8,1.6l-1.7,1.7l-1.7,1.6l-1.8,1.6l-1.8,1.5l-1.8,1.6l-1.9,1.5l-1.9,1.5l-1.9,1.4l-1.9,1.4l-2,1.4
+				l-1.9,1.4l-2,1.3l-2.1,1.2l-2,1.3l-2.1,1.1l-2.1,1.2l-2.1,1.1l-2.1,1l-2.2,1l-2.1,0.9l-2.2,0.9l-2.2,0.9l-2.3,0.7l-2.2,0.8
+				l-2.3,0.7l-2.2,0.6l-2.3,0.5l-2.3,0.6l-2.3,0.4l-2.3,0.4l-2.4,0.3l-2.3,0.3l-2.3,0.2l-2.3,0.2l-2.4,0.1l-2.3,0.1l-2.4-0.1h-2.3
+				l-2.4-0.2l-2.3-0.2l-2.3-0.2l-2.4-0.3l-2.3-0.4l-2.3-0.4l-2.3-0.5l-2.3-0.5l-2.3-0.6l-2.3-0.6l-2.2-0.7l-2.3-0.8l-2.2-0.7
+				l-2.3-0.9l-2.2-0.9l-2.1-0.9l-2.2-1l-2.2-1l-2.1-1.1l-2.1-1.1l-2.1-1.2l-2.1-1.2l-2-1.2l-2.1-1.3l-2-1.3l-1.9-1.4l-2-1.3
+				l-1.9-1.4l-2-1.4l-1.9-1.4l-1.8-1.5l-1.9-1.4l-1.8-1.5l-1.8-1.5l-1.9-1.4l-1.8-1.4l-1.8-1.4l-1.8-1.2l-1.8-1.2l-1.9-1l-1.9-0.9
+				l-2-0.7l-2.1-0.4l-2.1-0.4l-2.2-0.2l-2.3-0.1l-2.2-0.1h-2.3h-2.4l-2.3-0.1h-2.4l-2.3-0.1l-2.4-0.1l-2.4-0.1l-2.3-0.1l-2.4-0.2
+				l-2.4-0.2l-2.4-0.2l-2.4-0.3l-2.3-0.3l-2.4-0.4l-2.3-0.4l-2.4-0.4l-2.3-0.5l-2.4-0.5l-2.3-0.6l-2.3-0.6l-2.3-0.7l-2.2-0.7
+				l-2.3-0.8l-2.2-0.8l-2.2-0.9l-2.2-0.9l-2.1-1l-2.2-1l-2.1-1.1l-2-1.1L347,722l-2-1.2l-2-1.2l-1.9-1.3l-1.9-1.4l-1.9-1.4l-1.9-1.5
+				l-1.8-1.4l-1.7-1.6l-1.8-1.6l-1.7-1.6l-1.6-1.7l-1.6-1.7l-1.6-1.7l-1.5-1.8l-1.5-1.8l-1.4-1.9l-1.4-1.9l-1.3-1.9l-1.3-2l-1.3-2
+				l-1.2-2l-1.1-2.1l-1.2-2.1l-1-2.1l-1-2.1l-1-2.2l-0.9-2.2l-0.9-2.2l-0.9-2.2l-0.7-2.3l-0.8-2.3l-0.7-2.3l-0.7-2.3l-0.6-2.3
+				l-0.5-2.3l-0.6-2.3l-0.5-2.4l-0.4-2.3l-0.5-2.4l-0.3-2.3l-0.4-2.4l-0.3-2.3l-0.3-2.4l-0.3-2.3l-0.3-2.3l-0.2-2.4l-0.3-2.2
+				l-0.3-2.3l-0.3-2.3l-0.4-2.1l-0.5-2.2l-0.6-2l-0.7-2l-1-1.9l-1.1-1.8l-1.3-1.7l-1.4-1.7l-1.5-1.7l-1.5-1.7l-1.6-1.6l-1.6-1.7
+				l-1.7-1.7l-1.6-1.6l-1.6-1.8l-1.7-1.7l-1.6-1.7l-1.6-1.8l-1.5-1.8l-1.6-1.8l-1.5-1.9l-1.5-1.9l-1.4-1.9l-1.4-1.9l-1.4-2l-1.4-1.9
+				l-1.3-2l-1.2-2.1l-1.3-2l-1.1-2.1l-1.2-2.1l-1.1-2.1l-1-2.1l-1-2.2l-0.9-2.1l-0.9-2.2l-0.9-2.2l-0.7-2.3l-0.8-2.2l-0.7-2.3
+				l-0.6-2.2l-0.5-2.3l-0.6-2.3l-0.4-2.3l-0.4-2.3l-0.3-2.4l-0.3-2.3l-0.2-2.3l-0.2-2.3l-0.1-2.4l-0.1-2.3l0.1-2.4v-2.3l0.2-2.4
+				l0.2-2.3l0.2-2.3l0.3-2.4l0.4-2.3l0.4-2.3l0.5-2.3l0.5-2.3l0.6-2.3l0.6-2.3l0.7-2.2l0.8-2.3l0.7-2.2l0.9-2.3l0.9-2.2l0.9-2.1
+				l1-2.2l1-2.2l1.1-2.1l1.1-2.1l1.2-2.1l1.2-2.1l1.2-2l1.3-2.1l1.3-2l1.4-1.9l1.3-2l1.4-1.9l1.4-2l1.4-1.9l1.5-1.8l1.4-1.9l1.5-1.8
+				l1.5-1.8l1.4-1.9l1.4-1.8l1.4-1.8l1.2-1.8l1.2-1.8l1-1.9l0.9-1.9l0.7-2l0.4-2.1l0.4-2.1l0.2-2.2l0.1-2.3l0.1-2.2v-2.3v-2.4
+				l0.1-2.3v-2.4l0.1-2.3l0.1-2.4l0.1-2.4l0.1-2.3l0.2-2.4l0.2-2.4l0.2-2.4l0.3-2.4l0.3-2.3l0.4-2.4l0.4-2.3l0.4-2.4l0.5-2.3
+				l0.5-2.4l0.6-2.3l0.6-2.3l0.7-2.3l0.7-2.2l0.8-2.3l0.8-2.2l0.9-2.2l0.9-2.2l1-2.1l1-2.2l1.1-2.1l1.1-2l1.2-2.1l1.2-2l1.2-2
+				l1.3-1.9l1.4-1.9l1.4-1.9l1.5-1.9l1.4-1.8l1.6-1.7l1.6-1.8l1.6-1.7l1.7-1.6l1.7-1.6l1.7-1.6l1.8-1.5l1.8-1.5l1.9-1.4l1.9-1.4
+				l1.9-1.3l2-1.3l2-1.3l2-1.2l2.1-1.1l2.1-1.2l2.1-1l2.1-1l2.2-1l2.2-0.9l2.2-0.9l2.2-0.9l2.3-0.7l2.3-0.8l2.3-0.7l2.3-0.7l2.3-0.6
+				l2.3-0.5l2.3-0.6l2.4-0.5l2.3-0.4l2.4-0.5l2.3-0.3l2.4-0.4l2.3-0.3l2.4-0.3l2.3-0.3l2.3-0.3l2.4-0.2l2.2-0.3l2.3-0.3l2.3-0.3
+				l2.1-0.4l2.2-0.5l2-0.6l2-0.7l1.9-1l1.8-1.1l1.7-1.3l1.7-1.4l1.7-1.5l1.7-1.5l1.6-1.6l1.7-1.6l1.7-1.7l1.6-1.6l1.8-1.6l1.7-1.7
+				l1.7-1.6l1.8-1.6l1.8-1.5l1.8-1.6l1.9-1.5l1.9-1.5l1.9-1.4l1.9-1.4l2-1.4l1.9-1.4l2-1.3l2.1-1.2l2-1.3l2.1-1.1l2.1-1.2l2.1-1.1
+				l2.1-1l2.2-1l2.1-0.9l2.2-0.9l2.2-0.9l2.3-0.7l2.2-0.8l2.3-0.7l2.2-0.6l2.3-0.5l2.3-0.6l2.3-0.4l2.3-0.4l2.4-0.3l2.3-0.3l2.3-0.2
+				l2.3-0.2l2.4-0.1l2.3-0.1l2.4,0.1h2.3l2.4,0.2l2.3,0.2l2.3,0.2l2.4,0.3l2.3,0.4l2.3,0.4l2.3,0.5l2.3,0.5l2.3,0.6l2.3,0.6l2.2,0.7
+				l2.3,0.8l2.2,0.7l2.3,0.9l2.2,0.9l2.1,0.9l2.2,1l2.2,1l2.1,1.1l2.1,1.1l2.1,1.2l2.1,1.2l2,1.2l2.1,1.3l2,1.3l1.9,1.4l2,1.3
+				l1.9,1.4l2,1.4l1.9,1.4l1.8,1.5l1.9,1.4l1.8,1.5l1.8,1.5l1.9,1.4l1.8,1.4l1.8,1.4l1.8,1.2l1.8,1.2l1.9,1l1.9,0.9l2,0.7l2.1,0.4
+				l2.1,0.4l2.2,0.2l2.3,0.1l2.2,0.1h2.3h2.4l2.3,0.1h2.4l2.3,0.1l2.4,0.1l2.4,0.1l2.3,0.1l2.4,0.2l2.4,0.2l2.4,0.2l2.4,0.3l2.3,0.3
+				l2.4,0.4l2.3,0.4l2.4,0.4l2.3,0.5l2.4,0.5l2.3,0.6l2.3,0.6l2.3,0.7l2.2,0.7l2.3,0.8l2.2,0.8l2.2,0.9l2.2,0.9l2.1,1l2.2,1l2.1,1.1
+				l2,1.1l2.1,1.2l2,1.2l2,1.2l1.9,1.3l1.9,1.4l1.9,1.4l1.9,1.5l1.8,1.4l1.7,1.6l1.8,1.6l1.7,1.6l1.6,1.7l1.6,1.7l1.6,1.7l1.5,1.8
+				l1.5,1.8l1.4,1.9l1.4,1.9l1.3,1.9l1.3,2l1.3,2l1.2,2l1.1,2.1l1.2,2.1l1,2.1l1,2.1l1,2.2l0.9,2.2l0.9,2.2l0.9,2.2l0.7,2.3l0.8,2.3
+				l0.7,2.3l0.7,2.3l0.6,2.3l0.5,2.3l0.6,2.3l0.5,2.4l0.4,2.3l0.5,2.4l0.3,2.3l0.4,2.4l0.3,2.3l0.3,2.4l0.3,2.3l0.3,2.3l0.2,2.4
+				l0.3,2.2l0.3,2.3l0.3,2.3l0.4,2.1l0.5,2.2l0.6,2l0.7,2l1,1.9l1.1,1.8l1.3,1.7l1.4,1.7l1.5,1.7l1.5,1.7l1.6,1.6l1.6,1.7l1.7,1.7
+				l1.6,1.6l1.6,1.8l1.7,1.7l1.6,1.7l1.6,1.8l1.5,1.8l1.6,1.8l1.5,1.9l1.5,1.9l1.4,1.9l1.4,1.9l1.4,2l1.4,1.9l1.3,2l1.2,2.1l1.3,2
+				l1.1,2.1l1.2,2.1l1.1,2.1l1,2.1l1,2.2l0.9,2.1l0.9,2.2l0.9,2.2l0.7,2.3l0.8,2.2l0.7,2.3l0.6,2.2l0.5,2.3l0.6,2.3l0.4,2.3l0.4,2.3
+				l0.3,2.4l0.3,2.3l0.2,2.3l0.2,2.3l0.1,2.4l0.1,2.3l-0.1,2.4v2.3l-0.2,2.4L779.3,511.5z M416.5,511.5c0,52.5,42.5,95,95,95
+				s95-42.5,95-95s-42.5-95-95-95S416.5,459,416.5,511.5L416.5,511.5z"/>
+			
+				<linearGradient id="SVGID_5_" gradientUnits="userSpaceOnUse" x1="407.875" y1="-2.325" x2="408.875" y2="-1.325" gradientTransform="matrix(100 0 0 100 -40071 694)">
+				<stop  offset="0" style="stop-color:#FBC3D6"/>
+				<stop  offset="1" style="stop-color:#F6A5C0"/>
+			</linearGradient>
+			<circle class="st4" cx="766.5" cy="511.5" r="50"/>
+			
+				<linearGradient id="SVGID_6_" gradientUnits="userSpaceOnUse" x1="407.875" y1="-2.325" x2="408.875" y2="-1.325" gradientTransform="matrix(100 0 0 100 -40105 822)">
+				<stop  offset="0" style="stop-color:#FBC3D6"/>
+				<stop  offset="1" style="stop-color:#F6A5C0"/>
+			</linearGradient>
+			<circle class="st5" cx="732.5" cy="639.5" r="50"/>
+			
+				<linearGradient id="SVGID_7_" gradientUnits="userSpaceOnUse" x1="407.875" y1="-2.325" x2="408.875" y2="-1.325" gradientTransform="matrix(100 0 0 100 -40198 915)">
+				<stop  offset="0" style="stop-color:#FBC3D6"/>
+				<stop  offset="1" style="stop-color:#F6A5C0"/>
+			</linearGradient>
+			<circle class="st6" cx="639.5" cy="732.5" r="50"/>
+			
+				<linearGradient id="SVGID_8_" gradientUnits="userSpaceOnUse" x1="407.875" y1="-2.325" x2="408.875" y2="-1.325" gradientTransform="matrix(100 0 0 100 -40326 949)">
+				<stop  offset="0" style="stop-color:#FBC3D6"/>
+				<stop  offset="1" style="stop-color:#F6A5C0"/>
+			</linearGradient>
+			<circle class="st7" cx="511.5" cy="766.5" r="50"/>
+			
+				<linearGradient id="SVGID_9_" gradientUnits="userSpaceOnUse" x1="407.875" y1="-2.325" x2="408.875" y2="-1.325" gradientTransform="matrix(100 0 0 100 -40453 915)">
+				<stop  offset="0" style="stop-color:#FBC3D6"/>
+				<stop  offset="1" style="stop-color:#F6A5C0"/>
+			</linearGradient>
+			<circle class="st8" cx="384.5" cy="732.5" r="50"/>
+			
+				<linearGradient id="SVGID_10_" gradientUnits="userSpaceOnUse" x1="407.875" y1="-2.325" x2="408.875" y2="-1.325" gradientTransform="matrix(100 0 0 100 -40547 822)">
+				<stop  offset="0" style="stop-color:#FBC3D6"/>
+				<stop  offset="1" style="stop-color:#F6A5C0"/>
+			</linearGradient>
+			<circle class="st9" cx="290.5" cy="639.5" r="50"/>
+			
+				<linearGradient id="SVGID_11_" gradientUnits="userSpaceOnUse" x1="407.875" y1="-2.325" x2="408.875" y2="-1.325" gradientTransform="matrix(100 0 0 100 -40581 694)">
+				<stop  offset="0" style="stop-color:#FBC3D6"/>
+				<stop  offset="1" style="stop-color:#F6A5C0"/>
+			</linearGradient>
+			<circle class="st10" cx="256.5" cy="511.5" r="50"/>
+			
+				<linearGradient id="SVGID_12_" gradientUnits="userSpaceOnUse" x1="407.875" y1="-2.325" x2="408.875" y2="-1.325" gradientTransform="matrix(100 0 0 100 -40547 567)">
+				<stop  offset="0" style="stop-color:#FBC3D6"/>
+				<stop  offset="1" style="stop-color:#F6A5C0"/>
+			</linearGradient>
+			<circle class="st11" cx="290.5" cy="384.5" r="50"/>
+			
+				<linearGradient id="SVGID_13_" gradientUnits="userSpaceOnUse" x1="407.875" y1="-2.325" x2="408.875" y2="-1.325" gradientTransform="matrix(100 0 0 100 -40453 473)">
+				<stop  offset="0" style="stop-color:#FBC3D6"/>
+				<stop  offset="1" style="stop-color:#F6A5C0"/>
+			</linearGradient>
+			<circle class="st12" cx="384.5" cy="290.5" r="50"/>
+			
+				<linearGradient id="SVGID_14_" gradientUnits="userSpaceOnUse" x1="407.875" y1="-2.325" x2="408.875" y2="-1.325" gradientTransform="matrix(100 0 0 100 -40326 439)">
+				<stop  offset="0" style="stop-color:#FBC3D6"/>
+				<stop  offset="1" style="stop-color:#F6A5C0"/>
+			</linearGradient>
+			<circle class="st13" cx="511.5" cy="256.5" r="50"/>
+			
+				<linearGradient id="SVGID_15_" gradientUnits="userSpaceOnUse" x1="407.875" y1="-2.325" x2="408.875" y2="-1.325" gradientTransform="matrix(100 0 0 100 -40198 473)">
+				<stop  offset="0" style="stop-color:#FBC3D6"/>
+				<stop  offset="1" style="stop-color:#F6A5C0"/>
+			</linearGradient>
+			<circle class="st14" cx="639.5" cy="290.5" r="50"/>
+			
+				<linearGradient id="SVGID_16_" gradientUnits="userSpaceOnUse" x1="407.875" y1="-2.325" x2="408.875" y2="-1.325" gradientTransform="matrix(100 0 0 100 -40105 567)">
+				<stop  offset="0" style="stop-color:#FBC3D6"/>
+				<stop  offset="1" style="stop-color:#F6A5C0"/>
+			</linearGradient>
+			<circle class="st15" cx="732.5" cy="384.5" r="50"/>
+		</g>
+		<path class="st16" d="M299.5,399.5c20-66.7,63.3-110,130-130"/>
+	</g>
+</g>
+<g>
+	<line class="st17" x1="380" y1="350" x2="408" y2="332"/>
+	<line class="st18" x1="520" y1="318" x2="522" y2="348"/>
+	<line class="st19" x1="622" y1="340" x2="652" y2="356"/>
+	<line class="st20" x1="440" y1="395" x2="462" y2="378"/>
+	<line class="st21" x1="590" y1="395" x2="570" y2="378"/>
+	<line class="st20" x1="330" y1="470" x2="334" y2="440"/>
+	<line class="st17" x1="692" y1="472" x2="672" y2="446"/>
+	<line class="st18" x1="330" y1="565" x2="356" y2="578"/>
+	<line class="st19" x1="692" y1="565" x2="668" y2="580"/>
+</g>
+<circle class="st22" cx="420" cy="625" r="16"/>
+<circle class="st22" cx="604" cy="625" r="16"/>
+<path class="st23" d="M488,650c16,18.7,32,18.7,48,0"/>
+<circle class="st24" cx="372" cy="658" r="24"/>
+<circle class="st24" cx="652" cy="658" r="24"/>
+<g>
+	<path class="st25" d="M190,220l9-30l9,30l30,9l-30,9l-9,30l-9-30l-30-9L190,220z"/>
+	<path class="st26" d="M840,800l7-22l7,22l22,7l-22,7l-7,22l-7-22l-22-7L840,800z"/>
+	<circle class="st27" cx="820" cy="215" r="9"/>
+</g>
+</svg>

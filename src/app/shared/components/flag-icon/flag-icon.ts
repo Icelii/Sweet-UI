@@ -1,6 +1,12 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import type { Language } from '@core/i18n/i18n';
 
+/**
+ * Round flag for a language in the language menus. When you add a language to I18n,
+ * add its flag here as another @case.
+ *
+ * <app-flag-icon language="es" [size]="18" />
+ */
 @Component({
   selector: 'app-flag-icon',
   changeDetection: ChangeDetectionStrategy.OnPush,

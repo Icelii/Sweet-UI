@@ -1,0 +1,42 @@
+<div class="flex-1 min-h-0 flex flex-col gap-4 px-0 sm:px-4 md:px-8 py-0 sm:py-5">
+  <div class="hidden sm:flex flex-col gap-1">
+    <h2 class="text-[20px] font-bold text-(--text-color)">{{ 'chat.title' | translate }}</h2>
+    <p class="text-[13px] text-(--secondary-text)">{{ 'chat.subtitle' | translate }}</p>
+  </div>
+
+  <div class="flex-1 min-h-[480px] grid grid-cols-1 lg:grid-cols-[320px_1fr] bg-base-100 sm:border border-(--border-color-1)/40 sm:rounded-xl overflow-hidden">
+    <!-- Conversations -->
+    <section class="flex flex-col min-h-0 lg:border-r border-(--border-color-1)/40" [class]="selected() ? 'max-lg:hidden' : ''" [attr.aria-label]="'chat.conversations' | translate">
+      <header class="shrink-0 flex items-center justify-between gap-2 px-4 pt-4">
+        <h3 class="text-[16px] font-bold text-(--text-color)">{{ 'chat.conversations' | translate }}</h3>
+        <button type="button" class="size-8 inline-flex items-center justify-center rounded-full text-(--secondary-text) hover:bg-(--bg-2) hover:text-(--primary-color) transition cursor-pointer" [attr.aria-label]="'chat.new' | translate">
+          <app-tabler-icon name="edit" [size]="18" />
+        </button>
+      </header>
+      <app-chat-list class="flex-1" [selectedId]="active()" (conversationSelect)="selected.set($event)" />
+    </section>
+
+    <!-- Open conversation -->
+    @if (active(); as id) {
+      <app-chat-thread class="min-h-0" [class]="selected() ? '' : 'max-lg:hidden'" [conversationId]="id" back="mobile" (backClick)="selected.set(null)">
+        <div chatActions class="flex items-center gap-0.5 shrink-0">
+          <button type="button" class="size-9 inline-flex items-center justify-center rounded-full text-(--secondary-text) hover:bg-(--bg-2) hover:text-(--primary-color) transition cursor-pointer" [attr.aria-label]="'chat.call' | translate">
+            <app-tabler-icon name="phone" [size]="18" />
+          </button>
+          <button type="button" class="size-9 inline-flex items-center justify-center rounded-full text-(--secondary-text) hover:bg-(--bg-2) hover:text-(--primary-color) transition cursor-pointer" [attr.aria-label]="'chat.video' | translate">
+            <app-tabler-icon name="video" [size]="18" />
+          </button>
+          <app-dropdown align="end">
+            <button type="button" appDropdownTrigger class="size-9 inline-flex items-center justify-center rounded-full text-(--secondary-text) hover:bg-(--bg-2) hover:text-(--primary-color) transition cursor-pointer" [attr.aria-label]="'ui.action.options' | translate">
+              <app-tabler-icon name="dots-vertical" [size]="18" />
+            </button>
+            <button type="button" appDropdownItem><app-tabler-icon name="user" [size]="18" />{{ 'chat.viewProfile' | translate }}</button>
+            <button type="button" appDropdownItem><app-tabler-icon name="bell" [size]="18" />{{ 'chat.mute' | translate }}</button>
+            <button type="button" appDropdownItem><app-tabler-icon name="archive" [size]="18" />{{ 'chat.archive' | translate }}</button>
+            <button type="button" appDropdownItem class="ui-dropdown-item-danger"><app-tabler-icon name="trash" [size]="18" />{{ 'chat.delete' | translate }}</button>
+          </app-dropdown>
+        </div>
+      </app-chat-thread>
+    }
+  </div>
+</div>

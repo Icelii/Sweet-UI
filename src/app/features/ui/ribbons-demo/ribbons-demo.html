@@ -1,0 +1,144 @@
+<div class="px-4 md:px-8 py-5 flex flex-col gap-6">
+  <div class="flex flex-col gap-2">
+    <h2 class="text-[20px] font-bold text-(--text-color)">{{ 'ui.ribbons.title' | translate }}</h2>
+    <p class="text-[13px] text-(--secondary-text) -mt-1">{{ 'ui.ribbons.subtitle' | translate }}</p>
+  </div>
+
+  <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 items-start">
+    <!-- CORNER -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.ribbons.corner' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.ribbons.cornerHint' | translate }}</p>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        @for (tone of tones; track tone.key; let i = $index) {
+          <div class="relative h-28 rounded-xl border border-(--border-color-1)/40 bg-(--bg-2) flex items-end p-3">
+            <div class="ui-ribbon ui-ribbon-corner ui-ribbon-{{ tone.key }}" [class.ui-ribbon-start]="i % 2 === 1"><span>{{ tone.label | translate }}</span></div>
+            <span class="text-[12px] text-(--secondary-text)">{{ i % 2 === 1 ? ('ui.ribbons.start' | translate) : ('ui.ribbons.end' | translate) }}</span>
+          </div>
+        }
+      </div>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">&lt;div class="ui-ribbon ui-ribbon-corner ui-ribbon-success"&gt;&lt;span&gt;Nuevo&lt;/span&gt;&lt;/div&gt;</code>
+    </section>
+
+    <!-- SIDE -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.ribbons.side' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.ribbons.sideHint' | translate }}</p>
+      </div>
+      <!-- px-2 leaves room for the part that sticks out of the card. -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 px-2">
+        <div class="relative h-28 rounded-xl border border-(--border-color-1)/40 bg-(--bg-2) flex items-end p-3">
+          <span class="ui-ribbon ui-ribbon-side">{{ 'ui.badge.new' | translate }}</span>
+          <span class="text-[12px] text-(--secondary-text)">{{ 'ui.ribbons.end' | translate }}</span>
+        </div>
+        <div class="relative h-28 rounded-xl border border-(--border-color-1)/40 bg-(--bg-2) flex items-end justify-end p-3">
+          <span class="ui-ribbon ui-ribbon-side ui-ribbon-start ui-ribbon-danger"><app-tabler-icon name="discounts" [size]="14" />-35%</span>
+          <span class="text-[12px] text-(--secondary-text)">{{ 'ui.ribbons.start' | translate }}</span>
+        </div>
+        <div class="relative h-28 rounded-xl border border-(--border-color-1)/40 bg-(--bg-2) flex items-end p-3">
+          <span class="ui-ribbon ui-ribbon-side ui-ribbon-success"><app-tabler-icon name="check" [size]="14" [stroke]="3" />{{ 'ui.badge.verified' | translate }}</span>
+          <span class="ui-ribbon ui-ribbon-side ui-ribbon-warning top-12!"><app-tabler-icon name="star" [size]="14" />{{ 'ui.badge.featured' | translate }}</span>
+        </div>
+        <div class="relative h-28 rounded-xl border border-(--border-color-1)/40 bg-(--bg-2) flex items-end p-3">
+          <span class="ui-ribbon ui-ribbon-side ui-ribbon-info normal-case! tracking-normal!">{{ 'ui.ribbons.freeShipping' | translate }}</span>
+        </div>
+      </div>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">&lt;span class="ui-ribbon ui-ribbon-side ui-ribbon-start"&gt;-35%&lt;/span&gt;</code>
+    </section>
+
+    <!-- BOOKMARK + BANNER -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.ribbons.bookmark' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.ribbons.bookmarkHint' | translate }}</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="relative h-28 rounded-xl border border-(--border-color-1)/40 bg-(--bg-2) flex items-end p-3">
+          <span class="ui-ribbon ui-ribbon-bookmark ui-ribbon-warning" [attr.aria-label]="'ui.badge.featured' | translate"><app-tabler-icon name="star" [size]="16" /></span>
+          <span class="ui-ribbon ui-ribbon-bookmark ui-ribbon-start ui-ribbon-secondary">#1</span>
+          <span class="text-[12px] text-(--secondary-text)">{{ 'ui.ribbons.bookmarkUse' | translate }}</span>
+        </div>
+        <div class="rounded-xl border border-(--border-color-1)/40 bg-(--bg-2) overflow-hidden flex flex-col">
+          <div class="ui-ribbon ui-ribbon-banner"><app-tabler-icon name="bolt" [size]="14" />{{ 'ui.ribbons.mostPopular' | translate }}</div>
+          <div class="h-[4.25rem] flex items-end p-3"><span class="text-[12px] text-(--secondary-text)">{{ 'ui.ribbons.bannerUse' | translate }}</span></div>
+        </div>
+      </div>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">ui-ribbon-bookmark · ui-ribbon-banner</code>
+    </section>
+
+    <!-- NOTE -->
+    <section class="bg-(--primary-color)/5 border border-dashed border-(--primary-color)/40 rounded-xl p-5 flex items-start gap-3">
+      <app-tabler-icon name="info-circle" [size]="20" class="text-(--primary-color) mt-0.5" />
+      <p class="text-[13px] text-(--secondary-text)">{{ 'ui.ribbons.note' | translate }}</p>
+    </section>
+
+    <!-- PRICING -->
+    <section class="xl:col-span-2 bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.ribbons.pricing' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.ribbons.pricingHint' | translate }}</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:items-stretch">
+        @for (plan of plans; track plan.key) {
+          <article class="relative rounded-xl border flex flex-col" [class]="plan.popular ? 'border-(--primary-color) shadow-lg shadow-(--primary-color)/10 order-first md:order-none' : 'border-(--border-color-1)/40'">
+            @if (plan.popular) {
+              <div class="ui-ribbon ui-ribbon-banner"><app-tabler-icon name="bolt" [size]="14" />{{ 'ui.ribbons.mostPopular' | translate }}</div>
+            }
+            <div class="p-5 flex flex-col gap-4 flex-1">
+              <div>
+                <h4 class="text-[16px] font-bold text-(--text-color)">{{ plan.name | translate }}</h4>
+                <p class="mt-1"><span class="text-[30px] font-black text-(--text-color)">{{ plan.price }}</span><span class="text-[13px] text-(--secondary-text)"> / {{ 'ui.period.month' | translate }}</span></p>
+              </div>
+              <ul class="ui-list ui-list-check flex-1 text-[13px]!">
+                @for (feature of plan.features; track feature) {
+                  <li>{{ feature | translate }}</li>
+                }
+              </ul>
+              <button type="button" class="ui-btn ui-btn-block" [class]="plan.popular ? '' : 'ui-btn-light'">{{ 'ui.ribbons.choose' | translate }}</button>
+            </div>
+          </article>
+        }
+      </div>
+    </section>
+
+    <!-- PRODUCTS -->
+    <section class="xl:col-span-2 bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.ribbons.products' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.ribbons.productsHint' | translate }}</p>
+      </div>
+      <div class="grid grid-cols-1 min-[420px]:grid-cols-2 lg:grid-cols-4 gap-4 px-2">
+        @for (product of products; track product.name) {
+          <article class="relative rounded-xl border border-(--border-color-1)/40 bg-base-100 flex flex-col">
+            @if (product.ribbon; as ribbon) {
+              @if (ribbon.kind === 'corner') {
+                <div class="ui-ribbon ui-ribbon-corner ui-ribbon-{{ ribbon.tone }}"><span>{{ ribbon.label.startsWith('-') ? ribbon.label : ($any(ribbon.label) | translate) }}</span></div>
+              } @else {
+                <span class="ui-ribbon ui-ribbon-side ui-ribbon-{{ ribbon.tone }} top-4!">{{ $any(ribbon.label) | translate }}</span>
+              }
+            }
+            <div class="aspect-[4/3] rounded-t-xl bg-linear-to-br {{ product.gradient }} flex items-center justify-center text-(--text-color)/40">
+              <app-tabler-icon [name]="product.icon" [size]="44" [stroke]="1.5" />
+            </div>
+            <button type="button" class="absolute top-3 left-3 z-[2] size-9 rounded-full bg-base-100/90 backdrop-blur inline-flex items-center justify-center shadow-sm cursor-pointer transition hover:scale-105" [class]="favorites().includes(product.name) ? 'text-(--danger)' : 'text-(--secondary-text)'" [attr.aria-pressed]="favorites().includes(product.name)" [attr.aria-label]="('ui.action.favorite' | translate) + ': ' + product.name" (click)="toggleFavorite(product.name)">
+              <app-tabler-icon name="heart" [size]="18" [class]="favorites().includes(product.name) ? '[&_path]:fill-current' : ''" />
+            </button>
+            <div class="p-4 flex flex-col gap-2 flex-1">
+              <h4 class="text-[14px] font-semibold text-(--text-color) truncate">{{ product.name }}</h4>
+              <div class="flex items-baseline gap-2">
+                <span class="text-[16px] font-bold text-(--text-color)">{{ product.price }}</span>
+                @if (product.oldPrice) {
+                  <span class="text-[12px] text-(--secondary-text) line-through">{{ product.oldPrice }}</span>
+                }
+              </div>
+              <button type="button" class="ui-btn ui-btn-light ui-btn-sm ui-btn-block mt-auto"><app-tabler-icon name="shopping-cart" [size]="16" />{{ 'ui.ribbons.addToCart' | translate }}</button>
+            </div>
+          </article>
+        }
+      </div>
+    </section>
+  </div>
+</div>

@@ -25,7 +25,9 @@ yarn-error.log
 .history/*
 
 # Miscellaneous
-/.angular/cache
+/.angular/
+*.tsbuildinfo
+.eslintcache
 .sass-cache/
 /connect.lock
 /coverage
@@ -34,10 +36,17 @@ testem.log
 /typings
 __screenshots__/
 
-# Environment variables
+# Environment variables and secrets
 .env
 .env.*
 !.env.example
+# Can hold registry tokens
+.npmrc
+
+# Deploy tools
+.vercel/
+.netlify/
+.firebase/
 
 # Logs
 *.log
@@ -50,3 +59,5 @@ logs/
 .DS_Store
 Thumbs.db
 desktop.ini
+*.swp
+*~

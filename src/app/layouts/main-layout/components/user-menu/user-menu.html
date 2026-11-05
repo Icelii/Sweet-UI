@@ -1,8 +1,8 @@
 <div class="dropdown dropdown-end cursor-pointer" [class.group]="isDesktop()">
-    <div tabindex="0" role="button" class="flex items-center bg-base-100 border-none" [ngClass]="isDesktop() ? 'gap-2.5 outline-none' : 'gap-3'">
-        <div class="rounded-full overflow-hidden bg-(--primary-color)/10 text-(--primary-color) border-2 border-(--border-color-1)/40 flex items-center justify-center shrink-0 font-bold text-sm select-none" [ngClass]="isDesktop() ? 'w-9.5 h-9.5' : 'w-10 h-10'">
-            @if (user().img && !avatarFailed()) {
-                <img [src]="user().img" alt="{{ user().name || ('user.defaultName' | translate) }}" (error)="avatarFailed.set(true)" class="w-full h-full object-cover object-center rounded-full" />
+    <div tabindex="0" role="button" class="flex items-center bg-base-100 border-none" [class]="isDesktop() ? 'gap-2.5 outline-none' : 'gap-3'">
+        <div class="rounded-full overflow-hidden bg-(--primary-color)/10 text-(--primary-color) border-2 border-(--border-color-1)/40 flex items-center justify-center shrink-0 font-bold text-sm select-none size-10">
+            @if (user().img) {
+                <img [src]="user().img" alt="{{ user().name || ('user.defaultName' | translate) }}" class="w-full h-full object-cover object-center rounded-full" />
             } @else {
                 {{ (user().name || ('user.defaultName' | translate)) | initials }}
             }
@@ -23,7 +23,7 @@
 
         <ul class="menu w-full p-0 gap-0.5">
             <li>
-                <a routerLink="/account-settings/profile" routerLinkActive="bg-(--bg-2) !text-(--primary-color)" class="flex items-center gap-3 px-3 py-2.5 rounded-md text-[14px] font-medium text-(--text-color) hover:bg-(--bg-2) hover:text-(--primary-color) focus:bg-(--bg-2) active:bg-(--bg-2) active:text-(--primary-color) transition-colors outline-none">
+                <a routerLink="/account-settings/profile" (click)="closeMenu()" routerLinkActive="bg-(--bg-2) !text-(--primary-color)" class="flex items-center gap-3 px-3 py-2.5 rounded-md text-[14px] font-medium text-(--text-color) hover:bg-(--bg-2) hover:text-(--primary-color) focus:bg-(--bg-2) active:bg-(--bg-2) active:text-(--primary-color) transition-colors outline-none">
                     <app-tabler-icon name="user-circle" [size]="22" class="text-(--secondary-text)" />
                     {{ 'layout.profileSettings' | translate }}
                 </a>
@@ -42,7 +42,7 @@
             @if (languageMenuOpen()) {
                 @for (language of i18n.languages; track language) {
                     <li>
-                        <button (click)="selectLanguage(language)" class="flex w-full min-w-0 items-center gap-2 pl-11 pr-3 py-1.5 text-[13px] font-medium rounded-md outline-none hover:bg-(--bg-2) hover:text-(--primary-color) focus:bg-(--bg-2) active:bg-(--bg-2) active:text-(--primary-color)" [ngClass]="i18n.language() === language ? 'text-(--text-color)' : 'text-(--secondary-text)'" [attr.aria-pressed]="i18n.language() === language">
+                        <button (click)="selectLanguage(language)" class="flex w-full min-w-0 items-center gap-2 pl-11 pr-3 py-1.5 text-[13px] font-medium rounded-md outline-none hover:bg-(--bg-2) hover:text-(--primary-color) focus:bg-(--bg-2) active:bg-(--bg-2) active:text-(--primary-color)" [class]="i18n.language() === language ? 'text-(--text-color)' : 'text-(--secondary-text)'" [attr.aria-pressed]="i18n.language() === language">
                             <app-flag-icon [language]="language" />
                             <span class="flex-1 text-left">{{ languageNames[language] }}</span>
                             @if (i18n.language() === language) {
@@ -56,7 +56,7 @@
 
         <ul class="menu w-full p-0 pt-1 mt-1 border-t border-(--border-color-1)/40">
             <li>
-                <button class="group/logout flex w-full items-center gap-3 px-3 py-2.5 rounded-md text-[14px] font-medium text-(--text-color) hover:bg-rose-500/10 hover:text-(--danger) focus:bg-rose-500/10 active:bg-rose-500/10 active:text-(--danger) transition-colors outline-none">
+                <button (click)="closeMenu()" class="group/logout flex w-full items-center gap-3 px-3 py-2.5 rounded-md text-[14px] font-medium text-(--text-color) hover:bg-rose-500/10 hover:text-(--danger) focus:bg-rose-500/10 active:bg-rose-500/10 active:text-(--danger) transition-colors outline-none">
                     <app-tabler-icon name="logout" [size]="22" class="text-(--secondary-text) group-hover/logout:text-(--danger)" />
                     {{ 'layout.logout' | translate }}
                 </button>

@@ -1,0 +1,64 @@
+<dialog #dialog class="modal modal-bottom sm:modal-middle" (cancel)="onCancel($event)" (close)="open.set(false)" [attr.aria-label]="title()">
+  <div class="modal-box bg-base-100 p-0 flex flex-col max-h-[90dvh] overflow-hidden rounded-t-2xl sm:rounded-2xl" [class]="sizeClasses[size()]">
+    @if (layout() === 'centered') {
+      <div class="relative shrink-0 flex flex-col items-center text-center gap-3 px-6 pt-8 pb-2">
+        <button type="button" (click)="close()" [disabled]="locked()" class="absolute top-4 right-4 size-7 inline-flex items-center justify-center rounded-lg text-(--secondary-text) hover:text-(--text-color) cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed" [attr.aria-label]="'common.close' | translate">
+          <app-tabler-icon name="close" [size]="20" />
+        </button>
+        @if (icon(); as icon) {
+          <div class="size-14 rounded-full border flex items-center justify-center shrink-0 ring-8 ring-current/5" [class]="toneClasses[tone()]">
+            <app-tabler-icon [name]="icon" [size]="28" />
+          </div>
+        }
+        <div class="flex flex-col gap-1 min-w-0 max-w-full">
+          <h3 class="text-lg font-bold text-(--text-color) break-words">{{ title() }}</h3>
+          @if (subtitle()) {
+            <span class="text-[13px] text-(--secondary-text) break-words">{{ subtitle() }}</span>
+          }
+        </div>
+      </div>
+
+      <div class="flex-1 min-h-0 overflow-y-auto overscroll-contain px-6 py-3 text-center">
+        <ng-container *ngTemplateOutlet="body" />
+      </div>
+
+      <div class="shrink-0 px-6 pt-3 pb-[max(1.5rem,env(safe-area-inset-bottom))] flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-center gap-3 empty:hidden sm:*:flex-1">
+        <ng-container *ngTemplateOutlet="actions" />
+      </div>
+    } @else {
+      <div class="shrink-0 flex items-center justify-between gap-3 mx-6 pt-6 pb-4 border-b border-(--border-color-1)/40">
+        <div class="flex items-center gap-3 min-w-0">
+          @if (icon(); as icon) {
+            <div class="p-2.5 rounded-full border flex items-center justify-center shrink-0" [class]="toneClasses[tone()]">
+              <app-tabler-icon [name]="icon" />
+            </div>
+          }
+          <div class="flex flex-col min-w-0">
+            <h3 class="text-lg font-bold text-(--text-color) truncate">{{ title() }}</h3>
+            @if (subtitle()) {
+              <span class="text-xs text-(--secondary-text) truncate">{{ subtitle() }}</span>
+            }
+          </div>
+        </div>
+        <button type="button" (click)="close()" [disabled]="locked()" class="size-7 inline-flex items-center justify-center shrink-0 rounded-lg text-(--secondary-text) hover:text-(--text-color) cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed" [attr.aria-label]="'common.close' | translate">
+          <app-tabler-icon name="close" [size]="20" />
+        </button>
+      </div>
+
+      <div class="flex-1 min-h-0 overflow-y-auto overscroll-contain px-6 py-4">
+        <ng-container *ngTemplateOutlet="body" />
+      </div>
+
+      <div class="shrink-0 mx-6 pt-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] border-t border-(--border-color-1)/40 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-3 empty:hidden">
+        <ng-container *ngTemplateOutlet="actions" />
+      </div>
+    }
+  </div>
+
+  <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -- Mouse shortcut only; Escape and the close button cover the keyboard. -->
+  <div class="modal-backdrop" (click)="onBackdropClick()"></div>
+</dialog>
+
+<!-- ng-content can only appear once, so each slot lives in a template reused by both layouts. -->
+<ng-template #body><ng-content /></ng-template>
+<ng-template #actions><ng-content select="[modalActions]" /></ng-template>

@@ -1,0 +1,103 @@
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-(--border-color-1)/40 pb-5">
+  <div>
+    <h2 class="text-[20px] font-bold text-(--text-color)">{{ 'profile.title' | translate }}</h2>
+    <p class="text-[13px] text-(--secondary-text) mt-1">{{ 'profile.subtitle' | translate }}</p>
+  </div>
+  <button type="submit" form="profile-form" [disabled]="loading() || profileForm.pristine" class="btn btn-sm bg-(--primary-color) hover:brightness-110 text-white border-none rounded-lg px-5 shadow-sm font-medium outline-none cursor-pointer disabled:opacity-60">
+    @if (loading()) {
+      <span class="loading loading-spinner loading-xs"></span>
+    }
+    {{ 'common.saveChanges' | translate }}
+  </button>
+</div>
+
+<div class="flex items-center gap-5 py-6">
+  <div class="w-16 h-16 rounded-full bg-(--primary-color)/10 text-(--primary-color) border border-(--border-color-1)/40 flex items-center justify-center shrink-0 font-bold text-2xl select-none">
+    @if (user().img) {
+        <img [src]="user().img" alt="{{ user().name || ('user.defaultName' | translate) }}" class="w-full h-full object-cover object-center rounded-full" />
+    } @else {
+        {{ (user().name || ('user.defaultName' | translate)) | initials }}
+    }
+  </div>
+  <div class="flex flex-col items-start min-w-0">
+    <h3 class="font-bold text-(--text-color) text-[16px] leading-tight break-words">{{ user().name || ('user.defaultName' | translate) }}</h3>
+    <span class="text-[12px] text-(--secondary-text)">{{ user().email }}</span>
+    <span class="mt-1 inline-block px-2.5 py-0.5 text-[10px] font-bold bg-(--primary-color)/10 text-(--primary-color) border border-(--primary-color)/20 rounded-md uppercase tracking-wide">
+      {{ user().role | translate }}
+    </span>
+  </div>
+</div>
+
+<hr class="border-(--border-color-1)/40 mb-6" />
+
+<form id="profile-form" [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mb-8">
+  <div class="flex flex-col gap-1">
+    <label for="profile-name" class="text-[13px] font-medium text-(--secondary-text)">{{ 'auth.field.name' | translate }}</label>
+    <input id="profile-name" type="text" formControlName="name" autocomplete="name" [placeholder]="'auth.field.namePlaceholder' | translate" class="w-full mt-1 border-2 border-(--border-color-1)/40 rounded-lg py-2 px-3 bg-transparent text-(--text-color) text-[14px] outline-none focus:border-(--primary-color) transition-colors placeholder:text-(--secondary-text) placeholder:font-extralight placeholder:text-xs" />
+    <app-error-messages [control]="f.name" [label]="'validation.thisField' | translate" />
+  </div>
+
+  <div class="flex flex-col gap-1">
+    <label for="profile-email" class="text-[13px] font-medium text-(--secondary-text)">{{ 'auth.field.email' | translate }}</label>
+    <input id="profile-email" type="email" formControlName="email" autocomplete="email" [placeholder]="'auth.field.emailPlaceholder' | translate" class="w-full mt-1 border-2 border-(--border-color-1)/40 rounded-lg py-2 px-3 bg-transparent text-(--text-color) text-[14px] outline-none focus:border-(--primary-color) transition-colors placeholder:text-(--secondary-text) placeholder:font-extralight placeholder:text-xs" />
+    <app-error-messages [control]="f.email" [label]="'validation.thisField' | translate" />
+  </div>
+
+  <div class="flex flex-col gap-1">
+    <label for="profile-phone" class="text-[13px] font-medium text-(--secondary-text)">{{ 'profile.field.phone' | translate }} <span class="text-[11px] font-normal">{{ 'common.optional' | translate }}</span></label>
+    <input id="profile-phone" type="tel" formControlName="phone" autocomplete="tel" [placeholder]="'profile.field.phonePlaceholder' | translate" class="w-full mt-1 border-2 border-(--border-color-1)/40 rounded-lg py-2 px-3 bg-transparent text-(--text-color) text-[14px] outline-none focus:border-(--primary-color) transition-colors placeholder:text-(--secondary-text) placeholder:font-extralight placeholder:text-xs" />
+    <app-error-messages [control]="f.phone" [label]="'validation.thisField' | translate" [messageFormat]="'profile.validation.phone' | translate" />
+  </div>
+
+  <div class="flex flex-col gap-1">
+    <label for="profile-birthdate" class="text-[13px] font-medium text-(--secondary-text)">{{ 'profile.field.birthdate' | translate }} <span class="text-[11px] font-normal">{{ 'common.optional' | translate }}</span></label>
+    <app-datepicker inputId="profile-birthdate" formControlName="birthdate" [maxDate]="today" class="mt-1" />
+  </div>
+</form>
+
+<!-- DANGER ZONE -->
+<div class="rounded-xl border border-(--danger)/30 bg-(--danger)/5 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+  <div>
+    <h3 class="text-[15px] font-bold text-(--danger)">{{ 'profile.delete.title' | translate }}</h3>
+    <p class="text-[13px] text-(--secondary-text) mt-1">{{ 'profile.delete.description' | translate }}</p>
+  </div>
+  <button type="button" (click)="openDeleteModal()" class="btn btn-sm bg-base-100 hover:bg-(--danger)/10 text-(--danger) border border-(--danger)/40 rounded-lg px-5 shadow-sm font-semibold cursor-pointer shrink-0">
+    {{ 'profile.delete.button' | translate }}
+  </button>
+</div>
+
+<!-- DELETE ACCOUNT MODAL -->
+<app-modal [(open)]="isDeleteModalOpen" [title]="'profile.delete.button' | translate" [subtitle]="user().email" icon="user-x" size="lg" [locked]="deleting()">
+  <form id="delete-account-form" [formGroup]="deleteForm" (ngSubmit)="deleteAccount()" class="space-y-2">
+    <div class="rounded-lg border border-(--danger)/30 bg-(--danger)/10 px-3 py-2 text-xs text-(--danger) leading-relaxed">
+      <b>{{ 'profile.delete.warningTitle' | translate }}</b> {{ 'profile.delete.warning' | translate }}
+    </div>
+
+    <div>
+      <label for="delete-reason" class="text-[13px] font-medium text-(--secondary-text)">{{ 'profile.delete.reason' | translate }}</label>
+      <textarea id="delete-reason" formControlName="reason" rows="3" maxlength="500" [placeholder]="'profile.delete.reasonPlaceholder' | translate" class="w-full mt-1 border-2 border-(--border-color-1)/40 rounded-lg py-2 px-3 bg-transparent text-(--text-color) text-[14px] outline-none focus:border-(--primary-color) transition-colors placeholder:text-(--secondary-text) placeholder:font-extralight placeholder:text-xs"></textarea>
+      <app-error-messages [control]="df.reason" [label]="'validation.thisField' | translate" />
+    </div>
+
+    <div>
+      <label for="delete-email" class="text-[13px] font-medium text-(--secondary-text)">{{ 'profile.delete.confirmEmail' | translate }}</label>
+      <input id="delete-email" type="email" formControlName="email" autocomplete="off" [placeholder]="user().email" class="w-full mt-1 border-2 border-(--border-color-1)/40 rounded-lg py-2 px-3 bg-transparent text-(--text-color) text-[14px] outline-none focus:border-(--primary-color) transition-colors placeholder:text-(--secondary-text) placeholder:font-extralight placeholder:text-xs" />
+      <app-error-messages [control]="df.email" [label]="'validation.thisField' | translate" />
+      @if (df.email.valid && df.email.touched && !emailMatches()) {
+        <small class="block mt-1 text-(--danger)">• {{ 'profile.delete.emailMismatch' | translate }}</small>
+      }
+    </div>
+  </form>
+
+  <ng-container modalActions>
+    <button type="button" (click)="closeDeleteModal()" [disabled]="deleting()" class="w-full sm:w-auto btn bg-base-100 hover:bg-(--bg-2) text-(--secondary-text) border border-(--border-color-1) rounded-lg h-9 min-h-0 text-sm font-bold shadow-sm cursor-pointer">
+      {{ 'common.cancel' | translate }}
+    </button>
+    <button type="submit" form="delete-account-form" [disabled]="deleting() || !emailMatches()" class="w-full sm:w-auto btn bg-(--danger) hover:brightness-110 text-white border-none rounded-lg h-9 min-h-0 text-sm font-semibold px-5 shadow-sm cursor-pointer">
+      @if (deleting()) {
+        <span class="loading loading-spinner loading-sm"></span>
+      }
+      {{ 'profile.delete.submit' | translate }}
+    </button>
+  </ng-container>
+</app-modal>

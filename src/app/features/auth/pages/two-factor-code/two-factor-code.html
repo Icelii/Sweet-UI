@@ -1,0 +1,27 @@
+<h1 class="text-3xl sm:text-4xl font-black mb-2">{{ 'auth.twoFactor.title' | translate }}</h1>
+<p class="text-sm text-(--secondary-text) mb-8">{{ 'auth.twoFactor.subtitle' | translate }}</p>
+
+<form (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+  <div class="flex justify-between gap-2 md:gap-3 mb-2">
+    @for (digit of code(); track $index) {
+      <input #inputField type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" [value]="digit" (input)="onInputChange($index, $event)" (keydown.backspace)="onBackspace($index, $event)" (paste)="onPaste($event)" class="flex-1 min-w-0 max-w-16 aspect-square text-center text-2xl font-bold border-2 border-(--border-color-1) focus:outline-none focus:ring-0 focus:border-(--primary-color) bg-base-100 text-(--text-color) rounded-lg transition-colors" [attr.aria-label]="'auth.twoFactor.digit' | translate: { index: $index + 1 }"/>
+    }
+  </div>
+
+  <button type="submit" [disabled]="loading() || !isCodeComplete()" class="btn w-full bg-(--primary-color) hover:bg-(--primary-color)/85 text-white border-none rounded-md h-[42px] min-h-0 text-md font-semibold shadow-sm flex items-center justify-center gap-2 disabled:bg-(--primary-color)/50 disabled:text-white">
+    @if (loading()) {
+      <span class="loading loading-spinner loading-sm"></span>
+      <span>{{ 'auth.processing' | translate }}</span>
+    } @else {
+      <span>{{ 'auth.twoFactor.submit' | translate }}</span>
+    }
+  </button>
+
+  <button type="button" (click)="resend()" [disabled]="!canResend() || loading()" class="btn w-full bg-transparent border-2 border-(--border-color-1) text-(--secondary-text) hover:text-(--primary-color) hover:border-(--primary-color) rounded-md h-[42px] min-h-0 text-sm font-semibold shadow-none disabled:bg-transparent disabled:opacity-60">
+    @if (canResend()) {
+      {{ 'auth.twoFactor.resend' | translate }}
+    } @else {
+      {{ 'auth.twoFactor.resendIn' | translate: { seconds: timeLeft() } }}
+    }
+  </button>
+</form>

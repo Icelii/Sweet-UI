@@ -1,8 +1,8 @@
-import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter, map } from 'rxjs';
+import { BRAND, brandLogo } from '@core/config/brand';
 import { NavItem, NavLink } from '@core/interfaces/navigation';
 import { flattenNavigation, NAVIGATION } from '@core/navigation/navigation';
 import { Theme } from '@core/services/theme';
@@ -10,10 +10,10 @@ import { TablerIcon, TablerIconName } from '@shared/components/tabler-icon/table
 import { TranslatePipe } from '@shared/pipes/translate-pipe';
 import { LayoutState } from '@layouts/main-layout/layout-state';
 
-/** Menú lateral: logo, botón para colapsar y navegación con submenús. */
+/** Sidebar: logo, collapse button and navigation with submenus. */
 @Component({
   selector: 'app-sidebar',
-  imports: [NgClass, RouterLink, TablerIcon, TranslatePipe],
+  imports: [RouterLink, TablerIcon, TranslatePipe],
   templateUrl: './sidebar.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'contents' },
@@ -22,6 +22,8 @@ export class Sidebar {
   private readonly router = inject(Router);
   protected readonly theme = inject(Theme);
   protected readonly layout = inject(LayoutState);
+  protected readonly brand = BRAND;
+  protected readonly logo = computed(() => brandLogo(this.theme.isDark()));
 
   protected readonly navItems = flattenNavigation(NAVIGATION);
   protected readonly isExpanded = this.layout.isExpanded;

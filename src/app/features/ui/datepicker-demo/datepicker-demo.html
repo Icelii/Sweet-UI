@@ -1,0 +1,55 @@
+<div class="px-4 md:px-8 py-5">
+  <div class="mb-6">
+    <h2 class="text-[20px] font-bold text-(--text-color)">{{ 'demo.datepicker.title' | translate }}</h2>
+    <p class="text-[13px] text-(--secondary-text) mt-1">{{ 'demo.datepicker.subtitle' | translate }}</p>
+  </div>
+
+  <form [formGroup]="form" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-1">
+      <label for="demo-single" class="text-[14px] font-bold text-(--text-color)">{{ 'demo.datepicker.single' | translate }}</label>
+      <p class="text-[12px] text-(--secondary-text) mb-2">{{ 'demo.datepicker.singleHint' | translate }}</p>
+      <app-datepicker inputId="demo-single" formControlName="single" />
+    </section>
+
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-1">
+      <label for="demo-range" class="text-[14px] font-bold text-(--text-color)">{{ 'demo.datepicker.range' | translate }}</label>
+      <p class="text-[12px] text-(--secondary-text) mb-2">{{ 'demo.datepicker.rangeHint' | translate }}</p>
+      <app-datepicker inputId="demo-range" mode="range" [months]="2" showPresets formControlName="range" />
+    </section>
+
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-1">
+      <label for="demo-multiple" class="text-[14px] font-bold text-(--text-color)">{{ 'demo.datepicker.multiple' | translate }}</label>
+      <p class="text-[12px] text-(--secondary-text) mb-2">{{ 'demo.datepicker.multipleHint' | translate }}</p>
+      <app-datepicker inputId="demo-multiple" mode="multiple" formControlName="multiple" />
+    </section>
+
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-1">
+      <label for="demo-time" class="text-[14px] font-bold text-(--text-color)">{{ 'demo.datepicker.time' | translate }}</label>
+      <p class="text-[12px] text-(--secondary-text) mb-2">{{ 'demo.datepicker.timeHint' | translate }}</p>
+      <app-datepicker inputId="demo-time" showTime [minuteStep]="15" formControlName="dateTime" />
+    </section>
+
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-1">
+      <label for="demo-limits" class="text-[14px] font-bold text-(--text-color)">{{ 'demo.datepicker.limits' | translate }}</label>
+      <p class="text-[12px] text-(--secondary-text) mb-2">{{ 'demo.datepicker.limitsHint' | translate }}</p>
+      <app-datepicker inputId="demo-limits" [minDate]="today" [maxDate]="in60Days" [isDateDisabled]="isWeekend" formControlName="limited" />
+    </section>
+
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-1">
+      <label for="demo-disabled" class="text-[14px] font-bold text-(--text-color)">{{ 'demo.datepicker.disabled' | translate }}</label>
+      <p class="text-[12px] text-(--secondary-text) mb-2">{{ 'demo.datepicker.disabledHint' | translate }}</p>
+      <app-datepicker inputId="demo-disabled" formControlName="disabled" />
+    </section>
+
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-1">
+      <h3 class="text-[14px] font-bold text-(--text-color)">{{ 'demo.datepicker.inline' | translate }}</h3>
+      <p class="text-[12px] text-(--secondary-text) mb-2">{{ 'demo.datepicker.inlineHint' | translate }}</p>
+      <app-datepicker inline formControlName="inline" class="self-start" />
+    </section>
+
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-1 min-w-0">
+      <h3 class="text-[14px] font-bold text-(--text-color) mb-2">{{ 'demo.datepicker.value' | translate }}</h3>
+      <pre class="text-[12px] text-(--secondary-text) bg-(--bg-2) rounded-lg p-3 overflow-x-auto">{{ value() | json }}</pre>
+    </section>
+  </form>
+</div>

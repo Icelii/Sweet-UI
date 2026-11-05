@@ -1,0 +1,52 @@
+<h1 class="text-3xl sm:text-4xl font-black mb-6">{{ 'auth.login.welcome' | translate }}</h1>
+
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+  <div class="text-left">
+    <span class="font-black label-text font-bold text-sm lg:text-base">{{ 'auth.field.email' | translate }}</span>
+    <input type="text" formControlName="email" autocomplete="username" class="mt-1 border-2 border-(--border-color-1) focus:outline-none focus:ring-0 focus:border-(--primary-color) w-full py-2 px-3 bg-base-100 text-(--text-color) rounded-lg placeholder:font-normal placeholder:text-(--secondary-text) placeholder:font-extralight placeholder:text-xs" [placeholder]="'auth.field.emailPlaceholder' | translate"/>
+    <app-error-messages [control]="f['email']" [label]="'validation.thisField' | translate"></app-error-messages>
+  </div>
+
+  <div class="text-left relative">
+    <span class="font-black label-text font-bold text-sm lg:text-base">{{ 'auth.field.password' | translate }}</span>
+    <div class="relative mt-1">
+      <input [type]="passwordVisible() ? 'text' : 'password'" formControlName="password" autocomplete="current-password" class="pr-11 border-2 border-(--border-color-1) focus:outline-none focus:ring-0 focus:border-(--primary-color) w-full py-2 px-3 bg-base-100 text-(--text-color) rounded-lg placeholder:font-normal placeholder:text-(--secondary-text) placeholder:font-extralight placeholder:text-xs" [placeholder]="'auth.field.password' | translate"/>
+      <button type="button" (click)="togglePasswordVisibility()" class="cursor-pointer absolute inset-y-0 right-0 flex items-center px-3 text-(--secondary-text) hover:text-(--primary-color) transition-colors" [attr.aria-label]="'auth.togglePassword' | translate">
+        @if (passwordVisible()) {
+          <app-tabler-icon name="eye-closed" [size]="22" />
+        } @else {
+          <app-tabler-icon name="eye" [size]="22" />
+        }
+      </button>
+    </div>
+    <app-error-messages [control]="f['password']" [label]="'validation.thisField' | translate" [messageFormat]="'validation.passwordFormat' | translate"></app-error-messages>
+  </div>
+
+  <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 mt-2">
+    <label class="cursor-pointer flex items-center gap-3">
+      <input type="checkbox" formControlName="remember_me" class="toggle border-(--border-color-1) bg-(--border-color-1) text-white checked:border-(--border-color-1) checked:bg-(--primary-color) checked:text-white"/>
+      <span class="text-sm font-medium">{{ 'auth.login.rememberMe' | translate }}</span>
+    </label>
+    <a routerLink="/auth/forgot-password" class="text-sm text-(--primary-color) underline underline-offset-2 hover:text-(--primary-color)/80">
+      {{ 'auth.login.forgotPassword' | translate }}
+    </a>
+  </div>
+
+  <button type="submit" [disabled]="loading()" class="btn w-full bg-(--primary-color) hover:bg-(--primary-color)/85 text-white border-none rounded-md h-[42px] min-h-0 text-md font-semibold mt-2 shadow-sm flex items-center justify-center gap-2 disabled:bg-(--primary-color)/50">
+    @if (loading()) {
+      <span class="loading loading-spinner loading-sm"></span>
+      <span>{{ 'auth.processing' | translate }}</span>
+    } @else {
+      <span>{{ 'auth.login.submit' | translate }}</span>
+    }
+  </button>
+
+  <p class="text-sm text-center text-(--secondary-text)">
+    {{ 'auth.login.noAccount' | translate }}
+    <a routerLink="/auth/register" class="text-(--primary-color) font-semibold underline underline-offset-2 hover:text-(--primary-color)/80">{{ 'auth.login.createAccount' | translate }}</a>
+  </p>
+</form>
+
+<div class="divider text-xs text-(--secondary-text) my-5">{{ 'auth.or' | translate }}</div>
+
+<app-google-button [label]="'auth.login.google' | translate" [disabled]="loading()" (pressed)="onGoogleSignIn()" />

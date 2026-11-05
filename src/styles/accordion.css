@@ -1,0 +1,125 @@
+/*
+ * Accordions (see <app-accordion>). Variants: default (one bordered block),
+ * ui-accordion-flush (no outer border) and ui-accordion-separated (one card per item).
+ */
+@layer components {
+  .ui-accordion {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    border: 1px solid color-mix(in oklab, var(--border-color-1) 40%, transparent);
+    border-radius: 0.75rem;
+    background: var(--color-base-100);
+    overflow: hidden;
+  }
+  .ui-accordion > .ui-accordion-item + .ui-accordion-item {
+    border-top: 1px solid color-mix(in oklab, var(--border-color-1) 40%, transparent);
+  }
+  .ui-accordion-flush {
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+  .ui-accordion-separated {
+    gap: 0.75rem;
+    border: 0;
+    background: transparent;
+    overflow: visible;
+  }
+  .ui-accordion-separated > .ui-accordion-item,
+  .ui-accordion-separated > .ui-accordion-item + .ui-accordion-item {
+    border: 1px solid color-mix(in oklab, var(--border-color-1) 40%, transparent);
+    border-radius: 0.75rem;
+    background: var(--color-base-100);
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .ui-accordion-separated > .ui-accordion-item.is-open {
+    border-color: color-mix(in oklab, var(--primary-color) 40%, transparent);
+    box-shadow: 0 8px 24px -14px rgb(0 0 0 / 0.2);
+  }
+  .ui-accordion-item {
+    display: block;
+    min-width: 0;
+  }
+  .ui-accordion-trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 1rem 1.25rem;
+    border: 0;
+    background: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-color);
+    text-align: start;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.15s, color 0.15s;
+  }
+  .ui-accordion-trigger:hover {
+    background: var(--bg-2);
+  }
+  .ui-accordion-trigger:focus-visible {
+    box-shadow: inset 0 0 0 2px color-mix(in oklab, var(--primary-color) 50%, transparent);
+  }
+  .ui-accordion-trigger:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: none;
+  }
+  .ui-accordion-item.is-open > .ui-accordion-heading > .ui-accordion-trigger {
+    color: var(--primary-color);
+  }
+  .ui-accordion-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.625rem;
+    background: color-mix(in oklab, var(--primary-color) 10%, transparent);
+    color: var(--primary-color);
+  }
+  .ui-accordion-subtitle {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--secondary-text);
+  }
+  .ui-accordion-chevron {
+    flex-shrink: 0;
+    color: var(--secondary-text);
+    transition: transform 0.2s;
+  }
+  .ui-accordion-item.is-open > .ui-accordion-heading .ui-accordion-chevron {
+    transform: rotate(180deg);
+    color: var(--primary-color);
+  }
+  /* Height animation without measuring: the grid row goes from 0fr to 1fr. */
+  .ui-accordion-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.25s ease;
+  }
+  .ui-accordion-item.is-open > .ui-accordion-panel {
+    grid-template-rows: 1fr;
+  }
+  .ui-accordion-panel > div {
+    min-height: 0;
+    overflow: hidden;
+  }
+  .ui-accordion-body {
+    padding: 0 1.25rem 1.25rem;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--secondary-text);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ui-accordion-panel,
+    .ui-accordion-chevron {
+      transition: none;
+    }
+  }
+}

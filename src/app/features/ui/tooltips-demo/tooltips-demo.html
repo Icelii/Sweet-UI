@@ -1,0 +1,190 @@
+<div class="px-4 md:px-8 py-5 flex flex-col gap-6">
+  <div class="flex flex-col gap-2">
+    <h2 class="text-[20px] font-bold text-(--text-color)">{{ 'ui.tooltips.title' | translate }}</h2>
+    <p class="text-[13px] text-(--secondary-text) -mt-1">{{ 'ui.tooltips.subtitle' | translate }}</p>
+  </div>
+
+  <section class="xl:col-span-2 bg-(--primary-color)/5 border border-dashed border-(--primary-color)/40 rounded-xl p-5 flex items-start gap-3">
+    <app-tabler-icon name="info-circle" [size]="20" class="text-(--primary-color) mt-0.5" />
+    <p class="text-[13px] text-(--secondary-text)">{{ 'ui.tooltips.note' | translate }}</p>
+  </section>
+
+  <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 items-start">
+    <!-- TOOLTIP PLACEMENT -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.tooltips.placement' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.tooltips.placementHint' | translate }}</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-2.5">
+        @for (item of placements; track item.key) {
+          <button type="button" class="ui-btn ui-btn-default" [appTooltip]="('ui.tooltips.tipOn' | translate) + ' ' + (item.label | translate | lowercase)" [tooltipPlacement]="item.key">
+            <app-tabler-icon [name]="item.icon" [size]="16" />{{ item.label | translate }}
+          </button>
+        }
+      </div>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">&lt;button appTooltip="Texto" tooltipPlacement="right"&gt;</code>
+    </section>
+
+    <!-- TOOLTIP COLORS -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.tooltips.colors' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.tooltips.colorsHint' | translate }}</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-2.5">
+        @for (tone of tones; track tone.key) {
+          <button type="button" class="ui-btn ui-btn-light {{ tone.btn }}" [appTooltip]="'ui.tooltips.sample' | translate" [tooltipTone]="tone.key">{{ tone.label | translate }}</button>
+        }
+      </div>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">tooltipTone="dark | light | primary | success | warning | danger"</code>
+    </section>
+
+    <!-- TOOLTIPS IN CONTEXT -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-5 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.tooltips.context' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.tooltips.contextHint' | translate }}</p>
+      </div>
+
+      <!-- Icon toolbar -->
+      <div class="flex flex-wrap items-center gap-1 w-fit max-w-full rounded-xl border border-(--border-color-1)/40 p-1" role="toolbar" [attr.aria-label]="'ui.tooltips.editor' | translate">
+        @for (tool of toolbar; track tool.icon) {
+          <button type="button" class="ui-btn ui-btn-ghost ui-btn-neutral ui-btn-sm ui-btn-icon" [attr.aria-label]="tool.label | translate" [appTooltip]="tip(tool.label, tool.shortcut)" tooltipPlacement="bottom">
+            <app-tabler-icon [name]="tool.icon" [size]="18" />
+          </button>
+        }
+      </div>
+
+      <!-- Copy with feedback -->
+      <div class="flex flex-col gap-1 max-w-md">
+        <label for="tt-link" class="form-label">{{ 'ui.tooltips.inviteLink' | translate }}</label>
+        <div class="input-group">
+          <input id="tt-link" type="text" readonly [value]="link" />
+          <button type="button" class="input-group-button" (click)="copy()" [appTooltip]="(copied() ? 'ui.tooltips.copied' : 'ui.tooltips.copy') | translate" [tooltipTone]="copied() ? 'success' : 'dark'" [attr.aria-label]="'ui.tooltips.copy' | translate">
+            <app-tabler-icon [name]="copied() ? 'check' : 'copy'" [size]="16" />
+          </button>
+        </div>
+      </div>
+
+      <!-- Help icon in a label + disabled button + avatars -->
+      <div class="flex flex-wrap items-center gap-5">
+        <span class="flex items-center gap-1.5 text-[13px] font-medium text-(--secondary-text)">
+          {{ 'ui.tooltips.taxes' | translate }}
+          <button type="button" class="inline-flex text-(--secondary-text) hover:text-(--primary-color) cursor-help rounded-full" [appTooltip]="'ui.tooltips.taxesHint' | translate" [attr.aria-label]="'ui.tooltips.moreInfo' | translate">
+            <app-tabler-icon name="help-circle" [size]="16" />
+          </button>
+        </span>
+
+        <span tabindex="0" class="inline-flex rounded-lg" [appTooltip]="'ui.tooltips.disabledHint' | translate">
+          <button type="button" class="ui-btn ui-btn-sm pointer-events-none" disabled>{{ 'ui.action.approve' | translate }}</button>
+        </span>
+
+        <div class="ui-avatar-group">
+          @for (name of team; track name) {
+            <app-avatar [name]="name" size="sm" tabindex="0" [appTooltip]="name" />
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- POPOVERS -->
+    <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.tooltips.popovers' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.tooltips.popoversHint' | translate }}</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-2.5">
+        @for (item of placements; track item.key) {
+          <app-popover [title]="'ui.tooltips.popoverTitle' | translate" [placement]="item.key" panelClass="w-64">
+            <button type="button" appPopoverTrigger class="ui-btn ui-btn-light"><app-tabler-icon [name]="item.icon" [size]="16" />{{ item.label | translate }}</button>
+            <div class="ui-popover-body">{{ 'ui.tooltips.popoverBody' | translate }}</div>
+          </app-popover>
+        }
+      </div>
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">&lt;app-popover title="…" placement="right"&gt;&lt;button appPopoverTrigger&gt;…&lt;/button&gt;…&lt;/app-popover&gt;</code>
+    </section>
+
+    <!-- POPOVERS IN CONTEXT -->
+    <section class="xl:col-span-2 bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.tooltips.popoverContext' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.tooltips.popoverContextHint' | translate }}</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Profile card -->
+        <div class="rounded-xl border border-(--border-color-1)/40 p-4 flex flex-col gap-3">
+          <span class="text-[11px] font-semibold uppercase tracking-wide text-(--secondary-text)">{{ 'ui.tooltips.profileCard' | translate }}</span>
+          <div class="text-[13px] text-(--secondary-text)">
+            {{ 'ui.tooltips.assignedTo' | translate }}
+            <app-popover placement="top" panelClass="w-72">
+              <button type="button" appPopoverTrigger class="font-semibold text-(--primary-color) hover:underline underline-offset-2 cursor-pointer">Jaret González</button>
+              <div class="p-4 flex flex-col gap-3">
+                <div class="flex items-center gap-3">
+                  <app-avatar name="Jaret González" size="lg" status="away" />
+                  <div class="flex flex-col min-w-0">
+                    <span class="text-[14px] font-bold text-(--text-color) truncate">Jaret González</span>
+                    <span class="text-[12px] text-(--secondary-text) truncate">Backend Developer</span>
+                  </div>
+                </div>
+                <div class="flex flex-col gap-1.5 text-[12px] text-(--secondary-text)">
+                  <span class="flex items-center gap-2"><app-tabler-icon name="mail" [size]="14" />jaret&#64;sweetui.dev</span>
+                  <span class="flex items-center gap-2"><app-tabler-icon name="map-pin" [size]="14" />Monterrey, MX</span>
+                </div>
+                <div class="flex gap-2">
+                  <button type="button" class="ui-btn ui-btn-sm flex-1"><app-tabler-icon name="mail" [size]="16" />{{ 'ui.tooltips.message' | translate }}</button>
+                  <button type="button" class="ui-btn ui-btn-default ui-btn-sm flex-1">{{ 'tables.view' | translate }}</button>
+                </div>
+              </div>
+            </app-popover>
+          </div>
+        </div>
+
+        <!-- Quick edit -->
+        <div class="rounded-xl border border-(--border-color-1)/40 p-4 flex flex-col gap-3">
+          <span class="text-[11px] font-semibold uppercase tracking-wide text-(--secondary-text)">{{ 'ui.tooltips.quickEdit' | translate }}</span>
+          <div class="flex items-center justify-between gap-2 min-w-0">
+            <span class="text-[14px] font-semibold text-(--text-color) truncate">{{ projectName() }}</span>
+            <app-popover #rename [title]="'ui.tooltips.rename' | translate" placement="bottom" panelClass="w-72">
+              <button type="button" appPopoverTrigger class="ui-btn ui-btn-ghost ui-btn-neutral ui-btn-sm ui-btn-icon" (click)="draftName.set(projectName())" [attr.aria-label]="'ui.tooltips.rename' | translate" [appTooltip]="'ui.tooltips.rename' | translate">
+                <app-tabler-icon name="edit" [size]="16" />
+              </button>
+              <form class="ui-popover-body flex flex-col gap-3" (submit)="$event.preventDefault(); projectName.set(draftName().trim() || projectName()); rename.close()">
+                <input type="text" class="form-input form-input-sm" maxlength="40" [value]="draftName()" (input)="draftName.set($any($event.target).value)" [attr.aria-label]="'ui.modals.field.name' | translate" />
+                <div class="flex justify-end gap-2">
+                  <button type="button" class="ui-btn ui-btn-default ui-btn-sm" (click)="rename.close()">{{ 'common.cancel' | translate }}</button>
+                  <button type="submit" class="ui-btn ui-btn-sm">{{ 'common.saveChanges' | translate }}</button>
+                </div>
+              </form>
+            </app-popover>
+          </div>
+        </div>
+
+        <!-- Inline confirm -->
+        <div class="rounded-xl border border-(--border-color-1)/40 p-4 flex flex-col gap-3">
+          <span class="text-[11px] font-semibold uppercase tracking-wide text-(--secondary-text)">{{ 'ui.tooltips.confirm' | translate }}</span>
+          @if (!deleted()) {
+            <div class="flex items-center justify-between gap-2">
+              <span class="flex items-center gap-2 text-[13px] text-(--text-color) min-w-0"><app-tabler-icon name="file-text" [size]="18" class="text-(--primary-color)" /><span class="truncate">Reporte-octubre.pdf</span></span>
+              <app-popover #confirm placement="left" panelClass="w-64">
+                <button type="button" appPopoverTrigger class="ui-btn ui-btn-ghost ui-btn-danger ui-btn-sm ui-btn-icon" [attr.aria-label]="'ui.action.delete' | translate"><app-tabler-icon name="trash" [size]="16" /></button>
+                <div class="ui-popover-body flex flex-col gap-3">
+                  <p class="flex items-start gap-2 text-(--text-color)"><app-tabler-icon name="alert-triangle" [size]="18" class="text-(--danger) shrink-0" />{{ 'ui.tooltips.confirmBody' | translate }}</p>
+                  <div class="flex justify-end gap-2">
+                    <button type="button" class="ui-btn ui-btn-default ui-btn-sm" (click)="confirm.close()">{{ 'common.cancel' | translate }}</button>
+                    <button type="button" class="ui-btn ui-btn-danger ui-btn-sm" (click)="deleted.set(true); confirm.close(false)">{{ 'ui.action.delete' | translate }}</button>
+                  </div>
+                </div>
+              </app-popover>
+            </div>
+          } @else {
+            <div class="flex items-center justify-between gap-2 text-[13px]">
+              <span class="text-(--secondary-text)">{{ 'ui.tooltips.deleted' | translate }}</span>
+              <button type="button" class="ui-btn ui-btn-link ui-btn-sm" (click)="deleted.set(false)">{{ 'ui.tooltips.undo' | translate }}</button>
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

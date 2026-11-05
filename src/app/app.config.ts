@@ -12,9 +12,10 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withComponentInputBinding()),
     provideClientHydration(withEventReplay()),
     { provide: TitleStrategy, useClass: TranslatedTitleStrategy },
+    // Apply the saved theme, and wait for the language texts before the first render.
     provideAppInitializer(() => {
       inject(Theme);
-      inject(I18n);
+      return inject(I18n).ready;
     }),
   ],
 };

@@ -1,0 +1,210 @@
+/* Form controls shared by every page. Utilities (pl-10, w-auto, …) can still override them. */
+@layer components {
+  .form-label {
+    @apply text-[13px] font-medium text-(--secondary-text);
+  }
+
+  .form-hint {
+    @apply text-[12px] text-(--secondary-text);
+  }
+
+  .form-input {
+    @apply w-full border-2 border-(--border-color-1)/40 rounded-lg py-2 px-3 bg-transparent text-(--text-color) text-[14px] outline-none transition-colors;
+    @apply placeholder:text-(--secondary-text) placeholder:font-extralight placeholder:text-xs;
+    @apply focus:border-(--primary-color) disabled:opacity-60 disabled:cursor-not-allowed;
+  }
+
+  .form-input[readonly] {
+    @apply bg-(--bg-2) cursor-default focus:border-(--border-color-1)/40;
+  }
+
+  /*
+   * Native <select> styled like <app-select>. Browsers that support `appearance: base-select`
+   * (Chrome/Edge 135+) also get a styled dropdown; the rest keep their own list but share
+   * the field look and chevron.
+   */
+  select.form-input,
+  .input-group > select {
+    @apply appearance-none cursor-pointer pr-9 bg-no-repeat;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6l6 -6'/%3E%3C/svg%3E");
+    background-position: right 0.6rem center;
+    background-size: 18px;
+  }
+
+  select.form-input {
+    @apply bg-base-100;
+  }
+
+  @supports (appearance: base-select) {
+    select.form-input,
+    .input-group > select,
+    select.form-input::picker(select),
+    .input-group > select::picker(select) {
+      appearance: base-select;
+    }
+
+    select.form-input,
+    .input-group > select {
+      @apply flex items-center gap-2 bg-none pr-2.5;
+    }
+
+    select.form-input::picker-icon,
+    .input-group > select::picker-icon {
+      @apply text-(--secondary-text) transition-transform;
+      content: '';
+      width: 18px;
+      height: 18px;
+      background-color: currentColor;
+      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6l6 -6'/%3E%3C/svg%3E") center / contain no-repeat;
+      margin-inline-start: auto;
+      flex-shrink: 0;
+    }
+
+    select.form-input:open::picker-icon,
+    .input-group > select:open::picker-icon {
+      @apply rotate-180;
+    }
+
+    select.form-input:open {
+      @apply border-(--primary-color);
+    }
+
+    select.form-input::picker(select),
+    .input-group > select::picker(select) {
+      @apply bg-base-100 text-(--text-color) border border-(--border-color-1) rounded-xl shadow-xl p-1.5 mt-1.5;
+      min-width: anchor-size(width);
+    }
+
+    select.form-input option,
+    .input-group > select option {
+      @apply flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-[13px] text-(--text-color) cursor-pointer outline-none transition-colors;
+    }
+
+    select.form-input option:hover,
+    select.form-input option:focus-visible,
+    .input-group > select option:hover,
+    .input-group > select option:focus-visible {
+      @apply bg-(--primary-color)/10;
+    }
+
+    select.form-input option:checked,
+    .input-group > select option:checked {
+      @apply text-(--primary-color) font-semibold;
+    }
+
+    /* Check mark at the end, like <app-select>. */
+    select.form-input option::checkmark,
+    .input-group > select option::checkmark {
+      @apply order-1 ml-auto text-(--primary-color);
+    }
+
+    select.form-input option:disabled,
+    .input-group > select option:disabled {
+      @apply opacity-40 cursor-not-allowed;
+    }
+  }
+
+  .form-input-sm {
+    @apply py-1.5 px-2.5 text-[13px];
+  }
+
+  .form-input-lg {
+    @apply py-3 px-4 text-[15px];
+  }
+
+  /* Red border once a reactive control is invalid and touched. */
+  .form-input.ng-invalid.ng-touched,
+  .form-input[aria-invalid='true'],
+  .input-group:has(.ng-invalid.ng-touched) {
+    @apply border-(--danger) focus:border-(--danger) focus-within:border-(--danger);
+  }
+
+  .form-input.is-valid {
+    @apply border-success focus:border-success;
+  }
+
+  /* Several pieces (text, buttons, selects) sharing one border. */
+  .input-group {
+    @apply flex items-stretch w-full border-2 border-(--border-color-1)/40 rounded-lg overflow-hidden transition-colors focus-within:border-(--primary-color);
+  }
+
+  .input-group > input,
+  .input-group > select {
+    @apply flex-1 min-w-0 bg-transparent py-2 px-3 text-[14px] text-(--text-color) outline-none;
+    @apply placeholder:text-(--secondary-text) placeholder:font-extralight placeholder:text-xs;
+  }
+
+  .input-group > select {
+    @apply flex-none bg-(--bg-2) cursor-pointer border-r-2 border-(--border-color-1)/40;
+  }
+
+  .input-addon {
+    @apply flex items-center gap-1.5 px-3 bg-(--bg-2) text-(--secondary-text) text-[13px] font-medium whitespace-nowrap select-none;
+  }
+
+  .input-addon:first-child {
+    @apply border-r-2 border-(--border-color-1)/40;
+  }
+
+  .input-addon:last-child {
+    @apply border-l-2 border-(--border-color-1)/40;
+  }
+
+  .input-group-button {
+    @apply flex items-center gap-1.5 px-4 bg-(--primary-color) text-white text-[13px] font-semibold cursor-pointer transition hover:brightness-110;
+  }
+
+  .form-file {
+    @apply w-full text-[13px] text-(--secondary-text) border-2 border-(--border-color-1)/40 rounded-lg cursor-pointer transition-colors;
+    @apply focus:outline-none focus:border-(--primary-color) disabled:opacity-60 disabled:cursor-not-allowed;
+    @apply file:mr-3 file:border-0 file:border-r-2 file:border-(--border-color-1)/40 file:bg-(--bg-2) file:text-(--text-color) file:font-semibold file:px-4 file:py-2.5 file:cursor-pointer;
+    @apply hover:file:bg-(--primary-color)/10 hover:file:text-(--primary-color);
+  }
+
+  .form-file-sm {
+    @apply text-[12px] file:py-1.5 file:px-3;
+  }
+
+  /* Two stacked range inputs: only their handles catch the pointer (see <app-range-slider>). */
+  .range-thumb {
+    @apply absolute inset-0 w-full h-full m-0 appearance-none bg-transparent pointer-events-none outline-none;
+  }
+
+  .range-thumb::-webkit-slider-runnable-track {
+    @apply bg-transparent;
+  }
+
+  .range-thumb::-webkit-slider-thumb {
+    @apply appearance-none pointer-events-auto size-[18px] rounded-full bg-white border-[3px] border-(--primary-color) shadow-md cursor-grab transition-shadow;
+  }
+
+  .range-thumb::-moz-range-thumb {
+    @apply pointer-events-auto size-3 rounded-full bg-white border-[3px] border-(--primary-color) shadow-md cursor-grab;
+  }
+
+  .range-thumb:active::-webkit-slider-thumb {
+    @apply cursor-grabbing;
+  }
+
+  .range-thumb:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--primary-color) 30%, transparent);
+  }
+
+  .range-thumb:focus-visible::-moz-range-thumb {
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--primary-color) 30%, transparent);
+  }
+
+  .range-thumb:disabled::-webkit-slider-thumb {
+    @apply cursor-not-allowed;
+  }
+}
+
+/*
+ * Custom form controls get the same red border as .form-input when invalid and touched.
+ * Kept outside @layer so it wins over the border utilities inside those components.
+ */
+app-select.ng-invalid.ng-touched [role='combobox'],
+app-datepicker.ng-invalid.ng-touched button[aria-haspopup],
+app-dropzone.ng-invalid.ng-touched [role='button'] {
+  border-color: var(--danger);
+}

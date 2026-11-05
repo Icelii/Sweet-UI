@@ -7,9 +7,9 @@
     </div>
 
     <header class="flex h-16 items-center px-4 sm:px-8">
-        <a routerLink="/" class="flex items-center gap-3 outline-none" aria-label="Sweet UI">
-            <img [src]="theme.isDark() ? 'logo/sweet-ui-icon-beta-dark.svg' : 'logo/sweet-ui-icon-beta.svg'" alt="Sweet UI" class="h-10 w-10 object-contain"/>
-            <span class="font-heading text-lg font-bold">Sweet UI</span>
+        <a routerLink="/" class="flex items-center gap-3 outline-none" [attr.aria-label]="brand.name">
+            <img [src]="logo()" alt="" class="h-10 w-10 object-contain"/>
+            <span class="font-heading text-lg font-bold">{{ brand.name }}</span>
         </a>
     </header>
 

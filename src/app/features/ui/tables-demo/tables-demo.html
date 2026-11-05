@@ -1,0 +1,362 @@
+<div class="px-4 md:px-8 py-5 flex flex-col gap-6">
+  <div>
+    <h2 class="text-[20px] font-bold text-(--text-color)">{{ 'tables.title' | translate }}</h2>
+    <p class="text-[13px] text-(--secondary-text) mt-1">{{ 'tables.subtitle' | translate }}</p>
+  </div>
+
+  <!-- ===================== DATA TABLE ===================== -->
+  <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl">
+    <!-- Header: title + counter -->
+    <header class="px-4 sm:px-5 pt-5 flex flex-col sm:flex-row sm:items-end justify-between gap-1">
+      <div>
+        <h3 class="text-[17px] font-bold text-(--text-color)">{{ 'tables.discounts.title' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'tables.discounts.hint' | translate }}</p>
+      </div>
+      @if (!loading()) {
+        <p class="text-[12px] text-(--secondary-text)">
+          <b class="text-(--text-color)">{{ filtered().length }}</b>
+          {{ (filtered().length === 1 ? 'tables.discounts.one' : 'tables.discounts.many') | translate }}
+        </p>
+      }
+    </header>
+
+    <!-- Toolbar: search + actions -->
+    <div class="px-4 sm:px-5 pt-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+      <div class="relative w-full sm:w-72 md:w-80">
+        <app-tabler-icon name="search" [size]="18" class="absolute left-3 top-1/2 -translate-y-1/2 text-(--secondary-text) pointer-events-none" />
+        <input type="search" [value]="search()" (input)="search.set($any($event.target).value)" [placeholder]="'tables.searchPlaceholder' | translate" [attr.aria-label]="'tables.searchPlaceholder' | translate" class="form-input pl-10" />
+      </div>
+
+      <div class="grid grid-cols-2 sm:flex items-center gap-2">
+        <button type="button" (click)="refresh()" [disabled]="loading()" class="h-9 inline-flex items-center justify-center gap-2 rounded-lg border-2 border-(--border-color-1)/40 px-3.5 text-[13px] font-medium text-(--text-color) hover:bg-(--bg-2) disabled:opacity-60 transition cursor-pointer">
+          <app-tabler-icon name="refresh" [size]="16" [class.animate-spin]="loading()" />
+          {{ 'tables.refresh' | translate }}
+        </button>
+        <button type="button" (click)="showFilters.set(!showFilters())" [attr.aria-expanded]="showFilters()" class="h-9 inline-flex items-center justify-center gap-2 rounded-lg border-2 px-3.5 text-[13px] font-medium transition cursor-pointer" [class]="showFilters() || activeFilters() ? 'border-(--primary-color)/50 bg-(--primary-color)/10 text-(--primary-color)' : 'border-(--border-color-1)/40 text-(--text-color) hover:bg-(--bg-2)'">
+          <app-tabler-icon name="filter" [size]="16" />
+          {{ 'tables.filters' | translate }}
+          @if (activeFilters()) {
+            <span class="min-w-5 h-5 px-1 rounded-full bg-(--primary-color) text-white text-[11px] font-bold inline-flex items-center justify-center">{{ activeFilters() }}</span>
+          }
+        </button>
+        <button type="button" (click)="openForm()" class="col-span-2 h-9 inline-flex items-center justify-center gap-2 rounded-lg bg-(--primary-color) hover:brightness-110 px-4 text-[13px] font-semibold text-white shadow-sm transition cursor-pointer">
+          <app-tabler-icon name="plus" [size]="16" />
+          {{ 'tables.discounts.new' | translate }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Collapsible filters -->
+    @if (showFilters()) {
+      <div class="mx-4 sm:mx-5 mt-4 rounded-xl border border-(--border-color-1)/40 bg-(--bg-2)/50 p-4">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="flex flex-col gap-1">
+            <label for="t-scope" class="form-label">{{ 'tables.col.scope' | translate }}</label>
+            <app-select inputId="t-scope" [options]="scopeOptions()" [value]="scopeFilter()" (valueChange)="scopeFilter.set($any($event))" [placeholder]="'tables.scope.any' | translate" />
+          </div>
+          <div class="flex flex-col gap-1">
+            <label for="t-state" class="form-label">{{ 'tables.col.state' | translate }}</label>
+            <app-select inputId="t-state" [options]="stateOptions()" [value]="stateFilter()" (valueChange)="stateFilter.set($any($event))" [placeholder]="'tables.state.any' | translate" />
+          </div>
+          <div class="flex flex-col gap-1">
+            <label for="t-size" class="form-label">{{ 'tables.perPage' | translate }}</label>
+            <select id="t-size" [value]="pageSize()" (change)="pageSize.set(+$any($event.target).value)" class="form-input">
+              @for (size of pageSizes; track size) {
+                <option [value]="size" [selected]="size === pageSize()">{{ size }}</option>
+              }
+            </select>
+          </div>
+        </div>
+        <div class="flex justify-end mt-4 pt-3 border-t border-(--border-color-1)/40">
+          <button type="button" (click)="clearFilters()" [disabled]="!hasQuery()" class="h-8 px-3 rounded-lg text-[13px] font-medium text-(--secondary-text) hover:bg-base-100 hover:text-(--text-color) disabled:opacity-50 transition cursor-pointer">
+            {{ 'tables.clearFilters' | translate }}
+          </button>
+        </div>
+      </div>
+    }
+
+    <div class="p-4 sm:p-5">
+      <app-data-table [rows]="visible()" [columns]="discountColumns()" [trackBy]="byId" [(sort)]="sort" [loading]="loading()" [rowClass]="dimBusy" minWidth="900px" [label]="'tables.discounts.title' | translate">
+        <ng-template appCell="state" let-row><ng-container *ngTemplateOutlet="stateBadge; context: { $implicit: row }" /></ng-template>
+        <ng-template appCell="name" let-row>
+          <div class="flex flex-col min-w-0">
+            <span class="font-bold text-(--text-color) truncate max-w-60">{{ row.name }}</span>
+            <span class="text-[11px] text-(--secondary-text) truncate max-w-60">{{ row.description || ('tables.noDescription' | translate) }}</span>
+          </div>
+        </ng-template>
+        <ng-template appCell="value" let-row><span class="font-semibold text-(--text-color) whitespace-nowrap">{{ valueLabel(row) }}</span></ng-template>
+        <ng-template appCell="scope" let-row><ng-container *ngTemplateOutlet="scopeInfo; context: { $implicit: row }" /></ng-template>
+        <ng-template appCell="to" let-row><ng-container *ngTemplateOutlet="validity; context: { $implicit: row }" /></ng-template>
+        <ng-template appCell="active" let-row><ng-container *ngTemplateOutlet="activeToggle; context: { $implicit: row }" /></ng-template>
+        <ng-template appCell="actions" let-row><ng-container *ngTemplateOutlet="rowActions; context: { $implicit: row }" /></ng-template>
+
+        <!-- Phones -->
+        <ng-template appTableCard let-discount>
+          <div class="flex items-start justify-between gap-3">
+            <div class="flex items-center gap-3 min-w-0">
+              <span class="size-10 shrink-0 rounded-full bg-(--primary-color)/10 text-(--primary-color) inline-flex items-center justify-center">
+                <app-tabler-icon name="discounts" [size]="20" />
+              </span>
+              <div class="flex flex-col min-w-0">
+                <span class="text-[14px] font-bold text-(--text-color) truncate">{{ discount.name }}</span>
+                <span class="text-[11px] text-(--secondary-text) truncate">{{ discount.description || ('tables.noDescription' | translate) }}</span>
+              </div>
+            </div>
+            <ng-container *ngTemplateOutlet="stateBadge; context: { $implicit: discount }" />
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 text-[12px]">
+            <div class="flex flex-col gap-0.5">
+              <span class="text-(--secondary-text)">{{ 'tables.col.value' | translate }}</span>
+              <span class="font-bold text-(--text-color) text-[14px]">{{ valueLabel(discount) }}</span>
+            </div>
+            <div class="flex flex-col gap-0.5 min-w-0">
+              <span class="text-(--secondary-text)">{{ 'tables.col.scope' | translate }}</span>
+              <ng-container *ngTemplateOutlet="scopeInfo; context: { $implicit: discount }" />
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-0.5 text-[12px]">
+            <span class="text-(--secondary-text)">{{ 'tables.col.validity' | translate }}</span>
+            <ng-container *ngTemplateOutlet="validity; context: { $implicit: discount }" />
+          </div>
+
+          <div class="flex items-center justify-between gap-2 pt-3 border-t border-(--border-color-1)/40">
+            <!-- eslint-disable-next-line @angular-eslint/template/label-has-associated-control -- The toggle input comes from the activeToggle template. -->
+            <label class="inline-flex items-center gap-2 text-[12px] text-(--secondary-text)">
+              <ng-container *ngTemplateOutlet="activeToggle; context: { $implicit: discount }" />
+              {{ (discount.active ? 'tables.active' : 'tables.inactive') | translate }}
+            </label>
+            <ng-container *ngTemplateOutlet="rowActions; context: { $implicit: discount }" />
+          </div>
+        </ng-template>
+
+        <ng-template appTableEmpty><ng-container *ngTemplateOutlet="emptyState" /></ng-template>
+      </app-data-table>
+    </div>
+
+    @if (!loading() && filtered().length > 0) {
+      <div class="px-4 sm:px-5 pb-5">
+        <app-pagination [(page)]="page" [total]="filtered().length" [pageSize]="pageSize()" />
+      </div>
+    }
+  </section>
+
+  <!-- ===================== SIMPLE TABLE ===================== -->
+  <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl">
+    <header class="px-4 sm:px-5 py-4 border-b border-(--border-color-1)/40">
+      <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'tables.simple.title' | translate }}</h3>
+      <p class="form-hint mt-0.5">{{ 'tables.simple.hint' | translate }}</p>
+    </header>
+    <div class="p-4 sm:p-5">
+      <app-data-table [rows]="recentOrders" [columns]="orderColumns()" [trackBy]="byId" striped minWidth="560px" [label]="'tables.simple.title' | translate">
+        <ng-template appCell="id" let-order><span class="font-semibold text-(--primary-color)">{{ order.id }}</span></ng-template>
+        <ng-template appCell="date" let-order><span class="text-(--secondary-text) whitespace-nowrap">{{ date(order.date) }}</span></ng-template>
+        <ng-template appCell="status" let-order>
+          <span class="inline-block px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide border rounded-md" [class]="orderBadge(order).classes">{{ orderBadge(order).label | translate }}</span>
+        </ng-template>
+        <ng-template appCell="total" let-order><span class="font-semibold text-(--text-color) tabular-nums">{{ money(order.total) }}</span></ng-template>
+      </app-data-table>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== CELL TEMPLATES ===================== -->
+<ng-template #stateBadge let-discount>
+  <span class="inline-block px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide border rounded-md shrink-0 whitespace-nowrap" [class]="stateClasses[state(discount)]">
+    {{ stateLabels[state(discount)] | translate }}
+  </span>
+</ng-template>
+
+<ng-template #scopeInfo let-discount>
+  <div class="flex flex-col min-w-0">
+    <span class="text-[12px] font-semibold text-(--text-color)">{{ scopeLabel(discount) | translate }}</span>
+    @if (discount.target) {
+      <span class="text-[11px] text-(--secondary-text) truncate max-w-48">{{ discount.target }}</span>
+    }
+  </div>
+</ng-template>
+
+<ng-template #validity let-discount>
+  @if (discount.since || discount.to) {
+    <div class="flex flex-col text-[12px] text-(--text-color) whitespace-nowrap">
+      <span><span class="text-(--secondary-text)">{{ 'tables.from' | translate }}</span> {{ discount.since ? date(discount.since) : '—' }}</span>
+      <span><span class="text-(--secondary-text)">{{ 'tables.until' | translate }}</span> {{ discount.to ? date(discount.to) : ('tables.noEnd' | translate) }}</span>
+    </div>
+  } @else {
+    <span class="text-[12px] text-(--secondary-text)">{{ 'tables.noLimit' | translate }}</span>
+  }
+</ng-template>
+
+<ng-template #activeToggle let-discount>
+  @if (busyId() === discount.id) {
+    <span class="loading loading-spinner loading-xs text-(--primary-color)"></span>
+  } @else {
+    <input type="checkbox" [checked]="discount.active" (change)="toggleActive(discount)" [disabled]="!!busyId()" [attr.aria-label]="(discount.active ? 'tables.deactivate' : 'tables.activate') | translate" class="toggle toggle-sm toggle-primary" />
+  }
+</ng-template>
+
+<ng-template #rowActions let-discount>
+  <div class="flex items-center justify-end gap-1">
+    <button type="button" (click)="openDetail(discount)" [attr.aria-label]="'tables.view' | translate" [title]="'tables.view' | translate" class="size-8 inline-flex items-center justify-center rounded-lg text-(--secondary-text) hover:bg-(--bg-2) hover:text-(--text-color) transition cursor-pointer">
+      <app-tabler-icon name="eye" [size]="18" />
+    </button>
+    <button type="button" (click)="openForm(discount)" [attr.aria-label]="'tables.edit' | translate" [title]="'tables.edit' | translate" class="size-8 inline-flex items-center justify-center rounded-lg text-warning hover:bg-warning/10 transition cursor-pointer">
+      <app-tabler-icon name="edit" [size]="18" />
+    </button>
+    <button type="button" (click)="askDelete(discount)" [disabled]="busyId() === discount.id" [attr.aria-label]="'tables.delete' | translate" [title]="'tables.delete' | translate" class="size-8 inline-flex items-center justify-center rounded-lg text-(--danger) hover:bg-(--danger)/10 disabled:opacity-50 transition cursor-pointer">
+      <app-tabler-icon name="trash" [size]="18" />
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #emptyState>
+  <div class="py-12 flex flex-col items-center justify-center text-center">
+    <span class="size-14 rounded-full bg-(--bg-2) text-(--secondary-text) inline-flex items-center justify-center mb-3">
+      <app-tabler-icon name="discounts" [size]="28" />
+    </span>
+    <p class="text-[14px] font-semibold text-(--text-color)">{{ (hasQuery() ? 'tables.empty.noResults' : 'tables.empty.none') | translate }}</p>
+    <p class="text-[12px] text-(--secondary-text) mt-1">{{ (hasQuery() ? 'tables.empty.noResultsHint' : 'tables.empty.noneHint') | translate }}</p>
+    @if (hasQuery()) {
+      <button type="button" (click)="clearFilters()" class="mt-4 h-8 px-3 rounded-lg text-[13px] font-semibold text-(--primary-color) hover:bg-(--primary-color)/10 transition cursor-pointer">{{ 'tables.clearFilters' | translate }}</button>
+    }
+  </div>
+</ng-template>
+
+<!-- ===================== MODALS ===================== -->
+<app-modal [(open)]="detailOpen" [title]="'tables.detail.title' | translate" icon="discounts">
+  @if (detail(); as discount) {
+    <div class="space-y-4">
+      <div class="rounded-xl border-2 border-dashed border-(--primary-color)/40 bg-(--primary-color)/5 p-4 flex items-center justify-between gap-3">
+        <div class="flex flex-col min-w-0">
+          <span class="text-[11px] font-semibold uppercase tracking-wide text-(--secondary-text)">{{ scopeLabels[discount.scope] | translate }}</span>
+          <span class="text-[16px] font-black text-(--text-color) break-words">{{ discount.target ?? ('tables.allProducts' | translate) }}</span>
+        </div>
+        <span class="text-[24px] font-black text-(--primary-color) shrink-0">{{ valueLabel(discount) }}</span>
+      </div>
+
+      <div>
+        <p class="text-[15px] font-bold text-(--text-color)">{{ discount.name }}</p>
+        <p class="text-[13px] text-(--secondary-text) mt-1">{{ discount.description || ('tables.noDescription' | translate) }}</p>
+      </div>
+
+      <dl class="grid grid-cols-2 gap-x-4 gap-y-3">
+        <div>
+          <dt class="form-label">{{ 'tables.detail.type' | translate }}</dt>
+          <dd class="text-[14px] text-(--text-color)">{{ (discount.type === 'PERCENTAGE' ? 'tables.type.percentage' : 'tables.type.fixed') | translate }}</dd>
+        </div>
+        <div>
+          <dt class="form-label">{{ 'tables.col.state' | translate }}</dt>
+          <dd class="mt-0.5"><ng-container *ngTemplateOutlet="stateBadge; context: { $implicit: discount }" /></dd>
+        </div>
+        <div>
+          <dt class="form-label">{{ 'tables.from' | translate }}</dt>
+          <dd class="text-[14px] text-(--text-color)">{{ discount.since ? date(discount.since, true) : ('tables.immediately' | translate) }}</dd>
+        </div>
+        <div>
+          <dt class="form-label">{{ 'tables.until' | translate }}</dt>
+          <dd class="text-[14px] text-(--text-color)">{{ discount.to ? date(discount.to, true) : ('tables.noLimit' | translate) }}</dd>
+        </div>
+        <div>
+          <dt class="form-label">{{ 'tables.detail.maxUsages' | translate }}</dt>
+          <dd class="text-[14px] text-(--text-color)">{{ discount.maxUsages ?? ('tables.unlimited' | translate) }}</dd>
+        </div>
+        <div>
+          <dt class="form-label">{{ 'tables.detail.created' | translate }}</dt>
+          <dd class="text-[14px] text-(--text-color)">{{ date(discount.createdAt, true) }}</dd>
+        </div>
+      </dl>
+
+      @if (discount.updatedAt) {
+        <p class="text-[11px] text-(--secondary-text)">{{ 'tables.detail.updated' | translate }} {{ date(discount.updatedAt, true) }}</p>
+      }
+    </div>
+  }
+
+  <ng-container modalActions>
+    <button type="button" (click)="detailOpen.set(false)" class="w-full sm:w-auto btn bg-base-100 hover:bg-(--bg-2) text-(--secondary-text) border border-(--border-color-1) rounded-lg h-9 min-h-0 text-sm font-bold shadow-sm">{{ 'common.close' | translate }}</button>
+    <button type="button" (click)="editFromDetail()" class="w-full sm:w-auto btn bg-(--primary-color) hover:brightness-110 text-white border-none rounded-lg h-9 min-h-0 text-sm font-semibold px-5 shadow-sm">{{ 'tables.detail.edit' | translate }}</button>
+  </ng-container>
+</app-modal>
+
+<app-modal [(open)]="formOpen" [title]="(editing() ? 'tables.form.editTitle' : 'tables.form.newTitle') | translate" [subtitle]="editing()?.name" icon="discounts" size="lg" [locked]="saving()">
+  <form id="discount-form" [formGroup]="form" (ngSubmit)="save()" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div class="flex flex-col gap-1 sm:col-span-2">
+      <label for="d-name" class="form-label">{{ 'tables.form.name' | translate }}</label>
+      <input id="d-name" type="text" formControlName="name" maxlength="60" class="form-input" />
+      <app-error-messages [control]="form.controls.name" [label]="'validation.thisField' | translate" />
+    </div>
+    <div class="flex flex-col gap-1 sm:col-span-2">
+      <label for="d-description" class="form-label">{{ 'tables.form.description' | translate }} <span class="text-[11px] font-normal">{{ 'common.optional' | translate }}</span></label>
+      <textarea id="d-description" rows="2" formControlName="description" class="form-input resize-y"></textarea>
+    </div>
+
+    <fieldset class="flex flex-col gap-1">
+      <legend class="form-label mb-1">{{ 'tables.detail.type' | translate }}</legend>
+      <div class="grid grid-cols-2 gap-2">
+        <label class="relative cursor-pointer">
+          <input type="radio" formControlName="type" value="PERCENTAGE" class="peer sr-only" />
+          <span class="flex h-10 items-center justify-center rounded-lg border-2 border-(--border-color-1)/40 text-[13px] font-semibold text-(--secondary-text) transition peer-checked:border-(--primary-color) peer-checked:bg-(--primary-color)/10 peer-checked:text-(--primary-color) peer-focus-visible:ring-2 peer-focus-visible:ring-(--primary-color)/40">%</span>
+        </label>
+        <label class="relative cursor-pointer">
+          <input type="radio" formControlName="type" value="FIXED" class="peer sr-only" />
+          <span class="flex h-10 items-center justify-center rounded-lg border-2 border-(--border-color-1)/40 text-[13px] font-semibold text-(--secondary-text) transition peer-checked:border-(--primary-color) peer-checked:bg-(--primary-color)/10 peer-checked:text-(--primary-color) peer-focus-visible:ring-2 peer-focus-visible:ring-(--primary-color)/40">$ MXN</span>
+        </label>
+      </div>
+    </fieldset>
+    <div class="flex flex-col gap-1">
+      <label for="d-value" class="form-label">{{ 'tables.col.value' | translate }}</label>
+      <div class="input-group">
+        <span class="input-addon">{{ form.controls.type.value === 'PERCENTAGE' ? '%' : '$' }}</span>
+        <input id="d-value" type="number" min="1" [max]="form.controls.type.value === 'PERCENTAGE' ? 100 : null" formControlName="value" />
+      </div>
+      <app-error-messages [control]="form.controls.value" [label]="'validation.thisField' | translate" />
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label for="d-scope" class="form-label">{{ 'tables.col.scope' | translate }}</label>
+      <app-select inputId="d-scope" formControlName="scope" [options]="scopeOptions()" [clearable]="false" />
+    </div>
+    <div class="flex flex-col gap-1">
+      <label for="d-target" class="form-label">{{ 'tables.form.target' | translate }}</label>
+      <input id="d-target" type="text" formControlName="target" [readonly]="form.controls.scope.value === 'ALL'" [placeholder]="form.controls.scope.value === 'ALL' ? ('tables.allProducts' | translate) : ''" class="form-input" />
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label for="d-period" class="form-label">{{ 'tables.col.validity' | translate }} <span class="text-[11px] font-normal">{{ 'common.optional' | translate }}</span></label>
+      <app-datepicker inputId="d-period" mode="range" formControlName="period" />
+    </div>
+    <div class="flex flex-col gap-1">
+      <label for="d-max" class="form-label">{{ 'tables.detail.maxUsages' | translate }} <span class="text-[11px] font-normal">{{ 'common.optional' | translate }}</span></label>
+      <input id="d-max" type="number" min="1" formControlName="maxUsages" [placeholder]="'tables.unlimited' | translate" class="form-input" />
+    </div>
+
+    <label class="sm:col-span-2 flex items-center gap-3 cursor-pointer w-fit">
+      <input type="checkbox" formControlName="active" class="toggle toggle-sm toggle-primary" />
+      <span class="text-[14px] text-(--text-color)">{{ 'tables.form.activeLabel' | translate }}</span>
+    </label>
+  </form>
+
+  <ng-container modalActions>
+    <button type="button" (click)="formOpen.set(false)" [disabled]="saving()" class="w-full sm:w-auto btn bg-base-100 hover:bg-(--bg-2) text-(--secondary-text) border border-(--border-color-1) rounded-lg h-9 min-h-0 text-sm font-bold shadow-sm">{{ 'common.cancel' | translate }}</button>
+    <button type="submit" form="discount-form" [disabled]="saving()" class="w-full sm:w-auto btn bg-(--primary-color) hover:brightness-110 text-white border-none rounded-lg h-9 min-h-0 text-sm font-semibold px-5 shadow-sm">
+      @if (saving()) {
+        <span class="loading loading-spinner loading-sm"></span>
+      }
+      {{ (editing() ? 'common.saveChanges' : 'tables.form.create') | translate }}
+    </button>
+  </ng-container>
+</app-modal>
+
+<app-modal [(open)]="deleteOpen" [title]="'tables.deleteDialog.title' | translate" [subtitle]="toDelete()?.name" icon="trash" size="sm" [locked]="deleting()">
+  <p class="text-[14px] text-(--secondary-text)">{{ 'tables.deleteDialog.body' | translate }}</p>
+  <ng-container modalActions>
+    <button type="button" (click)="deleteOpen.set(false)" [disabled]="deleting()" class="w-full sm:w-auto btn bg-base-100 hover:bg-(--bg-2) text-(--secondary-text) border border-(--border-color-1) rounded-lg h-9 min-h-0 text-sm font-bold shadow-sm">{{ 'common.cancel' | translate }}</button>
+    <button type="button" (click)="confirmDelete()" [disabled]="deleting()" class="w-full sm:w-auto btn bg-(--danger) hover:brightness-110 text-white border-none rounded-lg h-9 min-h-0 text-sm font-semibold px-5 shadow-sm">
+      @if (deleting()) {
+        <span class="loading loading-spinner loading-sm"></span>
+      }
+      {{ 'tables.delete' | translate }}
+    </button>
+  </ng-container>
+</app-modal>

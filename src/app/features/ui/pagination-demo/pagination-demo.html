@@ -1,0 +1,156 @@
+<div class="px-4 md:px-8 py-5 flex flex-col gap-6">
+  <div class="flex flex-col gap-2">
+    <h2 class="text-[20px] font-bold text-(--text-color)">{{ 'ui.pagination.title' | translate }}</h2>
+    <p class="text-[13px] text-(--secondary-text) -mt-1">{{ 'ui.pagination.subtitle' | translate }}</p>
+  </div>
+
+  <!-- INSTALL -->
+  <section class="bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-3 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.pagination.usage' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.pagination.usageHint' | translate }}</p>
+      </div>
+      <pre class="text-[12px] leading-relaxed text-(--text-color) bg-(--bg-2) border border-(--border-color-1)/40 rounded-xl p-4 overflow-x-auto"><code>npm install &#64;icelii/ngx-api-paginator
+
+&lt;lib-ngx-api-paginator
+  [currentPage]="page()"
+  [perPage]="10"
+  [totalItems]="total()"
+  style="rounded"
+  (pageChanged)="loadPage($event)"
+/&gt;</code></pre>
+      <a href="https://www.npmjs.com/package/@icelii/ngx-api-paginator" target="_blank" rel="noopener" class="ui-btn ui-btn-light ui-btn-sm w-fit">
+        <app-tabler-icon name="link" [size]="16" />
+        npm · &#64;icelii/ngx-api-paginator
+      </a>
+  </section>
+
+  <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 items-start">
+    <!-- API -->
+    <section class="xl:col-span-2 bg-base-100 border border-(--border-color-1)/40 rounded-xl flex flex-col min-w-0 overflow-hidden">
+      <div class="p-5 pb-4 flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+        <div>
+          <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.pagination.api' | translate }}</h3>
+          <p class="form-hint mt-0.5">{{ 'ui.pagination.apiHint' | translate }}</p>
+        </div>
+        <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto shrink-0">GET /api/products?page={{ apiPage() }}&amp;per_page={{ apiPerPage }}</code>
+      </div>
+
+      <div class="relative border-y border-(--border-color-1)/40" [attr.aria-busy]="loading()">
+        <ul class="divide-y divide-(--border-color-1)/40 transition-opacity" [class.opacity-40]="loading()">
+          @for (product of products(); track product.id) {
+            <li class="px-5 py-3 flex items-center gap-3">
+              <span class="size-10 shrink-0 rounded-xl bg-(--primary-color)/10 text-(--primary-color) inline-flex items-center justify-center">
+                <app-tabler-icon name="products" [size]="20" />
+              </span>
+              <div class="flex flex-col min-w-0 flex-1">
+                <span class="text-[13px] font-semibold text-(--text-color) truncate">{{ product.category | translate }} · SKU-{{ product.id }}</span>
+                <span class="text-[11px] text-(--secondary-text)">{{ 'ui.pagination.stock' | translate: { count: product.stock } }}</span>
+              </div>
+              @if (product.stock === 0) {
+                <span class="ui-badge ui-badge-pill ui-badge-danger hidden sm:inline-flex">{{ 'ui.pagination.soldOut' | translate }}</span>
+              }
+              <span class="text-[13px] font-bold text-(--text-color) tabular-nums whitespace-nowrap">${{ product.price | number }}</span>
+            </li>
+          }
+        </ul>
+        @if (loading()) {
+          <div class="ui-loading-overlay bg-transparent!">
+            <span class="ui-spinner" role="status" [attr.aria-label]="'ui.pagination.loading' | translate"></span>
+          </div>
+        }
+      </div>
+
+      <div class="px-5">
+        <lib-ngx-api-paginator
+          [currentPage]="apiPage()"
+          [perPage]="apiPerPage"
+          [totalItems]="apiTotal()"
+          [textShowing]="labels().showing"
+          [textTo]="labels().to"
+          [textOf]="labels().of"
+          [textResults]="labels().results"
+          [textPrevious]="labels().previous"
+          [textNext]="labels().next"
+          (pageChanged)="onApiPage($event)"
+        />
+      </div>
+    </section>
+
+    <!-- STYLES -->
+    <section class="xl:col-span-2 bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.pagination.styles' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.pagination.stylesHint' | translate }}</p>
+      </div>
+      <div class="grid grid-cols-1 2xl:grid-cols-2 gap-x-6 gap-y-2">
+        @for (name of styles; track name) {
+          <div class="flex flex-col min-w-0 border-t border-(--border-color-1)/40 pt-3">
+            <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit">style="{{ name }}"</code>
+            <lib-ngx-api-paginator
+              [style]="name"
+              [currentPage]="stylePages()[name]"
+              [perPage]="10"
+              [totalItems]="150"
+              [showInfo]="false"
+              [textPrevious]="labels().previous"
+              [textNext]="labels().next"
+              (pageChanged)="setStylePage(name, $event)"
+            />
+          </div>
+        }
+      </div>
+    </section>
+
+    <!-- PER PAGE -->
+    <section class="xl:col-span-2 bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+        <div>
+          <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.pagination.perPage' | translate }}</h3>
+          <p class="form-hint mt-0.5">{{ 'ui.pagination.perPageHint' | translate }}</p>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <label for="pg-size" class="form-label whitespace-nowrap">{{ 'tables.perPage' | translate }}</label>
+          <select id="pg-size" class="form-input w-24!" (change)="setPerPage(+$any($event.target).value)">
+            @for (size of perPageOptions; track size) {
+              <option [value]="size" [selected]="size === perPage()">{{ size }}</option>
+            }
+          </select>
+        </div>
+      </div>
+      <lib-ngx-api-paginator
+        [style]="'flat'"
+        [currentPage]="bigPage()"
+        [perPage]="perPage()"
+        [totalItems]="bigTotal"
+        [textShowing]="labels().showing"
+        [textTo]="labels().to"
+        [textOf]="labels().of"
+        [textResults]="labels().results"
+        textPrevious=""
+        textNext=""
+        (pageChanged)="bigPage.set($event)"
+      />
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">[perPage]="perPage()" · [totalItems]="{{ bigTotal }}"</code>
+    </section>
+
+    <!-- COMPACT -->
+    <section class="xl:col-span-2 bg-base-100 border border-(--border-color-1)/40 rounded-xl p-5 flex flex-col gap-4 min-w-0">
+      <div>
+        <h3 class="text-[15px] font-bold text-(--text-color)">{{ 'ui.pagination.compact' | translate }}</h3>
+        <p class="form-hint mt-0.5">{{ 'ui.pagination.compactHint' | translate }}</p>
+      </div>
+      <lib-ngx-api-paginator
+        [style]="'circle'"
+        [currentPage]="compactPage()"
+        [perPage]="12"
+        [totalItems]="96"
+        [showInfo]="false"
+        textPrevious=""
+        textNext=""
+        (pageChanged)="compactPage.set($event)"
+      />
+      <code class="text-[11px] text-(--secondary-text) bg-(--bg-2) rounded-md px-2 py-1 w-fit max-w-full overflow-x-auto">[showInfo]="false" textPrevious="" textNext=""</code>
+    </section>
+  </div>
+</div>

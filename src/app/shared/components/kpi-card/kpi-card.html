@@ -1,0 +1,27 @@
+<article class="h-full bg-base-100 border border-(--border-color-1)/40 rounded-xl p-4 sm:p-5 flex flex-col gap-3 min-w-0">
+  <!-- Phones: icon above the label so the label gets the full width. From sm up: same row. -->
+  <div class="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-2.5 min-w-0">
+    @if (icon(); as kpiIcon) {
+      <span class="size-8 shrink-0 rounded-lg inline-flex items-center justify-center" [class]="toneClass()">
+        <app-tabler-icon [name]="kpiIcon" [size]="18" />
+      </span>
+    }
+    <h3 class="min-w-0 text-[11px] sm:text-xs font-bold text-(--secondary-text) uppercase tracking-wide leading-tight">{{ label() }}</h3>
+  </div>
+
+  <p class="text-[20px] sm:text-[24px] font-bold text-(--text-color) leading-none truncate">{{ value() }}</p>
+
+  @if (trend() !== null || hint()) {
+    <p class="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[12px] mt-auto">
+      @if (trend() !== null) {
+        <span class="inline-flex items-center gap-0.5 font-semibold" [class]="trendUp() ? 'text-success' : 'text-(--danger)'">
+          <app-tabler-icon [name]="trendUp() ? 'trending-up' : 'trending-down'" [size]="14" [stroke]="2.5" />
+          {{ trendText() }}
+        </span>
+      }
+      @if (hint()) {
+        <span class="text-(--secondary-text)">{{ hint() }}</span>
+      }
+    </p>
+  }
+</article>

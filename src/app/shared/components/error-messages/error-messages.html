@@ -1,0 +1,7 @@
+@if (messages().length) {
+  <div class="mt-1 text-(--danger) flex flex-col gap-1">
+    @for (message of messages(); track message) {
+      <small class="block">• {{ message }}</small>
+    }
+  </div>
+}
