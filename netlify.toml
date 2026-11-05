@@ -10,3 +10,48 @@
 # Server rendering on Netlify. It must also be in devDependencies (package.json).
 [[plugins]]
   package = "@netlify/angular-runtime"
+
+# Routes that only redirect (redirectTo in app.routes.ts). Netlify answers them right away,
+# instead of serving Angular's "Redirecting…" page and then adding the trailing slash.
+# Use 302 so browsers don't remember them if you change the start page later.
+[[redirects]]
+  from = "/"
+  to = "/dashboard/"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/auth"
+  to = "/auth/login/"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/auth/"
+  to = "/auth/login/"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/account-settings"
+  to = "/account-settings/profile/"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/account-settings/"
+  to = "/account-settings/profile/"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/ui/forms"
+  to = "/ui/forms/form-elements/"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/ui/forms/"
+  to = "/ui/forms/form-elements/"
+  status = 302
+  force = true

@@ -111,6 +111,16 @@ The template is UI only: it has no HTTP calls, route guards or environment files
 2. **Auth pages:** fill in `onSubmit()` in each page under `features/auth/pages/`. The places to call your API are marked with comments. Login currently goes straight to the dashboard as a demo.
 3. **Route guards:** protect the main layout in `app.routes.ts` with a `canActivate` guard once you have a session.
 
+## Deploying to Netlify
+
+The repo includes `netlify.toml`, so connecting it in Netlify is enough. It sets:
+
+- **Build:** the build command, the publish folder and Node 24.
+- **Server rendering:** the `@netlify/angular-runtime` plugin, which uses `src/server.ts`.
+- **Redirects:** routes that only redirect (`/` → `/dashboard/`, `/auth` → `/auth/login/`, …) are answered by Netlify right away, so the first visit never shows Angular's "Redirecting…" page.
+
+If you change a `redirectTo` in the routes, update the matching redirect in `netlify.toml`.
+
 ## Project structure
 
 ```
