@@ -37,7 +37,7 @@ Requirements: Node.js 22.22+ or 24.15+ (what Angular 22 supports) and npm.
 npm install
 npm start                  # dev server at http://localhost:4200
 npm run build              # production build with SSR and prerendering
-npm run serve:ssr:sweetUi  # serve the production build
+npx netlify dev            # run the production setup locally (needs netlify-cli)
 npm test                   # unit tests with Vitest (watch mode)
 npm run test:ci            # unit tests once, for CI
 npm run lint               # ESLint for TypeScript and templates (includes accessibility rules)

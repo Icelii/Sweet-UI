@@ -6,7 +6,6 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "serve:ssr:sweetUi": "node dist/sweetUi/server/server.mjs",
     "lint": "ng lint",
     "test": "ng test",
     "test:ci": "ng test --watch=false"
@@ -26,7 +25,6 @@
     "@icelii/ngx-api-paginator": "^1.0.4",
     "apexcharts": "^8.7.0",
     "daisyui": "^5.7.47",
-    "express": "^5.1.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },
@@ -37,7 +35,6 @@
     "@eslint/js": "^10.0.1",
     "@netlify/angular-runtime": "^4.0.0",
     "@tailwindcss/postcss": "^4.3.3",
-    "@types/express": "^5.0.1",
     "@types/node": "^24.19.2",
     "angular-eslint": "22.6.0",
     "eslint": "^10.12.0",
